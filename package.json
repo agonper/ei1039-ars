@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Audience Response System created for EI1039 subject at Universitat Jaume I (UJI)",
   "main": "./dist/server.js",
+  "engines": {
+    "node": ">= 4.0"
+  },
   "scripts": {
     "build-client": "cross-env NODE_ENV=production webpack -p",
     "build-server": "cross-env NODE_ENV=production webpack --config webpack.server.config.js -p",
