@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Component = React.Component;
+const { Component } = React;
 
 export interface HelloProps {
     compiler: string;

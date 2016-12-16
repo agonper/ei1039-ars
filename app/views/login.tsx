@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Hello} from "../components/hello";
 
-export default () => {
+export const Login = () => {
     return (
         <Hello framework="Login" compiler="TypeScript"/>
     );
-}
+};

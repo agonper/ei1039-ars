@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-import App from "./views/app";
-import MainView from "./views/main-view";
-import Login from "./views/login";
+import { App } from "./views/app";
+import { MainView } from "./views/main-view";
+import { Login } from "./views/login";
 
 export default (
     <Route path="/" component={App} >

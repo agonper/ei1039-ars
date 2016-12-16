@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default (props: any) => {
+export const App =  (props: any) => {
     return (
         <div>
             {props.children}
