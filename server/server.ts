@@ -58,7 +58,11 @@ export class Server {
         const app = this._app;
 
         app.get('/api/:resource', (req: express.Request, res: express.Response) => {
-            res.send(`Hello ${req.params.resource}!`)
+            const { resource } = req.params;
+            if (resource === 'hostname') {
+                return `${this._config.http.host}`;
+            }
+            res.send(`Hello ${resource}!`)
         });
 
         app.use('*', (req: express.Request, res: express.Response) =>

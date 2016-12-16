@@ -40,9 +40,8 @@ const productionConfig: ServerConfig = {
     }
 };
 
-export const configLoader = () => {
-    const environment = process.env.NODE_ENV;
-    switch(environment) {
+export const configLoader = (env: string) => {
+    switch(env) {
         case 'development':
             return developmentConfig;
         case 'test':
@@ -51,3 +50,5 @@ export const configLoader = () => {
             return productionConfig;
     }
 };
+
+export const serverConfig = configLoader(process.env.NODE_ENV);
