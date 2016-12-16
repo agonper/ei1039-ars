@@ -1,6 +1,5 @@
 import * as express from 'express';
 import * as path from 'path';
-import * as os from 'os';
 import * as morgan from 'morgan';
 import * as log from 'winston';
 
@@ -12,6 +11,7 @@ export interface DBConfig {
 }
 
 export interface HttpConfig {
+    host: string,
     port: number,
     secure: boolean
 }
@@ -43,7 +43,7 @@ export class Server {
         this._app.listen(http.port);
 
         const protocol = this._config.http.secure ? 'https' : 'http';
-        log.info(`(UJI | ARS) Server running at ${protocol}://${os.hostname()}:${http.port}`);
+        log.info(`(UJI | ARS) Server running at ${protocol}://${http.host}:${http.port}`);
     }
 
     private configure() {

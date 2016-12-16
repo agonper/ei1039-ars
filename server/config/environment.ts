@@ -1,8 +1,5 @@
 import {ServerConfig} from "../server";
-
-enum Environment {
-
-}
+import * as os from 'os';
 
 const developmentConfig: ServerConfig = {
     db :{
@@ -11,13 +8,37 @@ const developmentConfig: ServerConfig = {
         dbName: 'ei1039-ars-dev'
     },
     http: {
+        host: os.hostname(),
         port: 3000,
         secure: false
     }
 };
 
-const testConfig: ServerConfig = developmentConfig;
-const productionConfig: ServerConfig = developmentConfig;
+const testConfig: ServerConfig = {
+    db :{
+        host: 'localhost',
+        port: 27017,
+        dbName: 'ei1039-ars-dev'
+    },
+    http: {
+        host: os.hostname(),
+        port: 3000,
+        secure: false
+    }
+};
+
+const productionConfig: ServerConfig = {
+    db :{
+        host: 'localhost',
+        port: 27017,
+        dbName: 'ei1039-ars-dev'
+    },
+    http: {
+        host: os.hostname(),
+        port: process.env.PORT || 8080,
+        secure: false
+    }
+};
 
 export const configLoader = () => {
     const environment = process.env.NODE_ENV;
@@ -26,7 +47,7 @@ export const configLoader = () => {
             return developmentConfig;
         case 'test':
             return testConfig;
-        case 'production':
+        default:
             return productionConfig;
     }
 };
