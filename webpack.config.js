@@ -1,5 +1,24 @@
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var webpack = require('webpack');
 var path = require('path');
+
+var PROD = JSON.stringify(process.env.NODE_ENV) === 'production';
+
+var plugins = [
+    new CopyWebpackPlugin([{ from: 'public'}]),
+    new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+    })
+];
+
+if (PROD) plugins.push(new webpack.optimize.UglifyJsPlugin({
+    minimize: true,
+    compress: {
+        warnings: false,
+        booleans: false,
+        unused: false
+    }
+}));
 
 module.exports = {
     entry: "./app/index.tsx",
@@ -23,9 +42,7 @@ module.exports = {
             { test: /\.js$/, loader: "source-map-loader" }
         ]
     },
-    plugins: [
-        new CopyWebpackPlugin([{ from: 'public'}])
-    ],
+    plugins: plugins,
     devServer: {
         historyApiFallback: true,
         proxy: {

@@ -1,9 +1,17 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { Router, browserHistory } from 'react-router';
 
-import { Hello } from './components/hello';
+import reducers from './reducers';
+import routes from './routes';
+
+const createStoreWithMiddleware = applyMiddleware()(createStore);
 
 ReactDOM.render(
-    <Hello compiler="TypeScript (Webpack)" framework="React" />,
+    <Provider store={createStoreWithMiddleware(reducers)}>
+        <Router history={browserHistory} routes={routes} />
+    </Provider>,
     document.getElementById('example')
 );

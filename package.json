@@ -4,8 +4,8 @@
   "description": "Audience Response System created for EI1039 subject at Universitat Jaume I (UJI)",
   "main": "./dist/server.js",
   "scripts": {
-    "build-client": "cross-env NODE-ENV=production webpack -p",
-    "build-server": "cross-env NODE-ENV=production webpack --config webpack.server.config.js -p",
+    "build-client": "cross-env NODE_ENV=production webpack -p",
+    "build-server": "cross-env NODE_ENV=production webpack --config webpack.server.config.js -p",
     "build": "concurrently -r \"npm run build-client\" \"npm run build-server\"",
     "clean": "rimraf dist/",
     "dev:server": "concurrently -r \"cross-env NODE_ENV=development webpack --config webpack.server.config.js --watch\" \"cross-env NODE_ENV=development nodemon ./dist/server/main.js\"",
@@ -42,12 +42,17 @@
     "@types/morgan": "^1.7.32",
     "@types/react": "^0.14.55",
     "@types/react-dom": "^0.14.19",
+    "@types/react-redux": "^4.4.35",
+    "@types/react-router": "^2.0.41",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
     "morgan": "^1.7.0",
     "react": "^15.4.1",
-    "react-dom": "^15.4.1"
+    "react-dom": "^15.4.1",
+    "react-redux": "^5.0.1",
+    "react-router": "^3.0.0",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^3.0.0-beta.17",
