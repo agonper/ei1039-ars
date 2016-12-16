@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {Server} from "../server";
+import {Server} from "../initializers/server";
 
 export const AuthRouter = (server: Server): express.Router => {
   const router = express.Router();

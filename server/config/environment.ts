@@ -1,5 +1,22 @@
-import {ServerConfig} from "../server";
 import * as os from 'os';
+
+export interface DBConfig {
+    host: string,
+    port: number,
+    dbName: string
+}
+
+export interface HttpConfig {
+    host: string,
+    port: number,
+    secure: boolean
+}
+
+export interface ServerConfig {
+    db: DBConfig,
+    http: HttpConfig,
+    jwtSecret: string
+}
 
 const developmentConfig: ServerConfig = {
     db :{
@@ -11,7 +28,8 @@ const developmentConfig: ServerConfig = {
         host: os.hostname(),
         port: 3000,
         secure: false
-    }
+    },
+    jwtSecret: 'agdc-ei1039-ars'
 };
 
 const testConfig: ServerConfig = {
@@ -24,7 +42,8 @@ const testConfig: ServerConfig = {
         host: os.hostname(),
         port: 3000,
         secure: false
-    }
+    },
+    jwtSecret: 'agdc-ei1039-ars'
 };
 
 const productionConfig: ServerConfig = {
@@ -37,7 +56,8 @@ const productionConfig: ServerConfig = {
         host: process.env.SERVER_HOSTNAME || os.hostname(),
         port: process.env.PORT || 8080,
         secure: false
-    }
+    },
+    jwtSecret: 'agdc-ei1039-ars'
 };
 
 export const configLoader = (env: string) => {

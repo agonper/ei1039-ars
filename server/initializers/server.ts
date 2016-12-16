@@ -1,26 +1,11 @@
 import * as express from 'express';
 import * as path from 'path';
+import * as bodyparser from 'body-parser';
+import * as passport from 'passport';
 import * as morgan from 'morgan';
 import * as log from 'winston';
-import {AuthRouter} from "./routes/auth-router";
-
-
-export interface DBConfig {
-    host: string,
-    port: number,
-    dbName: string
-}
-
-export interface HttpConfig {
-    host: string,
-    port: number,
-    secure: boolean
-}
-
-export interface ServerConfig {
-    db: DBConfig,
-    http: HttpConfig
-}
+import {AuthRouter} from "../routes/auth-router";
+import {ServerConfig} from "../config/environment";
 
 export class Server {
     private _app: express.Application;
@@ -57,6 +42,10 @@ export class Server {
         app.use(morgan('combined'));
 
         app.use(express.static(path.resolve('dist', 'public')));
+
+        app.use(bodyparser.urlencoded({ extended: false }));
+
+        app.use(passport.initialize());
     }
 
     private addRoutes() {
