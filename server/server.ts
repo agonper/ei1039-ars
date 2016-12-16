@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as path from 'path';
 import * as morgan from 'morgan';
 import * as log from 'winston';
+import {AuthRouter} from "./routes/auth-router";
 
 
 export interface DBConfig {
@@ -34,6 +35,10 @@ export class Server {
         return this._app;
     }
 
+    public get config() {
+        return this._config;
+    }
+
     public start() {
         this.configure();
         this.addRoutes();
@@ -56,6 +61,8 @@ export class Server {
 
     private addRoutes() {
         const app = this._app;
+
+        app.use('/auth', AuthRouter(this));
 
         app.get('/api/:resource', (req: express.Request, res: express.Response) => {
             const { resource } = req.params;
