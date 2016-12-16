@@ -34,7 +34,7 @@ const productionConfig: ServerConfig = {
         dbName: 'ei1039-ars-dev'
     },
     http: {
-        host: os.hostname(),
+        host: process.env.SERVER_HOSTNAME || os.hostname(),
         port: process.env.PORT || 8080,
         secure: false
     }
