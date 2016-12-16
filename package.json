@@ -4,7 +4,8 @@
   "description": "Audience Response System created for EI1039 subject at Universitat Jaume I (UJI)",
   "main": "./dist/server.js",
   "engines": {
-    "node": ">= 4.0 < 7.0"
+    "node": "6.3.x",
+    "npm": "3.10.x"
   },
   "scripts": {
     "build-client": "cross-env NODE_ENV=production webpack -p",
