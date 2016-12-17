@@ -12,10 +12,15 @@ interface MainViewProps {
     auth: AuthState
 }
 
+const mainViewStyle = {
+    margin: '10px',
+    marginTop: '60px'
+};
+
 class MainViewComponent extends Component<MainViewProps, any> {
     render() {
         return (
-            <div style={{marginTop: '200px'}}>
+            <div style={mainViewStyle}>
                 <AuthBox />
             </div>
         );
