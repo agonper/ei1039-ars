@@ -1,11 +1,14 @@
 import * as express from 'express';
 import * as path from 'path';
 import * as bodyparser from 'body-parser';
-import * as passport from 'passport';
 import * as morgan from 'morgan';
 import * as log from 'winston';
-import {AuthRouter} from "../routes/auth-router";
-import {ServerConfig} from "../config/environment";
+import {AuthRouter} from '../routes/auth-router';
+import {ServerConfig} from '../config/environment';
+import {authChecker} from '../middlewares/auth-check';
+import {ApiRouter} from '../routes/api-router';
+import {PassportInitializer} from './passport';
+import * as passport from 'passport';
 
 export class Server {
     private _app: express.Application;
@@ -39,13 +42,21 @@ export class Server {
     private configure() {
         const app = this._app;
 
+        // Route logger
         app.use(morgan('combined'));
 
+        // Serve public files from /
         app.use(express.static(path.resolve('dist', 'public')));
 
-        app.use(bodyparser.urlencoded({ extended: false }));
+        // Enable JSON body parser for post requests
+        app.use(bodyparser.json());
 
-        app.use(passport.initialize());
+        const passportInitializer = new PassportInitializer(this.config);
+        passportInitializer.start(app);
+
+        // Protect /api with token access
+        const authCheckMiddleware = authChecker(this._config);
+        app.use('/api', authCheckMiddleware);
     }
 
     private addRoutes() {
@@ -53,13 +64,7 @@ export class Server {
 
         app.use('/auth', AuthRouter(this));
 
-        app.get('/api/:resource', (req: express.Request, res: express.Response) => {
-            const { resource } = req.params;
-            if (resource === 'hostname') {
-                return res.send(`${this._config.http.host}`);
-            }
-            res.send(`Hello ${resource}!`)
-        });
+        app.use('/api', ApiRouter(this));
 
         app.use('*', (req: express.Request, res: express.Response) =>
             res.sendFile(path.resolve('dist', 'public', 'index.html'))
