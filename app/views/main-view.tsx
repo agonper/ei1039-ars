@@ -7,11 +7,11 @@ import { connect } from 'react-redux';
 import {ApplicationState} from "../reducers/index";
 import {AuthState} from "../reducers/reducer_auth";
 
-interface MainViewState {
+interface MainViewProps {
     auth: AuthState
 }
 
-class MainViewComponent extends Component<MainViewState, any> {
+class MainViewComponent extends Component<MainViewProps, any> {
     render() {
         return (
             <div>
@@ -22,7 +22,7 @@ class MainViewComponent extends Component<MainViewState, any> {
     }
 }
 
-function mapStateToProps(state: ApplicationState) : MainViewState {
+function mapStateToProps(state: ApplicationState) : MainViewProps {
     return {
         auth: state.auth
     }

@@ -5,7 +5,10 @@ var path = require('path');
 var PROD = JSON.stringify(process.env.NODE_ENV) === 'production';
 
 var plugins = [
-    new CopyWebpackPlugin([{ from: 'public'}]),
+    new CopyWebpackPlugin([
+        { from: 'public'},
+        { from: 'node_modules/flexboxgrid/dist/flexboxgrid.min.css', to: 'css'}
+    ]),
     new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     })
