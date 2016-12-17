@@ -12,7 +12,7 @@ interface MainViewProps {
     auth: AuthState
 }
 
-const mainViewStyle = {
+export const mainViewStyle = {
     margin: '10px',
     marginTop: '60px'
 };
