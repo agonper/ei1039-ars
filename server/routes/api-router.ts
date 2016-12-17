@@ -7,7 +7,7 @@ export const ApiRouter = (server: Server): express.Router => {
     router.get('/:resource', (req, res) => {
         const { resource } = req.params;
         if (resource === 'hostname') {
-            return res.send(`${this._config.http.host}`);
+            return res.send(`${server.config.http.host}`);
         }
         res.send(`Hello ${resource}, ${req.user.name}!`);
     });
