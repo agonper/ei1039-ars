@@ -8,6 +8,7 @@ import { Login } from "./views/login";
 export default (
     <Route path="/" component={App} >
         <IndexRoute component={MainView}/>
-        <Route path="login" component={Login}/>
+        <Route path="/login" component={Login}/>
+        <Route path="/signup" component={Login}/>
     </Route>
 );
