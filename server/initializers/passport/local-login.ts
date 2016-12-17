@@ -25,11 +25,13 @@ export const localLogin = (config: ServerConfig): passport.Strategy => {
                     const token = jwt.sign(payload, config.jwtSecret);
 
                     return done(null, token);
-                }).catch(() => {
+                }).catch((err) => {
+                    log.info(err);
                     return done(error);
                 });
-        }).catch(() => {
-            return done(error);
+        }).catch((err) => {
+            log.info(err);
+            return done(error, false);
         });
     })
 };

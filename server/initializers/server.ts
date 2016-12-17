@@ -56,7 +56,7 @@ export class Server {
 
         // Protect /api with token access
         const authCheckMiddleware = authChecker(this._config);
-        app.use('/api', authCheckMiddleware);
+        app.use('/api', passport.authenticate(['basic-login', 'jwt-login'], { session: false }));
     }
 
     private addRoutes() {
