@@ -10,27 +10,23 @@ import {
 } from "material-ui";
 import CreateIcon from 'material-ui/svg-icons/content/create';
 import {Link} from 'react-router';
-import {ReduxFormProps, reduxForm, FieldProp} from "redux-form";
+import {ReduxFormProps, reduxForm} from "redux-form";
 import {MainTextField} from "../main-text-field";
+import {createUser} from "../../actions/auth";
+import IntrinsicAttributes = JSX.IntrinsicAttributes;
 
 
-
-interface SignupFormFields {
+export interface SignupFormFields {
     email: string,
     name: string,
     password: string
 }
 
-export class SignupFormComponent extends Component<ReduxFormProps<any>, any> {
+interface SignupFormProps extends ReduxFormProps<any> {
+    createUser(user: SignupFormFields): any;
+}
 
-    constructor() {
-        super();
-        this.onSubmit = this.onSubmit.bind(this);
-    }
-
-    onSubmit(fields: SignupFormFields) {
-        console.log(fields);
-    }
+export class SignupFormComponent extends Component<SignupFormProps, any> {
 
     render() {
         const {fields: {email, name, password}, handleSubmit} = this.props;
@@ -38,7 +34,7 @@ export class SignupFormComponent extends Component<ReduxFormProps<any>, any> {
             <div className="row center-xs">
                 <div className="col-md-4">
                     <Card className="start-xs">
-                        <form onSubmit={handleSubmit(this.onSubmit)}>
+                        <form onSubmit={handleSubmit(this.props.createUser)}>
                             <CardHeader title={<span><CreateIcon/> Signup</span>}/>
                             <CardText>
                                 <MainTextField
@@ -83,4 +79,4 @@ export const SignupForm = reduxForm({
     form: 'SignupForm',
     fields: ['email', 'name', 'password'],
     validate
-})(SignupFormComponent);
+}, null, {createUser})(SignupFormComponent);

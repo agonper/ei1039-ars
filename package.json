@@ -41,6 +41,7 @@
   },
   "homepage": "https://gitlab.com/agdc/ei1039-ars#README",
   "dependencies": {
+    "@types/axios": "^0.9.34",
     "@types/bcrypt": "0.0.30",
     "@types/body-parser": "0.0.33",
     "@types/cookie-parser": "^1.3.30",
@@ -58,8 +59,8 @@
     "@types/react-router": "^2.0.41",
     "@types/react-tap-event-plugin": "0.0.30",
     "@types/redux-form": "^4.0.31",
-    "@types/redux-promise": "^0.5.23",
     "@types/winston": "0.0.32",
+    "axios": "^0.15.3",
     "bcrypt": "^1.0.1",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
@@ -81,7 +82,6 @@
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-form": "^5.3.3",
-    "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0",
     "winston": "^2.3.0"
   },
