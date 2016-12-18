@@ -1,4 +1,5 @@
 import {Action} from "redux";
+import {ActionSuccess, ActionFailure} from "../actions/common";
 
 export interface AuthState {
     loggedIn: boolean
@@ -10,6 +11,6 @@ const INITIAL_SATE: AuthState = {
     user: undefined
 };
 
-export const AuthReducer = (state: AuthState = INITIAL_SATE, action: Action ): AuthState =>{
+export const AuthReducer = (state: AuthState = INITIAL_SATE, action: Action | ActionSuccess | ActionFailure ): AuthState =>{
     return state;
 };
