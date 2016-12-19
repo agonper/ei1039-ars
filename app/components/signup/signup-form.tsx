@@ -6,7 +6,9 @@ import {
     CardActions,
     CardText,
     RaisedButton,
-    FlatButton
+    FlatButton,
+    RadioButton,
+    RadioButtonGroup
 } from "material-ui";
 import CreateIcon from 'material-ui/svg-icons/content/create';
 import {Link} from 'react-router';
@@ -16,13 +18,19 @@ import {createUser, clearSignup} from "../../actions/signup";
 import {ApplicationState} from "../../reducers/index";
 import {Snackbar} from "material-ui";
 import PropTypes = React.PropTypes;
+import {FormattedMessage} from 'react-intl';
 
 
 export interface SignupFormFields {
     email: string,
     name: string,
-    password: string
+    password: string,
+    type: string
 }
+
+const radioStyle = {
+    margin: '2px'
+};
 
 export class SignupFormComponent extends Component<any, any> {
     static contextTypes = {
@@ -30,44 +38,77 @@ export class SignupFormComponent extends Component<any, any> {
     };
 
     onSubmitHandle(userData: SignupFormFields) {
+        console.log(userData);
         this.props.createUser(userData).then(() => this.props.resetForm());
     }
 
     render() {
-        const {fields: {email, name, password}, handleSubmit} = this.props;
+        const {fields, handleSubmit} = this.props;
+        const {email, name, password, type} = fields;
+
         const signupErrors = this.props.signup.errors;
         if (signupErrors) {
-            email.error = signupErrors.email;
-            name.error = signupErrors.name;
-            password.error = signupErrors.password;
+            Object.keys(signupErrors).forEach((field) => {
+                fields[field].error = (signupErrors[field]) ? 'signup.errors.' + signupErrors[field] : '';
+            });
         }
         return (
             <div>
-                <div className="row center-xs">
-                    <div className="col-md-4">
+                <div className="row center-xs" style={{margin: '10px'}}>
+                    <div className="col-lg-3 col-md-4 col-sm-6">
                         <Card className="start-xs">
                             <form onSubmit={handleSubmit(this.onSubmitHandle.bind(this))}>
-                                <CardHeader title={<span><CreateIcon/> Signup</span>}/>
+                                <CardHeader
+                                    title={
+                                        <span>
+                                            <h1><CreateIcon/> <FormattedMessage id="signup.title" defaultMessage="Signup"/></h1>
+                                        </span>
+                                    }/>
                                 <CardText>
                                     <MainTextField
                                         field={email}
-                                        hint="Enter your email"
-                                        label="Email"
+                                        hint="signup.email.hint"
+                                        defaultHint="Enter your email"
+                                        label="signup.email.label"
+                                        defaultLabel="Email"
                                         type="text"/>
                                     <MainTextField
                                         field={name}
-                                        hint="Enter your name"
-                                        label="Name"
+                                        hint="signup.name.hint"
+                                        defaultHint="Enter your name"
+                                        label="signup.name.label"
+                                        defaultLabel="Name"
                                         type="text"/>
                                     <MainTextField
                                         field={password}
-                                        hint="Enter your password"
-                                        label="Password"
+                                        hint="signup.password.hint"
+                                        defaultHint="Enter your password"
+                                        label="signup.password.label"
+                                        defaultLabel="Password"
                                         type="password"/>
+                                    {/* FIXME label only accepts strings */}
+                                    {type.value = 'student'} {/* TODO have an argument with the one that designed RadioButtonGroup API */}
+                                    <RadioButtonGroup name="type" defaultSelected={type.value} {...type}>
+                                        <RadioButton
+                                            value="student"
+                                            style={radioStyle}
+                                            label="Soy un estudiante" />
+                                        <RadioButton
+                                            value="teacher"
+                                            style={radioStyle}
+                                            label="Soy un profesor" />
+                                    </RadioButtonGroup>
                                 </CardText>
                                 <CardActions>
-                                    <RaisedButton type="submit" label="Signup" primary={true} disabled={this.props.signup.signingUp} />
-                                    <Link to="/login"><FlatButton label="I already have an account"/></Link>
+                                    <RaisedButton
+                                        type="submit"
+                                        label={<FormattedMessage id="signup.title" defaultMessage="Signup"/>}
+                                        primary={true}
+                                        disabled={this.props.signup.signingUp} />
+                                    <Link to="/login">
+                                        <FlatButton
+                                            label={<FormattedMessage id="signup.go-to-login" defaultMessage="I already have an account"/>}/>
+                                    </Link>
                                 </CardActions>
                             </form>
                         </Card>
@@ -101,6 +142,6 @@ function mapStateToProps(state: ApplicationState) {
 
 export const SignupForm = reduxForm({
     form: 'signup',
-    fields: ['email', 'name', 'password'],
+    fields: ['email', 'name', 'password', 'type'],
     validate
 }, mapStateToProps, {createUser, clearSignup})(SignupFormComponent);

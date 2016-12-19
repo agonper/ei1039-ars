@@ -3,6 +3,7 @@ import AppBar from 'material-ui/AppBar';
 import RecordVoiceOver from 'material-ui/svg-icons/action/record-voice-over'
 import {white} from 'material-ui/styles/colors';
 import IconButton from "material-ui/IconButton";
+import {FormattedMessage} from 'react-intl';
 import {Link} from 'react-router';
 
 export const App =  (props: any) => {
@@ -10,7 +11,7 @@ export const App =  (props: any) => {
     return (
         <div>
             <AppBar
-                title="UJI | ARS"
+                title={<FormattedMessage id="app.title" defaultMessage="UJI | ARS"/>}
                 iconElementLeft={<Link to="/"><IconButton><RecordVoiceOver color={white}/></IconButton></Link>}/>
 
             {props.children}

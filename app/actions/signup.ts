@@ -24,7 +24,7 @@ function signupSuccess(data: any): GenericAction {
     }
 }
 
-function signupFailed(err: Error): GenericAction {
+function signupFailed(err: any): GenericAction {
     return {
         type: USER_SIGNUP_ERROR,
         error: err
