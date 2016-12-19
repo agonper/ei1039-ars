@@ -31,10 +31,10 @@ export class SignupFormComponent extends Component<any, any> {
 
     render() {
         const {fields: {email, name, password}, handleSubmit} = this.props;
-        const signupErrors = this.props.signup.error;
+        const signupErrors = this.props.signup.errors;
         if (signupErrors) {
             email.error = signupErrors.email;
-            name.error = signupErrors.user;
+            name.error = signupErrors.name;
             password.error = signupErrors.password;
         }
         return (

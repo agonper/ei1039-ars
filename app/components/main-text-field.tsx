@@ -5,7 +5,7 @@ import {FieldProp} from "redux-form";
 import {TextField} from 'material-ui'
 
 const fieldsToOmit = ['initialValue', 'autofill', 'onUpdate', 'valid',
-    'invalid', 'dirty', 'pristine', 'error',
+    'invalid', 'dirty', 'pristine', 'errors',
     'active', 'touched', 'visited', 'autofilled'];
 
 interface MainTextFieldProps {
