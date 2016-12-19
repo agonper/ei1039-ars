@@ -19,6 +19,7 @@ import {ApplicationState} from "../../reducers/index";
 import {Snackbar} from "material-ui";
 import PropTypes = React.PropTypes;
 import {FormattedMessage} from 'react-intl';
+import {validateSignup} from "../../../common/validators/signup";
 
 const formName = 'signup';
 
@@ -146,5 +147,5 @@ function mapStateToProps(state: ApplicationState) {
 export const SignupForm = reduxForm({
     form: formName,
     fields: ['email', 'name', 'password', 'type'],
-    validate
+    validate: validateSignup
 }, mapStateToProps, {createUser, clearSignup})(SignupFormComponent);
