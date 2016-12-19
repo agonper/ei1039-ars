@@ -29,6 +29,10 @@ export class SignupFormComponent extends Component<any, any> {
         router: PropTypes.object
     };
 
+    onSubmitHandle(userData: SignupFormFields) {
+        this.props.createUser(userData).then(() => this.props.resetForm());
+    }
+
     render() {
         const {fields: {email, name, password}, handleSubmit} = this.props;
         const signupErrors = this.props.signup.errors;
@@ -42,7 +46,7 @@ export class SignupFormComponent extends Component<any, any> {
                 <div className="row center-xs">
                     <div className="col-md-4">
                         <Card className="start-xs">
-                            <form onSubmit={handleSubmit(this.props.createUser)}>
+                            <form onSubmit={handleSubmit(this.onSubmitHandle.bind(this))}>
                                 <CardHeader title={<span><CreateIcon/> Signup</span>}/>
                                 <CardText>
                                     <MainTextField
@@ -96,7 +100,7 @@ function mapStateToProps(state: ApplicationState) {
 }
 
 export const SignupForm = reduxForm({
-    form: 'SignupForm',
+    form: 'signup',
     fields: ['email', 'name', 'password'],
     validate
 }, mapStateToProps, {createUser, clearSignup})(SignupFormComponent);

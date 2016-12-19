@@ -1,10 +1,9 @@
 import {SignupFormFields} from "../components/signup/signup-form";
 import {RestAdapter} from "../adapters/rest";
 import {Action, Dispatch} from "redux";
-import {ActionSuccess, ActionFailure} from "./common";
+import {GenericAction} from "./common";
 import {ApplicationState} from "../reducers/index";
-import ThunkAction = Redux.ThunkAction;
-
+import {ThunkAction} from "redux-thunk";
 
 export const USER_SIGNUP_PENDING = 'USER_SIGNUP_PENDING';
 export const USER_SIGNUP_SUCCESS = 'USER_SIGNUP_SUCCESS';
@@ -18,14 +17,14 @@ function signupPending(): Action{
 }
 
 
-function signupSuccess(data: any): ActionSuccess {
+function signupSuccess(data: any): GenericAction {
     return {
         type: USER_SIGNUP_SUCCESS,
         payload: data
     }
 }
 
-function signupFailed(err: Error): ActionFailure {
+function signupFailed(err: Error): GenericAction {
     return {
         type: USER_SIGNUP_ERROR,
         error: err
@@ -37,8 +36,10 @@ export function createUser(userData: SignupFormFields): ThunkAction<void, Applic
     return (dispatch: Dispatch<ApplicationState>) => {
         dispatch(signupPending());
         request
-            .then((data) => dispatch(signupSuccess(data)))
-            .catch((err) => dispatch(signupFailed(err)));
+            .then((data) => {
+                dispatch(signupSuccess(data));
+            }).catch((err) => dispatch(signupFailed(err)));
+        return request;
     }
 }
 

@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
-import {AuthState, AuthReducer} from './reducer_auth';
 import {reducer as formReducer} from 'redux-form';
+import {AuthState, AuthReducer} from './reducer_auth';
 import {SignupState, SignupReducer} from "./reducer_signup";
 
 export interface ApplicationState {

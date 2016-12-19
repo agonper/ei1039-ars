@@ -1,5 +1,4 @@
-import {Action} from "redux";
-import {ActionSuccess, ActionFailure} from "../actions/common";
+import {GenericAction} from "../actions/common";
 import {USER_SIGNUP_PENDING, USER_SIGNUP_SUCCESS, USER_SIGNUP_ERROR, USER_SIGNUP_CLEAR} from "../actions/signup";
 
 export interface SignupState {
@@ -18,7 +17,7 @@ const INITIAL_STATE: SignupState = {
     errors: undefined
 };
 
-export const SignupReducer = (state: SignupState = INITIAL_STATE, action: Action | ActionSuccess | ActionFailure): SignupState => {
+export const SignupReducer = (state: SignupState = INITIAL_STATE, action: GenericAction): SignupState => {
     switch (action.type) {
         case USER_SIGNUP_PENDING:
             return {signingUp: true, signedUp: false, errors: undefined};
