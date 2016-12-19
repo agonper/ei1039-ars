@@ -1,5 +1,4 @@
-import {ServerConfig} from "../config/environment";
 
-export const initializeModels = (config: ServerConfig): Promise<any> => {
+export const initializeModels = (): Promise<any> => {
     return Promise.resolve();
 };

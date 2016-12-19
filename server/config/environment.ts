@@ -1,9 +1,7 @@
 import * as os from 'os';
 
 export interface DBConfig {
-    host: string,
-    port: number,
-    dbName: string
+    dbUri: string
 }
 
 export interface HttpConfig {
@@ -20,9 +18,7 @@ export interface ServerConfig {
 
 const developmentConfig: ServerConfig = {
     db :{
-        host: 'localhost',
-        port: 27017,
-        dbName: 'ei1039-ars-dev'
+        dbUri: 'mongodb://localhost:27017/ei1039-ars-dev'
     },
     http: {
         host: os.hostname(),
@@ -34,9 +30,7 @@ const developmentConfig: ServerConfig = {
 
 const testConfig: ServerConfig = {
     db :{
-        host: 'localhost',
-        port: 27017,
-        dbName: 'ei1039-ars-dev'
+        dbUri: 'mongodb://localhost:27017/ei1039-ars-test'
     },
     http: {
         host: os.hostname(),
@@ -48,14 +42,12 @@ const testConfig: ServerConfig = {
 
 const productionConfig: ServerConfig = {
     db :{
-        host: 'localhost',
-        port: 27017,
-        dbName: 'ei1039-ars-dev'
+        dbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/ei1039-ars-prod'
     },
     http: {
         host: process.env.SERVER_HOSTNAME || os.hostname(),
         port: process.env.PORT || 8080,
-        secure: false
+        secure: true
     },
     jwtSecret: 'agdc-ei1039-ars'
 };

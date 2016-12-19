@@ -49,6 +49,7 @@
     "@types/jsonwebtoken": "^7.1.33",
     "@types/lodash": "^4.14.43",
     "@types/material-ui": "^0.16.44",
+    "@types/mongoose": "^4.7.1",
     "@types/morgan": "^1.7.32",
     "@types/passport": "^0.2.35",
     "@types/passport-jwt": "^2.0.19",

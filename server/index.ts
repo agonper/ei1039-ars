@@ -1,7 +1,10 @@
 import {Server} from "./initializers/server";
 import {serverConfig} from "./config/environment";
-import {PassportInitializer} from "./initializers/passport";
+import {DbInitializer} from "./initializers/database";
 
 const server = new Server(serverConfig);
+const dbInitializer = new DbInitializer(serverConfig);
 
-server.start();
+dbInitializer.start().then(() => {
+    server.start();
+});
