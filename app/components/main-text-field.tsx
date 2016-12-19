@@ -21,7 +21,6 @@ interface MainTextFieldProps {
 export class MainTextField extends Component<MainTextFieldProps, any> {
     render() {
         const {field, hint, defaultHint, label, defaultLabel, type} = this.props;
-
         const inputFields = omit(field, fieldsToOmit);
 
         return (
@@ -30,7 +29,7 @@ export class MainTextField extends Component<MainTextFieldProps, any> {
                 floatingLabelText={<FormattedMessage id={label} defaultMessage={defaultLabel}/>}
                 fullWidth={true}
                 {...inputFields}
-                errorText={field.touched ? field.error : ''}
+                errorText={field.touched && field.error ? <FormattedMessage id={field.error} defaultMessage={field.error}/> : ''}
                 type={type}/>
         );
     }

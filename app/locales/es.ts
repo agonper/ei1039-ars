@@ -11,5 +11,9 @@ export const esTranslationStrings = {
     'signup.password.hint': "Introduce una contraseña",
     'signup.type.student': "Soy un estudiante",
     'signup.type.teacher': "Soy un profesor",
-    'signup.go-to-login': "Ya tengo una cuenta"
+    'signup.go-to-login': "Ya tengo una cuenta",
+    'signup.errors.empty-email': "Por favor introduce un correo",
+    'signup.errors.empty-name': "Por favor introduce tu nombre",
+    'signup.errors.empty-password': "Por favor introduce una contraseña",
+    'signup.errors.email-exists': "Ese correo ya existe en el sistema"
 };

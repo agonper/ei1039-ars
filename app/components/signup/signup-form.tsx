@@ -45,8 +45,6 @@ export class SignupFormComponent extends Component<any, any> {
         const {fields, handleSubmit} = this.props;
         const {email, name, password, type} = fields;
 
-        console.log(type);
-
         const signupErrors = this.props.signup.errors;
         if (signupErrors) {
             Object.keys(signupErrors).forEach((field) => {
@@ -129,9 +127,9 @@ export class SignupFormComponent extends Component<any, any> {
 function validate(values: SignupFormFields) {
     const errors: any = {};
 
-    if (!values.email) errors.email = "Please enter an email";
-    if (!values.name) errors.name = "Please enter a username";
-    if (!values.password) errors.password = "Please enter a password";
+    if (!values.email) errors.email = "signup.errors.empty-email";
+    if (!values.name) errors.name = "signup.errors.empty-name";
+    if (!values.password) errors.password = "signup.errors.empty-password";
 
     return errors;
 }
