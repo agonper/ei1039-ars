@@ -14,7 +14,7 @@ export const AuthRouter = (server: Server): express.Router => {
         email: req.body.email.trim().toString(),
         password: req.body.password.trim().toString(),
         name: req.body.name.trim().toString(),
-        type: 'TEACHER'
+        type: req.body.type.trim().toString()
     };
 
     userRepository.save(newUser)

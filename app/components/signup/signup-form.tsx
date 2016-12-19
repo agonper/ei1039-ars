@@ -20,6 +20,7 @@ import {Snackbar} from "material-ui";
 import PropTypes = React.PropTypes;
 import {FormattedMessage} from 'react-intl';
 
+const formName = 'signup';
 
 export interface SignupFormFields {
     email: string,
@@ -86,7 +87,7 @@ export class SignupFormComponent extends Component<any, any> {
                                         defaultLabel="Password"
                                         type="password"/>
                                     {/* FIXME label only accepts strings */}
-                                    <RadioButtonGroup name="type" defaultSelected={type.value = 'student'} {...type}>
+                                    <RadioButtonGroup name="type" valueSelected={type.value} onChange={type.onChange}>
                                         <RadioButton
                                             value="student"
                                             style={radioStyle}
@@ -105,6 +106,7 @@ export class SignupFormComponent extends Component<any, any> {
                                         disabled={this.props.signup.signingUp} />
                                     <Link to="/login">
                                         <FlatButton
+                                            secondary={true}
                                             label={<FormattedMessage id="signup.go-to-login" defaultMessage="I already have an account"/>}/>
                                     </Link>
                                 </CardActions>
@@ -135,11 +137,14 @@ function validate(values: SignupFormFields) {
 }
 
 function mapStateToProps(state: ApplicationState) {
-    return {signup: state.signup}
+    return {
+        signup: state.signup,
+        initialValues: {type: 'student'}
+    }
 }
 
 export const SignupForm = reduxForm({
-    form: 'signup',
+    form: formName,
     fields: ['email', 'name', 'password', 'type'],
     validate
 }, mapStateToProps, {createUser, clearSignup})(SignupFormComponent);

@@ -32,6 +32,7 @@ function signupFailed(err: any): GenericAction {
 }
 
 export function createUser(userData: SignupFormFields): ThunkAction<void, ApplicationState, void> {
+    console.log(userData);
     const request = RestAdapter.post('/auth/signup', userData);
     return (dispatch: Dispatch<ApplicationState>) => {
         dispatch(signupPending());
