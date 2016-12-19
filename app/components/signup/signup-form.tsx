@@ -38,13 +38,14 @@ export class SignupFormComponent extends Component<any, any> {
     };
 
     onSubmitHandle(userData: SignupFormFields) {
-        console.log(userData);
         this.props.createUser(userData).then(() => this.props.resetForm());
     }
 
     render() {
         const {fields, handleSubmit} = this.props;
         const {email, name, password, type} = fields;
+
+        console.log(type);
 
         const signupErrors = this.props.signup.errors;
         if (signupErrors) {
@@ -87,8 +88,7 @@ export class SignupFormComponent extends Component<any, any> {
                                         defaultLabel="Password"
                                         type="password"/>
                                     {/* FIXME label only accepts strings */}
-                                    {type.value = 'student'} {/* TODO have an argument with the one that designed RadioButtonGroup API */}
-                                    <RadioButtonGroup name="type" defaultSelected={type.value} {...type}>
+                                    <RadioButtonGroup name="type" defaultSelected={type.value = 'student'} {...type}>
                                         <RadioButton
                                             value="student"
                                             style={radioStyle}
