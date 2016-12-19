@@ -62,6 +62,7 @@
     "@types/react-router": "^2.0.41",
     "@types/react-tap-event-plugin": "0.0.30",
     "@types/redux-form": "^4.0.31",
+    "@types/validator": "^5.7.35",
     "@types/winston": "0.0.32",
     "axios": "^0.15.3",
     "bcrypt": "^1.0.1",
@@ -89,6 +90,7 @@
     "redux-form": "^5.3.3",
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0",
+    "validator": "^6.2.0",
     "winston": "^2.3.0"
   },
   "devDependencies": {

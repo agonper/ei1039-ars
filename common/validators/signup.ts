@@ -1,5 +1,5 @@
-import {SignupFormFields} from "../../app/components/signup/signup-form";
-import {User} from "../../server/models/user";
+import {SignupFormFields} from '../../app/components/signup/signup-form';
+import {User} from '../../server/models/user';
 import {isEmail, isEmpty, isAscii, isLength} from 'validator';
 
 export const validateSignup = (userData: SignupFormFields | User) => {
