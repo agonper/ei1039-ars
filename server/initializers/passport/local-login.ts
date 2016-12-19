@@ -3,7 +3,7 @@ import * as passport from "passport";
 import * as log from 'winston';
 import * as jwt from 'jsonwebtoken';
 import {Strategy} from "passport-local";
-import {userStorage} from "../../models/user";
+import {userRepository} from "../../models/user";
 
 export const localLogin = (config: ServerConfig): passport.Strategy => {
     return new Strategy({
@@ -15,8 +15,8 @@ export const localLogin = (config: ServerConfig): passport.Strategy => {
         const error = new Error('Incorrect email or password');
         error.name = 'IncorrectCredentialsError';
 
-        userStorage.findByEmail(email).then((user) => {
-            userStorage.comparePassword(password, user.password)
+        userRepository.findByEmail(email).then((user) => {
+            user.comparePassword(password)
                 .then(() => {
                     const payload = {
                         sub: user.email

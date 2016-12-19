@@ -2,7 +2,7 @@ import {ServerConfig} from "../../config/environment";
 import * as passport from "passport";
 import * as log from 'winston';
 import * as express from 'express';
-import {userStorage} from "../../models/user";
+import {userRepository} from "../../models/user";
 import {BasicStrategy} from "passport-http";
 
 export const basicLogin = (config: ServerConfig): passport.Strategy => {
@@ -13,8 +13,8 @@ export const basicLogin = (config: ServerConfig): passport.Strategy => {
         const error = new Error('Incorrect email or password');
         error.name = 'IncorrectCredentialsError';
 
-        userStorage.findByEmail(email).then((user) => {
-            userStorage.comparePassword(password, user.password)
+        userRepository.findByEmail(email).then((user) => {
+            user.comparePassword(password)
                 .then(() => {
                     req.user = user;
                     log.info(`User ${user.name}, logged in`);

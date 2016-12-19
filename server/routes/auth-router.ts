@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as passport from 'passport';
 import * as log from 'winston';
 import {Server} from "../initializers/server";
-import {User, userStorage} from "../models/user";
+import {User, userRepository} from "../models/user";
 
 export const AuthRouter = (server: Server): express.Router => {
   const router = express.Router();
@@ -11,12 +11,13 @@ export const AuthRouter = (server: Server): express.Router => {
     // FIXME Validate data first
 
     const newUser: User = {
-      email: req.body.email.trim(),
-      password: req.body.password.trim(),
-      name: req.body.name.trim()
+        email: req.body.email.trim().toString(),
+        password: req.body.password.trim().toString(),
+        name: req.body.name.trim().toString(),
+        type: 'TEACHER'
     };
 
-    userStorage.save(newUser)
+    userRepository.save(newUser)
         .then((user) => res.status(200).json({success: true, message: 'User signed up'}))
         .catch((err) => {
           log.info(err);

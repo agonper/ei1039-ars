@@ -2,7 +2,7 @@ import * as jwt from 'jsonwebtoken';
 import * as log from 'winston';
 import {ServerConfig} from "../config/environment";
 import {RequestHandler} from 'express';
-import {userStorage} from "../models/user";
+import {userRepository} from "../models/user";
 
 export const authChecker = (config: ServerConfig): RequestHandler => {
     return (req, res, next) => {
@@ -18,7 +18,7 @@ export const authChecker = (config: ServerConfig): RequestHandler => {
 
             const email = decoded.sub;
 
-            userStorage.findByEmail(email)
+            userRepository.findByEmail(email)
                 .then((user) => {
                     req.user = user;
                     return next();
