@@ -6,7 +6,7 @@ import {AuthBox} from "../components/main/auth-box";
 
 export const mainViewStyle = {
     margin: '10px',
-    marginTop: '60px'
+    marginTop: '45px'
 };
 
 export const MainView = () =>{
