@@ -1,23 +1,23 @@
 import * as React from 'react';
-import Paper from 'material-ui/Paper';
 import {TextField} from "material-ui";
 import {Checkbox} from "material-ui";
 import {RaisedButton} from "material-ui";
 import Component = React.Component;
 import FormEvent = React.FormEvent;
 import {reduxForm} from "redux-form";
-import {createQuestion} from "../../actions/createQuestion";
-
-interface Properties {};
-
-export interface QuestionFormFields {
-    question : String;
-    checkBoxState : boolean;
-    answerA : String;
-    answerB : String;
-    answerC : String;
-    answerD : String;
-};
+import {questionCreation_clear, questionCreation_createQuestion} from "../../actions/createQuestion";
+import {Table} from "material-ui";
+import {TableRow} from "material-ui";
+import {TableHeader} from "material-ui";
+import {TableHeaderColumn} from "material-ui";
+import {TableBody} from "material-ui";
+import {TableRowColumn} from "material-ui";
+import PropTypes = React.PropTypes;
+import {ApplicationState} from "../../reducers/index";
+import {CardHeader} from "material-ui";
+import {CardText} from "material-ui";
+import {CardActions} from "material-ui";
+import {Link} from 'react-router';
 
 const styles = {
     paper : {
@@ -56,50 +56,134 @@ const styles = {
     }
 };
 
-export default class QuestionBoxComponent extends React.Component<Properties, any> {
-    constructor(properties : Properties) {
-        super(properties);
-        this.state = {checkBoxState : true, question : "", answerA : "", answerB : "", answerC : "", answerD : ""};
-    }
+export interface QuestionFormFields {
+    question : string;
+    existsAnswers : boolean;
+    answerA : string;
+    answerB : string;
+    answerC : string;
+    answerD : string;
+    correctAnswer : string;
+};
 
-    public changeCheckboxState(event : any, checkboxState : boolean) {
-        let newState = !this.state.checkBoxState;
+export default class QuestionBoxComponent extends Component<any, any> {
 
-        if (newState == false) {
-            this.setState({
-                checkBoxState: newState,
-                question: this.state.question,
-                answerA : "",
-                answerB : "",
-                answerC : "",
-                answerD : ""
-            });
+    static contextTypes = {
+        router: PropTypes.object,
+    };
+
+    render () {
+        const {fields: {question, existsAnswers, answerA, answerB, answerC, answerD, correctAnswer}, handleSubmit } = this.props;
+        const questionCreationErrors = this.props.questionCreation_createQuestion.error;
+
+        if (questionCreationErrors) {
+            question.error = questionCreationErrors.question;
+            answerA.error = questionCreationErrors.answerA;
+            answerB.error = questionCreationErrors.answerB;
+            answerC.error = questionCreationErrors.answerC;
+            answerD.error = questionCreationErrors.answerD;
+            correctAnswer.error = questionCreationErrors.correctAnswer;
         }
-        else {
-            this.setState({
-                checkBoxState: newState,
-                question: this.state.question,
-                answerA : this.state.answerA,
-                answerB : this.state.answerB,
-                answerC : this.state.answerC,
-                answerD : this.state.answerD
-            });
-        }
-    }
 
-    public render () {
         return (
             <div className="row center-md">
-                <div className="col-md-8">
-                    <Paper style={styles.paper} zDepth={2}>
-                        <TextField ref="question" floatingLabelText={"Pregunta a insertar"} multiLine={true} fullWidth={true} style={styles.questionTextField}/>
-                        <Checkbox ref="answersCheckbox" label="¿La pregunta tiene respuestas?" labelPosition="left" defaultChecked={this.state.checkBoxState} style={styles.answersCheckBox} onCheck={(event, checkboxNewState) => this.changeCheckboxState(event, checkboxNewState)}/>
-                        <TextField ref="answerA" value={this.state.answerA} floatingLabelText={"Respuesta A"} floatingLabelFixed={true} disabled={!this.state.checkBoxState} multiLine={true} fullWidth={true} style={styles.answerTextField.standard} onChange={(e : any) => this.setState({answerA : e.target.value})}/>
-                        <TextField ref="answerB" value={this.state.answerB} floatingLabelText={"Respuesta B"} floatingLabelFixed={true} disabled={!this.state.checkBoxState} multiLine={true} fullWidth={true} style={styles.answerTextField.standard} onChange={(e : any) => this.setState({answerB : e.target.value})}/>
-                        <TextField ref="answerC" value={this.state.answerC} floatingLabelText={"Respuesta C"} floatingLabelFixed={true} disabled={!this.state.checkBoxState} multiLine={true} fullWidth={true} style={styles.answerTextField.standard} onChange={(e : any) => this.setState({answerC : e.target.value})}/>
-                        <TextField ref="answerD" value={this.state.answerD} floatingLabelText={"Respuesta D"} floatingLabelFixed={true} disabled={!this.state.checkBoxState} multiLine={true} fullWidth={true} style={styles.answerTextField.standard} onChange={(e : any) => this.setState({answerD : e.target.value})}/>
-                        <RaisedButton label="Crear pregunta" backgroundColor={"#9CCC65"} labelColor={"White"} style={styles.finishButton}/>
-                    </Paper>
+                <div className="row">
+                    <div className="col-md-8">
+                        <form onSubmit={handleSubmit(this.props.questionCreation)}>
+                            <CardHeader title={"Creación de una nueva pregunta"}/>
+                            <CardText>
+                                <TextField
+                                    floatingLabelText={"Pregunta a insertar"}
+                                    multiLine={true}
+                                    fullWidth={true}
+                                    style={styles.questionTextField}
+                                />
+                                <Checkbox
+                                    label="¿La pregunta tiene respuestas?"
+                                    labelPosition="left"
+                                    defaultChecked={this.props.existsAnswers}
+                                    style={styles.answersCheckBox}
+                                />
+                                <Table
+                                    selectable={true}
+                                    multiSelectable={false}
+                                >
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHeaderColumn>
+                                                Respuesta correcta
+                                            </TableHeaderColumn>
+                                            <TableHeaderColumn>
+                                                Respuestas
+                                            </TableHeaderColumn>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableRowColumn>A</TableRowColumn>
+                                            <TableRowColumn>
+                                                <TextField
+                                                    floatingLabelText={"Respuesta A"}
+                                                    floatingLabelFixed={true}
+                                                    disabled={!this.props.existsAnswers}
+                                                    multiLine={true}
+                                                    fullWidth={true}
+                                                    style={styles.answerTextField.standard}
+                                                />
+                                            </TableRowColumn>
+                                        </TableRow>
+
+                                        <TableRow>
+                                            <TableRowColumn>B</TableRowColumn>
+                                            <TableRowColumn>
+                                                <TextField
+                                                    floatingLabelText={"Respuesta B"}
+                                                    floatingLabelFixed={true}
+                                                    disabled={!this.props.existsAnswers}
+                                                    multiLine={true}
+                                                    fullWidth={true}
+                                                    style={styles.answerTextField.standard}
+                                                />
+                                            </TableRowColumn>
+                                        </TableRow>
+
+                                        <TableRow>
+                                            <TableRowColumn>C</TableRowColumn>
+                                            <TableRowColumn>
+                                                <TextField
+                                                    floatingLabelText={"Respuesta C"}
+                                                    floatingLabelFixed={true}
+                                                    disabled={!this.props.existsAnswers}
+                                                    multiLine={true} fullWidth={true}
+                                                    style={styles.answerTextField.standard}
+
+                                                />
+                                            </TableRowColumn>
+                                        </TableRow>
+
+                                        <TableRow>
+                                            <TableRowColumn>D</TableRowColumn>
+                                            <TableRowColumn>
+                                                <TextField
+                                                    floatingLabelText={"Respuesta D"}
+                                                    floatingLabelFixed={true}
+                                                    disabled={!this.props.existsAnswers}
+                                                    multiLine={true}
+                                                    fullWidth={true}
+                                                    style={styles.answerTextField.standard}
+
+                                                />
+                                            </TableRowColumn>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </CardText>
+                            <CardActions>
+                                <RaisedButton type="submit" label="Crear pregunta" backgroundColor={"#9CCC65"} labelColor={"White"} style={styles.finishButton}/>
+                                <Link to="WOLOLOWOLOLOWOLOLO"></Link>
+                            </CardActions>
+                        </form>
+                    </div>
                 </div>
             </div>
         );
@@ -112,7 +196,7 @@ function validate(values: QuestionFormFields) {
     if (!values.question)
         errors.question = "Hay que introducir una pregunta";
 
-    if (values.checkBoxState) {
+    if (values.existsAnswers) {
         let errorAnswer = "Hay que introducir una respuesta";
 
         if (!values.answerA) errors.answerA = errorAnswer;
@@ -124,11 +208,18 @@ function validate(values: QuestionFormFields) {
         if (!values.answerD) errors.answerD = errorAnswer;
     }
 
+    if (values.existsAnswers && !values.correctAnswer)
+        errors.correctAnswer = "Hay que marcar una respuesta como correcta";
+
     return errors;
+}
+
+function mapStateToProps(state : ApplicationState) {
+    return {questionCreation : state.questionCreation};
 }
 
 export const QuestionForm = reduxForm({
     form : 'QuestionForm',
-    fields : ['question', 'activeAnswers', 'answerA', 'answerB', 'answerC', 'answerD'],
+    fields : ['question', 'activeAnswers', 'answerA', 'answerB', 'answerC', 'answerD', 'correctAnswer'],
     validate
-}, null, {createQuestion})(QuestionBoxComponent);
+}, mapStateToProps, {questionCreation_createQuestion, questionCreation_clear})(QuestionBoxComponent);
