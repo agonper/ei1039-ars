@@ -17,7 +17,7 @@ export function questionResponse_Success(selectedAnswer : any, question: Questio
         return {
         type: QUESTION_RESPONSE_CORRECT,
         payload: true
-        }
+        };
     else
         return {
             type: QUESTION_RESPONSE_INCORRECT,

@@ -14,10 +14,14 @@ import {TableBody} from "material-ui";
 import {TableRowColumn} from "material-ui";
 import PropTypes = React.PropTypes;
 import {ApplicationState} from "../../../reducers/index";
-import {CardHeader} from "material-ui";
 import {CardText} from "material-ui";
 import {CardActions} from "material-ui";
 import {Link} from 'react-router';
+import {RadioButtonGroup} from "material-ui";
+import {RadioButton} from "material-ui";
+import {Card} from "material-ui";
+import {Toggle} from "material-ui";
+import {CardHeader} from "material-ui";
 
 const styles = {
     paper : {
@@ -28,7 +32,8 @@ const styles = {
     },
 
     questionTextField : {
-        "text-align" : 'left'
+        "text-align" : 'left',
+        "width" : '90%'
     },
 
     answersCheckBox : {
@@ -51,7 +56,6 @@ const styles = {
     },
 
     finishButton : {
-        "margin-top": '30px',
         "float" : 'right'
     }
 };
@@ -72,9 +76,21 @@ export default class QuestionBoxComponent extends Component<any, any> {
         router: PropTypes.object,
     };
 
+    onSubmitHandle(questionData : QuestionFormFields) {
+        this.props.questionCreation_createQuestion(questionData);
+    }
+
     render () {
-        const {fields: {question, existsAnswers, answerA, answerB, answerC, answerD, correctAnswer}, handleSubmit } = this.props;
+        const {fields, handleSubmit} = this.props;
+        const {question, existsAnswers, answerA, answerB, answerC, answerD, correctAnswer} = fields;
+
         const questionCreationErrors = this.props.questionCreation_createQuestion.error;
+
+        if (questionCreationErrors) {
+            Object.keys(questionCreationErrors).forEach((field) => {
+                fields[field].error = (questionCreationErrors[field]) ? 'empty-field' + questionCreationErrors[field] : '';
+            });
+        }
 
         if (questionCreationErrors) {
             question.error = questionCreationErrors.question;
@@ -88,102 +104,87 @@ export default class QuestionBoxComponent extends Component<any, any> {
         return (
             <div className="row center-md">
                 <div className="row">
-                    <div className="col-md-8">
-                        <form onSubmit={handleSubmit(this.props.questionCreation)}>
-                            <CardHeader title={"Creación de una nueva pregunta"}/>
-                            <CardText>
-                                <TextField
-                                    floatingLabelText={"Pregunta a insertar"}
-                                    multiLine={true}
-                                    fullWidth={true}
-                                    style={styles.questionTextField}
-                                />
-                                <Checkbox
-                                    label="¿La pregunta tiene respuestas?"
-                                    labelPosition="left"
-                                    defaultChecked={this.props.existsAnswers}
-                                    style={styles.answersCheckBox}
-                                />
-                                <Table
-                                    selectable={true}
-                                    multiSelectable={false}
-                                >
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHeaderColumn>
-                                                Respuesta correcta
-                                            </TableHeaderColumn>
-                                            <TableHeaderColumn>
-                                                Respuestas
-                                            </TableHeaderColumn>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableRowColumn>A</TableRowColumn>
-                                            <TableRowColumn>
-                                                <TextField
-                                                    floatingLabelText={"Respuesta A"}
-                                                    floatingLabelFixed={true}
-                                                    disabled={!this.props.existsAnswers}
-                                                    multiLine={true}
-                                                    fullWidth={true}
-                                                    style={styles.answerTextField.standard}
-                                                />
-                                            </TableRowColumn>
-                                        </TableRow>
+                    <form onSubmit={handleSubmit(this.onSubmitHandle.bind(this))}>
+                        <Card style={{paddingBottom: '30px'}}>
+                            <TextField
+                                floatingLabelText={"Pregunta a insertar"}
+                                multiLine={true}
+                                errorText={questionCreationErrors ? questionCreationErrors.question : ''}
+                                style={styles.questionTextField}
+                            />
+                            <div className="row">
+                                    <div className="col-md-2">
+                                        <CardHeader title="Respuesta correcta" style={{margin: '20px 0px 0px 50px'}}>
+                                            <RadioButtonGroup name="correctAnswer" labelPosition="left">
+                                                <RadioButton value="A" label="A" disabled={!fields[existsAnswers]} style={{margin: '70px 0px 0px 0px'}}/>
+                                                <RadioButton value="B" label="B" disabled={!fields[existsAnswers]} style={{margin: '70px 0px 0px 0px'}}/>
+                                                <RadioButton value="C" label="C" disabled={!fields[existsAnswers]} style={{margin: '70px 0px 0px 0px'}}/>
+                                                <RadioButton value="D" label="D" disabled={!fields[existsAnswers]} style={{margin: '70px 0px 0px 0px'}}/>
+                                            </RadioButtonGroup>
+                                        </CardHeader>
+                                    </div>
 
-                                        <TableRow>
-                                            <TableRowColumn>B</TableRowColumn>
-                                            <TableRowColumn>
-                                                <TextField
-                                                    floatingLabelText={"Respuesta B"}
-                                                    floatingLabelFixed={true}
-                                                    disabled={!this.props.existsAnswers}
-                                                    multiLine={true}
-                                                    fullWidth={true}
-                                                    style={styles.answerTextField.standard}
-                                                />
-                                            </TableRowColumn>
-                                        </TableRow>
+                                    <div className="col-md-8">
+                                        <CardText>
 
-                                        <TableRow>
-                                            <TableRowColumn>C</TableRowColumn>
-                                            <TableRowColumn>
-                                                <TextField
-                                                    floatingLabelText={"Respuesta C"}
-                                                    floatingLabelFixed={true}
-                                                    disabled={!this.props.existsAnswers}
-                                                    multiLine={true} fullWidth={true}
-                                                    style={styles.answerTextField.standard}
+                                            <Toggle
+                                                label="¿La pregunta tiene respuestas?"
+                                                labelPosition="left"
+                                                defaultChecked={fields[existsAnswers]}
+                                                style={styles.answersCheckBox}
+                                            />
 
-                                                />
-                                            </TableRowColumn>
-                                        </TableRow>
 
-                                        <TableRow>
-                                            <TableRowColumn>D</TableRowColumn>
-                                            <TableRowColumn>
-                                                <TextField
-                                                    floatingLabelText={"Respuesta D"}
-                                                    floatingLabelFixed={true}
-                                                    disabled={!this.props.existsAnswers}
-                                                    multiLine={true}
-                                                    fullWidth={true}
-                                                    style={styles.answerTextField.standard}
+                                            <TextField
+                                                floatingLabelText={"Respuesta A"}
+                                                floatingLabelFixed={true}
+                                                disabled={!fields[existsAnswers]}
+                                                multiLine={true}
+                                                fullWidth={true}
+                                                errorText={questionCreationErrors ? questionCreationErrors.answerA : ''}
+                                                style={styles.answerTextField.standard}
+                                            />
 
-                                                />
-                                            </TableRowColumn>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </CardText>
+                                            <TextField
+                                                floatingLabelText={"Respuesta B"}
+                                                floatingLabelFixed={true}
+                                                disabled={!fields[existsAnswers]}
+                                                multiLine={true}
+                                                fullWidth={true}
+                                                errorText={questionCreationErrors ? questionCreationErrors.answerB : ''}
+                                                style={styles.answerTextField.standard}
+                                            />
+
+                                            <TextField
+                                                floatingLabelText={"Respuesta C"}
+                                                floatingLabelFixed={true}
+                                                disabled={!fields[existsAnswers]}
+                                                multiLine={true}
+                                                fullWidth={true}
+                                                errorText={questionCreationErrors ? questionCreationErrors.answerC : ''}
+                                                style={styles.answerTextField.standard}
+
+                                            />
+
+                                            <TextField
+                                                floatingLabelText={"Respuesta D"}
+                                                floatingLabelFixed={true}
+                                                disabled={!fields[existsAnswers]}
+                                                multiLine={true}
+                                                fullWidth={true}
+                                                errorText={questionCreationErrors ? questionCreationErrors.answerD : ''}
+                                                style={styles.answerTextField.standard}
+
+                                            />
+                                        </CardText>
+                                    </div>
+                                </div>
                             <CardActions>
                                 <RaisedButton type="submit" label="Crear pregunta" backgroundColor={"#9CCC65"} labelColor={"White"} style={styles.finishButton}/>
                                 <Link to="WOLOLOWOLOLOWOLOLO"></Link>
                             </CardActions>
-                        </form>
-                    </div>
+                        </Card>
+                    </form>
                 </div>
             </div>
         );
@@ -220,6 +221,6 @@ function mapStateToProps(state : ApplicationState) {
 
 export const QuestionCreationForm = reduxForm({
     form : 'QuestionForm',
-    fields : ['question', 'activeAnswers', 'answerA', 'answerB', 'answerC', 'answerD', 'correctAnswer'],
+    fields : ['question', 'existsAnswers', 'answerA', 'answerB', 'answerC', 'answerD', 'correctAnswer'],
     validate
 }, mapStateToProps, {questionCreation_createQuestion, questionCreation_clear})(QuestionBoxComponent);

@@ -15,6 +15,7 @@ export interface ApplicationState {
 const rootReducer = combineReducers({
     login: LoginReducer,
     signup: SignupReducer,
+    questionCreation : QuestionCreationReducer,
     form: formReducer,
     intl: intlReducer
 });
