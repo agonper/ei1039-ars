@@ -32,7 +32,6 @@ export class LoginFormComponent extends Component<any, any> {
     };
 
     onSubmitHandle(loginData: LoginData) {
-        console.log(loginData);
         this.props.loginUser(loginData)
             .then(() => this.props.resetForm());
             // TODO transition to home

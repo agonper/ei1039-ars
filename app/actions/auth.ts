@@ -37,10 +37,8 @@ export function loginUser(loginData: LoginData): ThunkAction<void, ApplicationSt
         dispatch(loginPending());
         request
             .then((data) => {
-                console.log(data);
                 dispatch(loginSuccess(data));
             }).catch((err) => {
-                console.log(err);
                 dispatch(loginFailed(err))
             });
         return request;
