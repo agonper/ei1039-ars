@@ -1,6 +1,6 @@
 import {Action, Dispatch} from "redux";
 import {GenericAction} from "./common";
-import {QuestionFormFields} from "../components/questions/questionForm";
+import {QuestionFormFields} from "../components/questions/creation/questionCreationForm";
 import {ApplicationState} from "../reducers/index";
 import {ThunkAction} from "redux-thunk";
 import {RestAdapter} from "../adapters/rest";

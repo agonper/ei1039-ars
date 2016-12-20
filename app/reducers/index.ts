@@ -3,7 +3,8 @@ import {reducer as formReducer} from 'redux-form';
 import {intlReducer} from 'react-intl-redux';
 import {SignupState, SignupReducer} from "./signup";
 import {LoginState, LoginReducer} from "./login";
-import {QuestionCreationState, QuestionCreationReducer} from "./reducer_questionCreation";
+import {QuestionCreationState, QuestionCreationReducer} from "./questionCreation";
+import {QuestionResponseReducer} from "./questionResponse";
 
 export interface ApplicationState {
     login: LoginState,
@@ -14,7 +15,6 @@ export interface ApplicationState {
 const rootReducer = combineReducers({
     login: LoginReducer,
     signup: SignupReducer,
-    questionCreation : QuestionCreationReducer,
     form: formReducer,
     intl: intlReducer
 });
