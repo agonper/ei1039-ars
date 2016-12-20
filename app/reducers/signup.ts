@@ -24,7 +24,8 @@ export const SignupReducer = (state: SignupState = INITIAL_STATE, action: Generi
         case USER_SIGNUP_SUCCESS:
             return {signingUp: false, signedUp: true, errors: undefined};
         case USER_SIGNUP_ERROR:
-            return {signingUp: false, signedUp: false, errors: {email: 'email-exists', name: '', password: ''}};
+            const errors = action.error.response.data.errors;
+            return {signingUp: false, signedUp: false, errors: {email: errors.email, name: errors.name, password: errors.password}};
         case USER_SIGNUP_CLEAR:
             return INITIAL_STATE;
         default:

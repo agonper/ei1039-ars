@@ -10,22 +10,20 @@ export const basicLogin = (config: ServerConfig): passport.Strategy => {
         passReqToCallback: true
     }, (req: express.Request, email: string, password: string , done:any) => {
 
-        const error = new Error('Incorrect email or password');
-        error.name = 'IncorrectCredentialsError';
-
         userRepository.findByEmail(email).then((user) => {
             user.comparePassword(password)
                 .then(() => {
+                    if (!user) throw new Error('User not found');
                     req.user = user;
                     log.info(`User ${user.name}, logged in`);
                     return done(null, user);
                 }).catch((err) => {
                 log.info(err);
-                return done(error);
+                return done({message: 'Wrong password', errors: {password: 'wrong-password'}}, false);
             });
         }).catch((err) => {
             log.info(err);
-            return done(error);
+            return done({message: 'Wrong email', errors: {email: 'wrong-email'}}, false);
         });
     })
 };

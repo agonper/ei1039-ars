@@ -12,12 +12,12 @@ export const localLogin = (config: ServerConfig): passport.Strategy => {
         passReqToCallback: true
     }, (req, email, password, done) => {
 
-        const error = new Error('Incorrect email or password');
-        error.name = 'IncorrectCredentialsError';
 
         userRepository.findByEmail(email).then((user) => {
             user.comparePassword(password)
                 .then(() => {
+                    if (!user) throw new Error('User not found');
+
                     const payload = {
                         sub: user.email
                     };
@@ -27,11 +27,11 @@ export const localLogin = (config: ServerConfig): passport.Strategy => {
                     return done(null, token);
                 }).catch((err) => {
                     log.info(err);
-                    return done(error);
+                    return done({message: 'Wrong password', errors: {password: 'wrong-password'}}, false);
                 });
         }).catch((err) => {
             log.info(err);
-            return done(error, false);
+            return done({message: 'Wrong email', errors: {email: 'wrong-email'}}, false);
         });
     })
 };

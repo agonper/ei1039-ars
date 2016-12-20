@@ -5,7 +5,10 @@ export interface LoginState {
     loggingIn: boolean,
     loggedIn: boolean,
     token: any,
-    errors: any
+    errors: {
+        email: string,
+        password: string
+    }
 }
 
 const storageTokenKey = 'session-token';
@@ -27,7 +30,8 @@ export const LoginReducer = (state: LoginState = INITIAL_SATE, action: GenericAc
             storeToken(token);
             return {loggingIn: false, loggedIn: true, token: token, errors: undefined};
         case LOGIN_ERROR:
-            return {loggingIn: false, loggedIn: false, token: undefined, errors: {email: 'wrong-email', password: 'wrong-password'}};
+            const errors = action.error.response.data.errors;
+            return {loggingIn: false, loggedIn: false, token: undefined, errors: {email: errors.email, password: errors.password}};
         case LOGOUT:
             removeToken();
             return {...state, loggedIn: false, token: undefined};

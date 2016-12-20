@@ -20,17 +20,15 @@ export interface UserWithMethods extends User {
 }
 
 class UserRepository {
-    private _storage: {[key: string]: User};
-
-    constructor() {
-        this._storage = {};
-    }
 
     public save(user: User): Promise<MongooseDocument & UserWithMethods> {
-        return this.findByEmail(user.email).then((existingUser) => {
+        return this.findByEmail(user.email).catch((err) => {
+            log.error('Error fetching user by mail: ', user.email);
+            return Promise.reject({message: 'Error creating user account', errors: {general: err}});
+        }).then((existingUser) => {
             if (existingUser) {
                 log.info(`User already exist with email: ${user.email}`);
-                return Promise.reject(new Error('User already exists'));
+                return Promise.reject({message: 'Email already exists', errors: {email: 'email-exists'}});
             }
             return generateHash(user.password).then((hash) => {
                 user.password = hash;
@@ -38,14 +36,14 @@ class UserRepository {
                 const userModel = new UserModel(user);
                 return userModel.save();
             })
-        }).catch((err) => {
-            log.error('Error fetching user by mail: ', user.email);
-            return Promise.reject(err);
         });
     }
 
     public findByEmail(email: string): Promise<MongooseDocument & UserWithMethods> {
-        return <any>UserModel.findOne({email: email}).exec();
+        return <any>UserModel.findOne({email: email}).exec().catch((err) => {
+            log.error('Error fetching user by mail');
+            return Promise.reject({message: 'Error fetching user', errors: {general: err}})
+        });
     }
 }
 

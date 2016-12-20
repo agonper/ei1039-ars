@@ -16,11 +16,12 @@ export const jwtLogin = (config: ServerConfig): passport.Strategy => {
 
         userRepository.findByEmail(sub)
             .then((user) => {
+                if (!user) throw new Error('User not found');
                 req.user = user;
                 return done(null, user);
             }).catch((err) => {
             log.info(err);
-            return done(error, false)
+            return done({message: 'Invalid token', errors: {token: 'invalid-token'}}, false)
         });
     })
 };
