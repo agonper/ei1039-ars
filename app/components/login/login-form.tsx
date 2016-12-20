@@ -11,7 +11,7 @@ import {
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import {Link} from 'react-router';
 import {reduxForm} from "redux-form";
-import {MainTextField} from "../main-text-field";
+import {MainTextField} from "../ui/main-text-field";
 import {ApplicationState} from "../../reducers/index";
 import PropTypes = React.PropTypes;
 import {FormattedMessage} from 'react-intl';

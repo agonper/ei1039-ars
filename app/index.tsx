@@ -38,5 +38,5 @@ ReactDOM.render(
             </MuiThemeProvider>
         </IntlProvider>
     </Provider>,
-    document.getElementById('example')
+    document.getElementById('app')
 );
