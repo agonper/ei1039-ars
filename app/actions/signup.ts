@@ -1,4 +1,4 @@
-import {SignupFormFields} from "../components/signup/signup-form";
+import {SignupData} from "../components/signup/signup-form";
 import {RestAdapter} from "../adapters/rest";
 import {Action, Dispatch} from "redux";
 import {GenericAction} from "./common";
@@ -31,7 +31,7 @@ function signupFailed(err: any): GenericAction {
     }
 }
 
-export function createUser(userData: SignupFormFields): ThunkAction<void, ApplicationState, void> {
+export function createUser(userData: SignupData): ThunkAction<void, ApplicationState, void> {
     const request = RestAdapter.post('/auth/signup', userData);
     return (dispatch: Dispatch<ApplicationState>) => {
         dispatch(signupPending());

@@ -1,8 +1,11 @@
 import * as React from 'react';
-import {Hello} from "../components/hello";
+import {mainViewStyle} from "./main-view";
+import {LoginForm} from "../components/login/login-form";
 
 export const Login = () => {
     return (
-        <Hello framework="Login" compiler="TypeScript"/>
+        <div style={mainViewStyle}>
+            <LoginForm/>
+        </div>
     );
 };

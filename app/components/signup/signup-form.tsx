@@ -10,7 +10,7 @@ import {
     RadioButton,
     RadioButtonGroup
 } from "material-ui";
-import CreateIcon from 'material-ui/svg-icons/content/create';
+import InputIcon from 'material-ui/svg-icons/action/input'
 import {Link} from 'react-router';
 import {reduxForm} from "redux-form";
 import {MainTextField} from "../main-text-field";
@@ -23,7 +23,7 @@ import {validateSignup} from "../../../common/validators/signup";
 
 const formName = 'signup';
 
-export interface SignupFormFields {
+export interface SignupData {
     email: string,
     name: string,
     password: string,
@@ -39,7 +39,7 @@ export class SignupFormComponent extends Component<any, any> {
         router: PropTypes.object
     };
 
-    onSubmitHandle(userData: SignupFormFields) {
+    onSubmitHandle(userData: SignupData) {
         this.props.createUser(userData).then(() => this.props.resetForm());
     }
 
@@ -62,7 +62,7 @@ export class SignupFormComponent extends Component<any, any> {
                                 <CardHeader
                                     title={
                                         <span>
-                                            <h1><CreateIcon/> <FormattedMessage id="signup.title" defaultMessage="Signup"/></h1>
+                                            <h1><InputIcon/> <FormattedMessage id="signup.title" defaultMessage="Signup"/></h1>
                                         </span>
                                     }/>
                                 <CardText>
@@ -125,16 +125,6 @@ export class SignupFormComponent extends Component<any, any> {
             </div>
         );
     }
-}
-
-function validate(values: SignupFormFields) {
-    const errors: any = {};
-
-    if (!values.email) errors.email = "signup.errors.empty-email";
-    if (!values.name) errors.name = "signup.errors.empty-name";
-    if (!values.password) errors.password = "signup.errors.empty-password";
-
-    return errors;
 }
 
 function mapStateToProps(state: ApplicationState) {

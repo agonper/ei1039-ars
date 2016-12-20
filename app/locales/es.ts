@@ -4,6 +4,9 @@ export const esTranslationStrings = {
     'main.auth-box.welcome': "¡Bienvenido!",
 
     'login.title': "Iniciar sesión",
+    'login.go-to-signup': "No estoy registrado",
+    'login.errors.wrong-email': "Email incorrecto",
+    'login.errors.wrong-password': "Contraseña incorrecta",
 
     'signup.title': "Registro",
     'signup.email.label': "Email",
