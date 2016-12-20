@@ -5,7 +5,7 @@ import {RaisedButton} from "material-ui";
 import Component = React.Component;
 import FormEvent = React.FormEvent;
 import {reduxForm} from "redux-form";
-import {questionCreation_clear, questionCreation_createQuestion} from "../../actions/createQuestion";
+import {questionCreation_clear, questionCreation_createQuestion} from "../../../actions/createQuestion";
 import {Table} from "material-ui";
 import {TableRow} from "material-ui";
 import {TableHeader} from "material-ui";
@@ -13,7 +13,7 @@ import {TableHeaderColumn} from "material-ui";
 import {TableBody} from "material-ui";
 import {TableRowColumn} from "material-ui";
 import PropTypes = React.PropTypes;
-import {ApplicationState} from "../../reducers/index";
+import {ApplicationState} from "../../../reducers/index";
 import {CardHeader} from "material-ui";
 import {CardText} from "material-ui";
 import {CardActions} from "material-ui";
@@ -218,7 +218,7 @@ function mapStateToProps(state : ApplicationState) {
     return {questionCreation : state.questionCreation};
 }
 
-export const QuestionForm = reduxForm({
+export const QuestionCreationForm = reduxForm({
     form : 'QuestionForm',
     fields : ['question', 'activeAnswers', 'answerA', 'answerB', 'answerC', 'answerD', 'correctAnswer'],
     validate

@@ -1,4 +1,3 @@
-import {Action} from "redux";
 import {GenericAction} from "../actions/common";
 import {
     QUESTION_CREATION_PENDING, QUESTION_CREATION_SUCCESS, QUESTION_CREATION_ERROR,
