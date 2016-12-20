@@ -22,7 +22,10 @@ module.exports = {
     devtool: "source-map",
 
     resolve: {
-        extensions: ["", ".ts", ".js"]
+        extensions: ["", ".ts", ".js"],
+        alias: {
+            graphql: path.resolve('./node_modules/graphql')
+        }
     },
 
     module: {
