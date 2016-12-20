@@ -8,6 +8,7 @@ export interface LoginState {
     errors: any
 }
 
+const storageTokenKey = 'session-token';
 const initialToken = recoverToken();
 
 const INITIAL_SATE: LoginState = {
@@ -34,8 +35,6 @@ export const LoginReducer = (state: LoginState = INITIAL_SATE, action: GenericAc
             return state;
     }
 };
-
-const storageTokenKey = 'session-token';
 
 function recoverToken(): string {
     return localStorage.getItem(storageTokenKey);

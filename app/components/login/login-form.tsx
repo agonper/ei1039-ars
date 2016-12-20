@@ -33,8 +33,8 @@ export class LoginFormComponent extends Component<any, any> {
 
     onSubmitHandle(loginData: LoginData) {
         this.props.loginUser(loginData)
-            .then(() => this.props.resetForm());
-            // TODO transition to home
+            .then(() => this.props.resetForm())
+            .then(() => this.context.router.push('/dashboard'));
     }
 
     render() {
@@ -78,7 +78,7 @@ export class LoginFormComponent extends Component<any, any> {
                                 <CardActions>
                                     <RaisedButton
                                         type="submit"
-                                        label={<FormattedMessage id="login.title" defaultMessage="Login"/>}
+                                        label={<FormattedMessage id="login.main.button" defaultMessage="Login"/>}
                                         primary={true}
                                         disabled={this.props.login.loggingIn} />
                                     <Link to="/signup">
