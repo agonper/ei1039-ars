@@ -13,7 +13,7 @@ import {
 import InputIcon from 'material-ui/svg-icons/action/input'
 import {Link} from 'react-router';
 import {reduxForm} from "redux-form";
-import {MainTextField} from "../main-text-field";
+import {MainTextField} from "../ui/main-text-field";
 import {createUser, clearSignup} from "../../actions/signup";
 import {ApplicationState} from "../../reducers/index";
 import {Snackbar} from "material-ui";

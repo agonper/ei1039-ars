@@ -15,7 +15,7 @@ import * as en from 'react-intl/locale-data/en';
 addLocaleData([...es, ...en]);
 
 import {applicationStore} from "./store";
-import routes from './routes';
+import routes from './routes/routes';
 
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
@@ -38,5 +38,5 @@ ReactDOM.render(
             </MuiThemeProvider>
         </IntlProvider>
     </Provider>,
-    document.getElementById('example')
+    document.getElementById('app')
 );

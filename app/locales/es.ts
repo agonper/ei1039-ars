@@ -1,9 +1,11 @@
 export const esTranslationStrings = {
     'app.title': "UJI | ARS",
+    'app.main.logout': "Desconectar",
 
     'main.auth-box.welcome': "¡Bienvenido!",
 
     'login.title': "Iniciar sesión",
+    'login.main.button': "Entrar",
     'login.go-to-signup': "No estoy registrado",
     'login.errors.wrong-email': "Email incorrecto",
     'login.errors.wrong-password': "Contraseña incorrecta",

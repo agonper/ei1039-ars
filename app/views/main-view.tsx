@@ -2,6 +2,7 @@ import * as React from 'react';
 import Component = React.Component;
 
 import {AuthBox} from "../components/main/auth-box";
+import {CustomAppBar} from "../components/ui/custom-app-bar";
 
 
 export const mainViewStyle = {
@@ -11,8 +12,12 @@ export const mainViewStyle = {
 
 export const MainView = () =>{
     return (
-        <div style={mainViewStyle}>
-            <AuthBox />
+        <div>
+            <CustomAppBar/>
+            <div style={mainViewStyle}>
+                <AuthBox />
+            </div>
         </div>
+
     );
 };
