@@ -5,7 +5,6 @@ import * as morgan from 'morgan';
 import * as log from 'winston';
 import {AuthRouter} from '../routes/auth-router';
 import {ServerConfig} from '../config/environment';
-import {authChecker} from '../middlewares/auth-check';
 import {ApiRouter} from '../routes/api-router';
 import {PassportInitializer} from './passport';
 import * as passport from 'passport';
@@ -55,7 +54,6 @@ export class Server {
         passportInitializer.start(app);
 
         // Protect /api with token access
-        const authCheckMiddleware = authChecker(this._config);
         app.use('/api', passport.authenticate(['basic-login', 'jwt-login'], { session: false }));
     }
 
