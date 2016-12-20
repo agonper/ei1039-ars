@@ -7,7 +7,7 @@ import {
 export interface QuestionCreationState {
     creatingQuestion : boolean,
     questionCreated : boolean,
-    error : {[field : string] : string}
+    error : string
 }
 
 const INITIAL_STATE : QuestionCreationState = {
@@ -25,7 +25,7 @@ export const QuestionCreationReducer = (state: QuestionCreationState = INITIAL_S
             return {creatingQuestion : false, questionCreated : true, error : undefined};
 
         case QUESTION_CREATION_ERROR:
-            return {creatingQuesion : true, questionCreated : false, error : {question : 'empty-question', answerA : 'empty-answerA', answerB : 'empty-answerB', answerC : 'empty-answerC', answerD : 'empty-answerD', correctAnswer : 'not-selected'}};
+            return {creatingQuesion : true, questionCreated : false, error : 'empty-field'};
 
         case QUESTION_CREATION_CLEAR:
             return INITIAL_STATE;

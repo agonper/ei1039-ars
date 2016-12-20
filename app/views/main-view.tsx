@@ -3,6 +3,7 @@ import Component = React.Component;
 
 import {AuthBox} from "../components/main/auth-box";
 import {CustomAppBar} from "../components/ui/custom-app-bar";
+import {QuestionCreationForm} from "../components/questions/creation/questionCreationForm";
 
 
 export const mainViewStyle = {
