@@ -1,13 +1,12 @@
 import * as bcrypt from 'bcrypt';
-import * as log from 'winston';
 import {Schema, model} from 'mongoose';
 
 export const UserSchema = new Schema({
-    email: {type: 'string', unique: true, required: true},
-    name: {type: 'string', required: true},
-    password: {type: 'string', required: true},
-    type: {type: 'string', required: true}
-    // TODO Add classes
+    email: {type: String, unique: true, required: true},
+    name: {type: String, required: true},
+    password: {type: String, required: true},
+    type: {type: String, required: true},
+    courses: [{type: Schema.Types.ObjectId, ref: 'Course'}]
 });
 
 UserSchema.methods.comparePassword = function(password: string): Promise<any> {

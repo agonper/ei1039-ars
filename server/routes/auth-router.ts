@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as passport from 'passport';
 import * as log from 'winston';
 import {Server} from "../initializers/server";
-import {User, userRepository} from "../models/user";
+import {userRepository, UserSignupData} from "../models/user";
 
 export const AuthRouter = (server: Server): express.Router => {
     const router = express.Router();
@@ -10,7 +10,7 @@ export const AuthRouter = (server: Server): express.Router => {
     router.post('/signup', (req, res) => {
         //FIXME Validate data first
 
-        const newUser: User = {
+        const newUser: UserSignupData = {
             email: req.body.email.trim().toString(),
             password: req.body.password.trim().toString(),
             name: req.body.name.trim().toString(),

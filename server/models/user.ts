@@ -1,8 +1,8 @@
 import * as bcrypt from 'bcrypt';
 import * as log from 'winston';
-import reject = Promise.reject;
 import {UserModel} from "./mongodb/user";
-import {MongooseDocument} from "mongoose";
+import {MongooseDocument, Types} from "mongoose";
+import {Course} from "./course";
 
 
 export interface LoginData {
@@ -10,9 +10,14 @@ export interface LoginData {
     password: string
 }
 
-export interface User extends LoginData {
+export interface UserSignupData extends LoginData{
     name: string,
     type: string
+}
+
+export interface User extends UserSignupData {
+    _id: Types.ObjectId,
+    courses: [Course]
 }
 
 export interface UserWithMethods extends User {
@@ -21,7 +26,7 @@ export interface UserWithMethods extends User {
 
 class UserRepository {
 
-    public save(user: User): Promise<MongooseDocument & UserWithMethods> {
+    public save(user: UserSignupData): Promise<MongooseDocument & UserWithMethods> {
         return this.findByEmail(user.email).catch((err) => {
             log.error('Error fetching user by mail: ', user.email);
             return Promise.reject({message: 'Error creating user account', errors: {general: err}});
