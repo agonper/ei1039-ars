@@ -30,5 +30,6 @@ export const esTranslationStrings = {
     'signup.errors.too-short-password': "Por favor introduce una contraseña más larga",
 
     'dashboard.courses.title': "Cursos",
-    'dashboard.courses.subtitle': "Tus cursos"
+    'dashboard.courses.subtitle': "Tus cursos",
+    'dashboard.courses.empty': "No tienes cursos"
 };

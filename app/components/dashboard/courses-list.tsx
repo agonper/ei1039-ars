@@ -9,6 +9,7 @@ import {
     ListItem
 } from 'material-ui';
 import RecordVoiceOverIcon from 'material-ui/svg-icons/action/record-voice-over';
+import MoreHorizIcon from 'material-ui/svg-icons/navigation/more-horiz';
 import {white} from 'material-ui/styles/colors';
 import {Link} from 'react-router';
 import {FormattedMessage} from 'react-intl';
@@ -48,9 +49,17 @@ class CoursesListComponent extends Component<CoursesListProps, any> {
     }
 
     renderUserCourses() {
-        const userCourses = this.props.userCourses.courses;
+        const {courses, fetching} = this.props.userCourses;
 
-        return userCourses.map((course) => {
+        if (fetching) return <div className="center-xs"><MoreHorizIcon/></div>;
+
+        if (courses.length == 0) return (
+            <div className="center-xs">
+                <FormattedMessage id="dashboard.courses.empty" defaultMessage="You have no courses"/>
+            </div>
+        );
+
+        return courses.map((course) => {
             return (
                 <ListItem
                     key={course.id}

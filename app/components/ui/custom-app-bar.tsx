@@ -16,6 +16,7 @@ import {ApplicationState} from "../../reducers/index";
 
 import {connect} from 'react-redux';
 import {logout} from "../../actions/auth";
+import {apolloClient} from "../../adapters/graphql";
 
 interface CustomAppBarProps {
     login: LoginState,
@@ -46,6 +47,7 @@ class CustomAppBarComponent extends Component<CustomAppBarProps, any> {
 
     onClickLogoutHandler() {
         this.props.logout();
+        apolloClient.resetStore();
         this.context.router.push('/login');
     }
 
