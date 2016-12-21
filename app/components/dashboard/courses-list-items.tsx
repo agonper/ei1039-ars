@@ -1,29 +1,21 @@
 import * as React from 'react';
 const {Component} = React;
 import {
-    Drawer,
-    AppBar,
-    IconButton,
-    List,
-    Subheader,
     ListItem
 } from 'material-ui';
-import RecordVoiceOverIcon from 'material-ui/svg-icons/action/record-voice-over';
 import MoreHorizIcon from 'material-ui/svg-icons/navigation/more-horiz';
-import {white} from 'material-ui/styles/colors';
-import {Link} from 'react-router';
 import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
 import {ApplicationState} from "../../reducers/index";
 import {fetchUserCourses} from "../../actions/courses";
 import {UserCoursesState} from "../../reducers/user-courses";
 
-interface CoursesListProps {
+interface CoursesListItemsProps {
     userCourses: UserCoursesState,
     fetchUserCourses(): any
 }
 
-class CoursesListComponent extends Component<CoursesListProps, any> {
+class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
 
     componentWillMount() {
         this.props.fetchUserCourses();
@@ -71,27 +63,7 @@ class CoursesListComponent extends Component<CoursesListProps, any> {
     }
 
     render() {
-
-        // TODO https://github.com/callemall/material-ui/issues/4752
-        // TODO https://github.com/balloob/react-sidebar/blob/master/example/src/responsive_example.js#L32-L44
-
-        return (
-            <div>
-                <Drawer
-                    docked={true}
-                    open={true}>
-                    <AppBar
-                        iconElementLeft={<Link to="/"><IconButton><RecordVoiceOverIcon color={white}/></IconButton></Link>}
-                        title={<FormattedMessage id="dashboard.courses.title" defaultMessage="Courses"/>}/>
-                    <List>
-                        <Subheader>
-                            <FormattedMessage id="dashboard.courses.subtitle" defaultMessage="Your courses"/>
-                        </Subheader>
-                        {this.renderUserCourses()}
-                    </List>
-                </Drawer>
-            </div>
-        );
+        return <div>{this.renderUserCourses()}</div>;
     }
 }
 
@@ -101,4 +73,4 @@ function mapStateToProps(state: ApplicationState) {
     }
 }
 
-export const CoursesList = connect(mapStateToProps, {fetchUserCourses})(CoursesListComponent);
+export const CoursesListItems = connect(mapStateToProps, {fetchUserCourses})(CoursesListItemsComponent);

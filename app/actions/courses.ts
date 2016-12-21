@@ -39,7 +39,7 @@ const UserCoursesQuery = gql`
  }`;
 
 export function fetchUserCourses(): ThunkAction<void, ApplicationState, void> {
-    const request = apolloClient.query({query: UserCoursesQuery});
+    const request = apolloClient.query({query: UserCoursesQuery}); // TODO Check if forceFetch option is needed to invalidate cache
     return (dispatch: Dispatch<ApplicationState>) => {
         dispatch(listCoursesPending());
         request

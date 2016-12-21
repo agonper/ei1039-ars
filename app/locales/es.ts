@@ -1,6 +1,7 @@
 export const esTranslationStrings = {
     'app.title': "UJI | ARS",
     'app.main.logout': "Desconectar",
+    'app.general.cancel': "Cancelar",
 
     'main.auth-box.welcome': "¡Bienvenido!",
 
@@ -31,5 +32,7 @@ export const esTranslationStrings = {
 
     'dashboard.courses.title': "Cursos",
     'dashboard.courses.subtitle': "Tus cursos",
-    'dashboard.courses.empty': "No tienes cursos"
+    'dashboard.courses.empty': "No tienes cursos",
+    'dashboard.course.create.title': "Crear un curso",
+    'dashboard.course.create.submit': "Crear curso"
 };
