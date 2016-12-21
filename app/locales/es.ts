@@ -28,4 +28,7 @@ export const esTranslationStrings = {
     'signup.errors.invalid-name': "Tu nombre debe contener sólo letras",
     'signup.errors.invalid-password': "Por favor introduce un password válido",
     'signup.errors.too-short-password': "Por favor introduce una contraseña más larga",
+
+    'dashboard.courses.title': "Cursos",
+    'dashboard.courses.subtitle': "Tus cursos"
 };

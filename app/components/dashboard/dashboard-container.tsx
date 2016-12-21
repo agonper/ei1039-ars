@@ -1,6 +1,14 @@
 import * as React from 'react';
 
-export const DashboardContainer = (props: any) => {
-    return <div>Dashboard container</div>;
+const containerStyle = {
+    paddingLeft: '255px'
 };
 
+export const DashboardContainer = (props: any) => {
+
+    return (
+        <div style={containerStyle}>
+            Dashboard container
+        </div>
+    );
+};

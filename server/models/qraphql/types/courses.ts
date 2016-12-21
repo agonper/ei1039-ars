@@ -15,6 +15,10 @@ const CourseType: any = new GraphQLObjectType({
             name: {
                 type: GraphQLString
             },
+            createdAt: {
+                type: GraphQLString,
+                resolve: course => course.createdAt.toISOString()
+            },
             teacher: {
                 type: UserType,
                 resolve: course => course.populate('teacher').execPopulate()

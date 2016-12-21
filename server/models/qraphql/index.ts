@@ -4,7 +4,7 @@ import QueryType from "./queries/index";
 
 const appGraphQLSchema = new GraphQLSchema({
     query: QueryType,
-     mutation: MutationType
+    mutation: MutationType
 });
 
 export default appGraphQLSchema;

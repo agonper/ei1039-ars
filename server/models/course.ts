@@ -7,6 +7,7 @@ import {CourseModel} from './mongodb/course';
 export interface Course {
     _id: Types.ObjectId,
     name: string,
+    createdAt: Date,
     teacher: User,
     students: [User]
 }
@@ -15,7 +16,7 @@ class CourseRepository {
 
     public createCourse(user: any & MongooseDocument, name: string): Promise<MongooseDocument & Course> {
         if (user.type !== 'teacher') throw new Error('user-not-a-teacher');
-        const course = new CourseModel({name: name, teacher: user._id});
+        const course = new CourseModel({name: name, teacher: user._id, createdAt: Date.now()});
         return course.save().then((course) => {
             user.courses.push(course);
             return user.save().then(() => course);
