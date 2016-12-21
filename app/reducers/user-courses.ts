@@ -1,7 +1,10 @@
 import {GenericAction} from "../actions/common";
-import {LIST_COURSES_PENDING, LIST_COURSES_SUCCESS, LIST_COURSES_ERROR} from "../actions/courses";
+import {
+    LIST_COURSES_PENDING, LIST_COURSES_SUCCESS, LIST_COURSES_ERROR,
+    CREATE_COURSE_SUCCESS
+} from "../actions/courses";
 
-interface LimitedCourse {
+export interface LimitedCourse {
     id: string,
     name: string
 }
@@ -27,6 +30,9 @@ export const UserCoursesReducer = (state: UserCoursesState = INITIAL_SATE, actio
             return {fetching: false, courses, error: undefined};
         case LIST_COURSES_ERROR:
             return {fetching: false, courses: [], error: action.error.errors};
+        case CREATE_COURSE_SUCCESS:
+            const course = action.payload.data.createCourse;
+            return {...state, courses: [course, ...state.courses]};
         default:
             return state;
     }

@@ -7,11 +7,13 @@ import {QuestionCreationState, QuestionCreationReducer} from "./questionCreation
 import {QuestionResponseReducer} from "./questionResponse";
 import {UserCoursesReducer, UserCoursesState} from "./user-courses";
 import {DashboardState, DashboardReducer} from "./dashboard";
+import {CreateCourseReducer, CreateCourseState} from "./create-course";
 
 export interface ApplicationState {
     login: LoginState,
     signup: SignupState,
     userCourses: UserCoursesState,
+    createCourse: CreateCourseState,
     dashboard: DashboardState,
     questionCreation : QuestionCreationState
 }
@@ -21,6 +23,7 @@ const rootReducer = combineReducers({
     signup: SignupReducer,
     userCourses: UserCoursesReducer,
     dashboard: DashboardReducer,
+    createCourse: CreateCourseReducer,
     questionCreation : QuestionCreationReducer,
     form: formReducer,
     intl: intlReducer
