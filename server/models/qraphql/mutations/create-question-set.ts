@@ -14,7 +14,7 @@ const MutationCreateQuestionSet = {
         },
         name: {
             name: 'name',
-            type: GraphQLString
+            type: new GraphQLNonNull(GraphQLString)
         }
     },
     resolve: (root: any, args: any, context: any) => {

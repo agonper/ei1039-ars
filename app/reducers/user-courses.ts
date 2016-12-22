@@ -3,6 +3,8 @@ import {
     LIST_COURSES_PENDING, LIST_COURSES_SUCCESS, LIST_COURSES_ERROR,
     CREATE_COURSE_SUCCESS
 } from "../actions/courses";
+import {CREATE_QUESTION_SET_SUCCESS} from "../actions/question-set";
+import {dropWhile, takeWhile, drop, find} from 'lodash';
 
 export interface LimitedQuestionSet {
     id: string,
@@ -40,6 +42,23 @@ export const UserCoursesReducer = (state: UserCoursesState = INITIAL_SATE, actio
         case CREATE_COURSE_SUCCESS:
             const course = action.payload.data.createCourse;
             return {...state, courses: [course, ...state.courses]};
+        case CREATE_QUESTION_SET_SUCCESS:
+            const createQuestionSet = action.payload.data.createQuestionSet;
+            const {id, name, createdAt} = createQuestionSet;
+            const questionSet: LimitedQuestionSet = {id, name, createdAt};
+
+            const courseId = createQuestionSet.course.id.toString();
+            const updatedCourse = find(state.courses, (course) => course.id === courseId);
+            const notEqualsCourse = (course: LimitedCourse) => course.id !== updatedCourse.id;
+            const rightCourses = takeWhile(state.courses, notEqualsCourse);
+            const leftCourses = drop(dropWhile(state.courses, notEqualsCourse));
+
+            return {
+                ...state,
+                courses: [
+                    ...rightCourses,
+                    {...updatedCourse, questionSets: [questionSet, ...updatedCourse.questionSets]},
+                    ...leftCourses]};
         default:
             return state;
     }

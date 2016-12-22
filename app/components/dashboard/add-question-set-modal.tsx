@@ -11,6 +11,8 @@ import {ApplicationState} from "../../reducers/index";
 import {DashboardState} from "../../reducers/dashboard";
 import {HintOnlyTextField} from "../ui/hint-only-text-field";
 import {toggleAddQuestionSetModal} from "../../actions/dashboard";
+import {CreateQuestionSetState} from "../../reducers/create-question-set";
+import {createQuestionSet} from "../../actions/question-set";
 
 export interface NewQuestionSetData {
     name: string
@@ -18,20 +20,20 @@ export interface NewQuestionSetData {
 
 interface AddQuestionSetModalProps extends ReduxFormProps<any> {
     dashboard: DashboardState,
-    /*create: CreateCourseState,*/
+    create: CreateQuestionSetState,
     toggleAddQuestionSetModal(): any,
-    /*createCourse(course: NewQuestionSetData): Promise<any>,*/
+    createQuestionSet(courseId: string, questionSet: NewQuestionSetData): Promise<any>,
     resetForm(): any
 }
 
 class AddQuestionSetModalComponent extends Component<any & AddQuestionSetModalProps, any> {
 
     onCreateQuestionSet(questionSet: NewQuestionSetData) {
-        /*return this.props.createCourse(course)
+        return this.props.createQuestionSet(this.props.dashboard.selectedItemId, questionSet)
             .then(() => {
-                this.props.toggleAddCourseModal();
+                this.props.toggleAddQuestionSetModal();
                 this.props.resetForm();
-            })*/
+            });
     }
 
     render() {
@@ -40,7 +42,7 @@ class AddQuestionSetModalComponent extends Component<any & AddQuestionSetModalPr
         const actions = [
             <RaisedButton
                 primary={true}
-                disabled={/*this.props.create.creating*/false}
+                disabled={this.props.create.creating}
                 onTouchTap={handleSubmit(this.onCreateQuestionSet.bind(this))}
                 label={<FormattedMessage id="dashboard.question-set.create.submit" defaultMessage="Create question set"/>}/>,
             <FlatButton
@@ -75,8 +77,8 @@ class AddQuestionSetModalComponent extends Component<any & AddQuestionSetModalPr
 
 function mapStateToProps(state: ApplicationState) {
     return {
-        dashboard: state.dashboard/*,
-        create: state.createCourse*/
+        dashboard: state.dashboard,
+        create: state.createQuestionSet
     }
 }
 
@@ -94,5 +96,5 @@ export const AddQuestionSetModal = reduxForm({
     form: 'addQuestionSet',
     fields: ['name'],
     validate
-}, mapStateToProps, {toggleAddQuestionSetModal/*, createCourse*/})(AddQuestionSetModalComponent);
+}, mapStateToProps, {toggleAddQuestionSetModal, createQuestionSet})(AddQuestionSetModalComponent);
 
