@@ -2,6 +2,7 @@ import {GraphQLObjectType, GraphQLList} from "graphql";
 import {GraphQLID} from "graphql";
 import {GraphQLString} from "graphql";
 import UserType from "./user";
+import QuestionSetType from "./question-set";
 
 const CourseType: any = new GraphQLObjectType({
     name: 'Course',
@@ -28,6 +29,11 @@ const CourseType: any = new GraphQLObjectType({
                 type: new GraphQLList(UserType),
                 resolve: course => course.populate('students').execPopulate()
                     .then((course: any) => course.students)
+            },
+            questionSets: {
+                type: new GraphQLList(QuestionSetType),
+                resolve: course => course.populate({path: 'questionSets', options: {sort: {createdAt: -1}}}).execPopulate()
+                    .then((course: any) => course.questionSets)
             }
         }
     }

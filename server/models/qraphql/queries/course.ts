@@ -1,4 +1,4 @@
-import CourseType from "../types/courses";
+import CourseType from "../types/course";
 import {courseRepository} from "../../course";
 import {GraphQLNonNull, GraphQLString} from 'graphql';
 

@@ -2,6 +2,7 @@ import QueryCurrentUser from "./current-user";
 import {GraphQLObjectType} from "graphql";
 import QueryUserCourses from "./user-courses";
 import QueryCourse from "./course";
+import QueryQuestionSet from "./question-set";
 
 const QueryType = new GraphQLObjectType({
     name: 'Query',
@@ -9,7 +10,8 @@ const QueryType = new GraphQLObjectType({
     fields: {
         currentUser: QueryCurrentUser,
         userCourses: QueryUserCourses,
-        course: QueryCourse
+        course: QueryCourse,
+        questionSet: QueryQuestionSet
     }
 });
 

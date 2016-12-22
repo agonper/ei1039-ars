@@ -1,5 +1,5 @@
 import {GraphQLString, GraphQLNonNull} from 'graphql'
-import CourseType from "../types/courses";
+import CourseType from "../types/course";
 import {courseRepository} from "../../course";
 
 const MutationCreateCourse = {

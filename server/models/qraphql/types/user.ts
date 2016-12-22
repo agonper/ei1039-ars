@@ -1,7 +1,7 @@
 import {GraphQLObjectType, GraphQLList} from "graphql";
 import {GraphQLID} from "graphql";
 import {GraphQLString} from "graphql";
-import CourseType from "./courses";
+import CourseType from "./course";
 
 const UserType: any = new GraphQLObjectType({
     name: 'User',
@@ -23,7 +23,7 @@ const UserType: any = new GraphQLObjectType({
             },
             courses: {
                 type: new GraphQLList(CourseType),
-                resolve: user => user.populate('courses').execPopulate()
+                resolve: user => user.populate({path: 'courses', options: {sort: {createdAt: -1}}}).execPopulate()
                     .then((user: any) => user.courses)
             }
         }

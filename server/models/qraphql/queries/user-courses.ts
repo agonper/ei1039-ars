@@ -1,5 +1,5 @@
 import {GraphQLList} from "graphql";
-import CourseType from "../types/courses";
+import CourseType from "../types/course";
 
 const QueryUserCourses = {
     type: new GraphQLList(CourseType),
