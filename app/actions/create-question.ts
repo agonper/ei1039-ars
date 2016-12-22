@@ -1,6 +1,6 @@
 import {Action, Dispatch} from "redux";
 import {GenericAction} from "./common";
-import {QuestionFormFields} from "../components/questions/creation/questionCreationForm";
+import {QuestionFormFields} from "../components/questions/creation/question-creation-form";
 import {ApplicationState} from "../reducers/index";
 import {ThunkAction} from "redux-thunk";
 import {RestAdapter} from "../adapters/rest";
@@ -29,6 +29,7 @@ function questionCreation_failed(err : Error) : GenericAction {
     };
 }
 
+
 export function questionCreation_clear() : Action {
     return {
         type : QUESTION_CREATION_CLEAR
@@ -45,4 +46,5 @@ export function questionCreation_createQuestion(questionData : QuestionFormField
             .then((data) => dispatch(questionCreation_success(questionData)))
             .catch((err) => dispatch(questionCreation_failed(err)));
     };
+
 }

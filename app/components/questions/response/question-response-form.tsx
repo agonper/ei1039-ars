@@ -9,7 +9,7 @@ import {Toggle} from "material-ui";
 import {CardActions} from "material-ui";
 import {LinearProgress} from "material-ui";
 import {RaisedButton} from "material-ui";
-import {questionResponse_Success} from "../../../actions/responseQuestion";
+import {questionResponse_Success} from "../../../actions/response-question";
 
 
 const formName = 'QuestionResponse';
@@ -27,9 +27,10 @@ class QuestionResponseComponent extends Component<any, any> {
             <div>
                 <div className="row center-xs">
                     <Card>
-                        <LinearProgress mode="determinate"/>
+                        <LinearProgress mode="determinate" style={{marginTop: '20px'}}/>
                         <CardText>
-                            <Toggle label={this.props.questionState.question.question}/>
+                            <h3>Prueba</h3>
+                            <hr/>
                         </CardText>
                         <CardActions>
                             <RaisedButton type="submit" fullWidth={true} label={this.props.questionState.question.answerA}/>
