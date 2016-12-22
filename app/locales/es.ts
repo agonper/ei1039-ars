@@ -30,6 +30,8 @@ export const esTranslationStrings = {
     'signup.errors.invalid-password': "Por favor introduce un password válido",
     'signup.errors.too-short-password': "Por favor introduce una contraseña más larga",
 
+    'dashboard.main.select-a-course': "Para empezar, selecciona un curso del panel lateral o",
+    'dashboard.main.create-a-course': "Crea uno",
     'dashboard.courses.title': "Cursos",
     'dashboard.courses.subtitle': "Tus cursos",
     'dashboard.courses.empty': "No tienes cursos",

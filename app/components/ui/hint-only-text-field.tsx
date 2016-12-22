@@ -10,12 +10,13 @@ interface HintOnlyTextFieldProps {
     field: FieldProp<any>,
     hint: string,
     defaultHint: string,
-    type: string
+    type: string,
+    focus: boolean
 }
 
 export class HintOnlyTextField extends Component<HintOnlyTextFieldProps, any> {
     render() {
-        const {field, hint, defaultHint, type} = this.props;
+        const {field, hint, defaultHint, type, focus} = this.props;
         const inputFields = omit(field, fieldsToOmitFromInput);
 
         return (

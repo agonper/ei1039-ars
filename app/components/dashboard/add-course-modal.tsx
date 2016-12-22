@@ -62,6 +62,7 @@ class AddCourseModalComponent extends Component<any & AddCourseModalProps, any> 
                         actions={actions}>
                         <form onSubmit={handleSubmit(this.onCreateCourse.bind(this))}>
                             <HintOnlyTextField
+                                focus={true}
                                 field={name}
                                 hint="dashboard.course.create.name"
                                 defaultHint="Course name"
