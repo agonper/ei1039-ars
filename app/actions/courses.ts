@@ -83,8 +83,12 @@ function createCourseFailed(error: any): GenericAction {
 const CreateCourseMutation = gql`
  mutation createCourse($name: String!) {
     createCourse(name: $name) {
-        id
-        name
+       id
+       name
+       questionSets {
+          id
+          name
+       }
     }
  }`;
 
@@ -93,8 +97,14 @@ export function createCourse(course: NewCourseData): ThunkAction<void, Applicati
     return (dispatch: Dispatch<ApplicationState>) => {
         dispatch(createCoursePending());
         request
-            .then((data) => dispatch(createCourseSuccess(data)))
-            .catch((err) => dispatch(createCourseFailed(err)));
+            .then((data) => {
+                console.log(data);
+                dispatch(createCourseSuccess(data))
+            })
+            .catch((err) => {
+                console.log(err);
+                dispatch(createCourseFailed(err))
+            });
         return request;
     }
 }

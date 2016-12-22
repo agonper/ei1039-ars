@@ -26,15 +26,16 @@ class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
     renderQuestionSets(questionSets: LimitedQuestionSet[]) {
 
         return questionSets.map((questionSet) => {
+            const formattedDate = <FormattedDate
+                                    value={new Date(questionSet.createdAt)}
+                                    year='numeric'
+                                    month='short'
+                                    day='2-digit'/>;
             return (
                 <ListItem
                     key={questionSet.id}
                     title={(questionSet.name !== "") ? questionSet.name : questionSet.createdAt}
-                    primaryText={(questionSet.name !== "") ? questionSet.name : <FormattedDate
-                                                                                    value={new Date(questionSet.createdAt)}
-                                                                                    year='numeric'
-                                                                                    month='short'
-                                                                                    day='2-digit'/>}/>
+                    primaryText={(questionSet.name !== "") ? questionSet.name : formattedDate}/>
             );
         })
     }
