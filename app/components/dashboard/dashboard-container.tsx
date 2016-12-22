@@ -1,12 +1,12 @@
 import * as React from 'react';
 const {Component} = React;
-import {
-    Paper,
-    RaisedButton
-} from 'material-ui';
-import {FormattedMessage} from 'react-intl';
+import {Paper} from 'material-ui';
 import {connect} from 'react-redux';
 import {toggleAddCourseModal} from "../../actions/dashboard";
+import {NoSelection} from "./no-selection";
+import {ApplicationState} from "../../reducers/index";
+import {DashboardState} from "../../reducers/dashboard";
+import {CourseContainer} from "./course-container";
 
 const containerStyle = {
     position: 'fixed',
@@ -17,25 +17,38 @@ const containerStyle = {
 };
 
 interface DashboardContainerProps {
-    toggleAddCourseModal(): any
+    dashboard: DashboardState
 }
 
 class DashboardContainerComponent extends Component<DashboardContainerProps, any> {
+
+    renderInnerContainer() {
+        const {isItemSelected, selectedItemType} = this.props.dashboard;
+        if (!isItemSelected) return <NoSelection/>;
+
+        switch (selectedItemType) {
+            case 'course':
+                return <CourseContainer/>;
+            default:
+                return <NoSelection/>;
+        }
+    }
+
     render() {
         return (
             <div style={containerStyle}>
-                <Paper style={{height: '100%'}} className="row middle-xs center-xs">
-                    <FormattedMessage
-                        id="dashboard.main.select-a-course"
-                        defaultMessage="To start, select a course from the side panel or "/>
-                    <RaisedButton
-                        secondary={true}
-                        style={{marginLeft: '5px'}}
-                        onTouchTap={this.props.toggleAddCourseModal}
-                        label={<FormattedMessage id="dashboard.main.create-a-course" defaultMessage="Create one"/>}/>
+                <Paper style={{height: '100%'}}>
+                    {this.renderInnerContainer()}
                 </Paper>
             </div>
         );
     }
 }
-export const DashboardContainer = connect(null, {toggleAddCourseModal})(DashboardContainerComponent);
+
+function mapStateToProps(state: ApplicationState) {
+    return {
+        dashboard: state.dashboard
+    }
+}
+
+export const DashboardContainer = connect(mapStateToProps, {toggleAddCourseModal})(DashboardContainerComponent);

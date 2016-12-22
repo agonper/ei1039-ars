@@ -8,11 +8,13 @@ import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
 import {ApplicationState} from "../../reducers/index";
 import {fetchUserCourses} from "../../actions/courses";
-import {UserCoursesState} from "../../reducers/user-courses";
+import {UserCoursesState, LimitedCourse} from "../../reducers/user-courses";
+import {selectCourse} from "../../actions/dashboard";
 
 interface CoursesListItemsProps {
     userCourses: UserCoursesState,
-    fetchUserCourses(): any
+    fetchUserCourses(): any,
+    selectCourse(courseId: string): any
 }
 
 class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
@@ -40,6 +42,10 @@ class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
         })
     }
 
+    handleCourseClick(course: LimitedCourse) {
+        this.props.selectCourse(course.id);
+    }
+
     renderUserCourses() {
         const {courses, fetching} = this.props.userCourses;
 
@@ -55,6 +61,8 @@ class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
             return (
                 <ListItem
                     key={course.id}
+                    value={course.id}
+                    onTouchTap={() => this.handleCourseClick(course)}
                     primaryText={course.name}
                     title={course.name}
                     nestedItems={this.renderQuestionSets()}/>
@@ -73,4 +81,4 @@ function mapStateToProps(state: ApplicationState) {
     }
 }
 
-export const CoursesListItems = connect(mapStateToProps, {fetchUserCourses})(CoursesListItemsComponent);
+export const CoursesListItems = connect(mapStateToProps, {fetchUserCourses, selectCourse})(CoursesListItemsComponent);

@@ -40,7 +40,7 @@ const UserCoursesQuery = gql`
  }`;
 
 export function fetchUserCourses(): ThunkAction<void, ApplicationState, void> {
-    const request = apolloClient.query({query: UserCoursesQuery}); // TODO Check if forceFetch option is needed to invalidate cache
+    const request = apolloClient.query({query: UserCoursesQuery});
     return (dispatch: Dispatch<ApplicationState>) => {
         dispatch(listCoursesPending());
         request
@@ -90,6 +90,53 @@ export function createCourse(course: NewCourseData): ThunkAction<void, Applicati
         request
             .then((data) => dispatch(createCourseSuccess(data)))
             .catch((err) => dispatch(createCourseFailed(err)));
+        return request;
+    }
+}
+
+export const FETCH_COURSE_PENDING = 'FETCH_COURSE_PENDING';
+export const FETCH_COURSE_SUCCESS = 'FETCH_COURSE_SUCCESS';
+export const FETCH_COURSE_ERROR = 'FETCH_COURSE_ERROR';
+
+function fetchCoursePending(): Action {
+    return {
+        type: FETCH_COURSE_PENDING
+    }
+}
+
+function fetchCourseSuccess(data: any): GenericAction {
+    return {
+        type: FETCH_COURSE_SUCCESS,
+        payload: data
+    }
+}
+
+function fetchCourseFailed(err: any): GenericAction {
+    return {
+        type: FETCH_COURSE_ERROR,
+        payload: err
+    }
+}
+
+const FetchCourseQuery = gql`
+ query course($id: String!) {
+   course(id: $id) {
+     id
+     name
+     students {
+       name
+       email
+     }
+   }
+ }`;
+
+export function fetchCourse(id: string): ThunkAction<void, ApplicationState, void> {
+    const request = apolloClient.query({query: FetchCourseQuery, variables: {id}});
+    return (dispatch: Dispatch<ApplicationState>) => {
+        dispatch(fetchCoursePending());
+        request
+            .then((data) => dispatch(fetchCourseSuccess(data)))
+            .catch((err) => dispatch(fetchCourseFailed(err)));
         return request;
     }
 }
