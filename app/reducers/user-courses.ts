@@ -4,9 +4,16 @@ import {
     CREATE_COURSE_SUCCESS
 } from "../actions/courses";
 
+export interface LimitedQuestionSet {
+    id: string,
+    name: string,
+    createdAt: string
+}
+
 export interface LimitedCourse {
     id: string,
-    name: string
+    name: string,
+    questionSets: LimitedQuestionSet[]
 }
 
 export interface UserCoursesState {

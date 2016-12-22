@@ -4,11 +4,11 @@ import {
     ListItem
 } from 'material-ui';
 import MoreHorizIcon from 'material-ui/svg-icons/navigation/more-horiz';
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage, FormattedDate} from 'react-intl';
 import {connect} from 'react-redux';
 import {ApplicationState} from "../../reducers/index";
 import {fetchUserCourses} from "../../actions/courses";
-import {UserCoursesState, LimitedCourse} from "../../reducers/user-courses";
+import {UserCoursesState, LimitedCourse, LimitedQuestionSet} from "../../reducers/user-courses";
 import {selectCourse} from "../../actions/dashboard";
 
 interface CoursesListItemsProps {
@@ -23,21 +23,18 @@ class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
         this.props.fetchUserCourses();
     }
 
-    renderQuestionSets() {
-        const questionSets = [
-            {id: 0, name: "23 Dic 16"},
-            {id: 1, name: "19 Dic 16"},
-            {id: 2, name: "15 Dic 16"},
-            {id: 3, name: "12 Dic 16"},
-            {id: 4, name: "10 Dic 16"}
-        ];
+    renderQuestionSets(questionSets: LimitedQuestionSet[]) {
 
         return questionSets.map((questionSet) => {
             return (
                 <ListItem
                     key={questionSet.id}
-                    title={questionSet.name}
-                    primaryText={questionSet.name}/>
+                    title={(questionSet.name !== "") ? questionSet.name : questionSet.createdAt}
+                    primaryText={(questionSet.name !== "") ? questionSet.name : <FormattedDate
+                                                                                    value={new Date(questionSet.createdAt)}
+                                                                                    year='numeric'
+                                                                                    month='short'
+                                                                                    day='2-digit'/>}/>
             );
         })
     }
@@ -65,7 +62,7 @@ class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
                     onTouchTap={() => this.handleCourseClick(course)}
                     primaryText={course.name}
                     title={course.name}
-                    nestedItems={this.renderQuestionSets()}/>
+                    nestedItems={(course.questionSets.length > 0) ? this.renderQuestionSets(course.questionSets) : []}/>
             );
         })
     }

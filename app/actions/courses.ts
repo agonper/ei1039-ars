@@ -33,11 +33,16 @@ function listCoursesFailed(err: any): GenericAction {
 
 const UserCoursesQuery = gql`
  query {
-    userCourses {
-        id
-        name
+  userCourses {
+    id
+    name
+    questionSets {
+      id
+      name
+      createdAt
     }
- }`;
+  }
+}`;
 
 export function fetchUserCourses(): ThunkAction<void, ApplicationState, void> {
     const request = apolloClient.query({query: UserCoursesQuery});

@@ -1,12 +1,12 @@
 import {GenericAction} from "../actions/common";
 import {FETCH_COURSE_PENDING, FETCH_COURSE_SUCCESS, FETCH_COURSE_ERROR} from "../actions/courses";
 
-interface BasicStudent {
+export interface BasicStudent {
     name: string,
     email: string
 }
 
-interface SelectedCourse {
+export interface SelectedCourse {
     id: string
     name: string
     students: BasicStudent[]
