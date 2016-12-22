@@ -5,11 +5,18 @@ import {ApplicationState} from "../reducers/index";
 import {fetchCourse} from "./courses";
 
 export const TOGGLE_ADD_COURSE_MODAL = 'TOGGLE_ADD_COURSE_MODAL';
+export const TOGGLE_ADD_QUESTION_SET_MODAL = 'TOGGLE_ADD_QUESTION_SET_MODAL';
 export const SELECT_COURSE = 'SELECT_COURSE';
 
 export function toggleAddCourseModal(): Action {
     return {
         type: TOGGLE_ADD_COURSE_MODAL
+    }
+}
+
+export function toggleAddQuestionSetModal(): Action {
+    return {
+        type: TOGGLE_ADD_QUESTION_SET_MODAL
     }
 }
 

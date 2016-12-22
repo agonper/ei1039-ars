@@ -42,5 +42,10 @@ export const esTranslationStrings = {
     'dashboard.course.create.empty-name': "Introduce un nombre",
     'dashboard.course.content.title': "¿Qué deseas añadir?",
     'dashboard.course.content.create-question': "Una pregunta",
-    'dashboard.course.content.create-question-set': "Un grupo de preguntas"
+    'dashboard.course.content.create-question-set': "Un grupo de preguntas",
+
+    'dashboard.question-set.create.submit': "Crear grupo de preguntas",
+    'dashboard.question-set.create.title': "Crear un gurpo de preguntas",
+    'dashboard.question-set.create.name': "Nombre del grupo de preguntas",
+    'dashboard.question-set.create.empty-name': "Introduce un nombre"
 };
