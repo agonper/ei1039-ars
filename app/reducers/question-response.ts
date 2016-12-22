@@ -1,5 +1,5 @@
 import {GenericAction} from "../actions/common";
-import {QUESTION_RESPONSE_PENDING, QUESTION_RESPONSE_CORRECT, QUESTION_RESPONSE_INCORRECT} from "../actions/responseQuestion";
+import {QUESTION_RESPONSE_PENDING, QUESTION_RESPONSE_CORRECT, QUESTION_RESPONSE_INCORRECT} from "../actions/response-question";
 export interface QuestionResponseState {
     responding : boolean,
     selectedAnswer : boolean,

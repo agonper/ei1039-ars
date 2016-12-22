@@ -1,8 +1,7 @@
 import {GenericAction} from "../actions/common";
 import {
-    QUESTION_CREATION_PENDING, QUESTION_CREATION_SUCCESS, QUESTION_CREATION_ERROR,
-    QUESTION_CREATION_CLEAR
-} from "../actions/createQuestion";
+    QUESTION_CREATION_CLEAR, QUESTION_CREATION_PENDING, QUESTION_CREATION_SUCCESS, QUESTION_CREATION_ERROR
+} from "../actions/create-question";
 
 export interface QuestionCreationState {
     creatingQuestion : boolean,

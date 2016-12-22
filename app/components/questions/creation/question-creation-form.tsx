@@ -1,17 +1,10 @@
 import * as React from 'react';
 import {TextField} from "material-ui";
-import {Checkbox} from "material-ui";
 import {RaisedButton} from "material-ui";
 import Component = React.Component;
 import FormEvent = React.FormEvent;
 import {reduxForm} from "redux-form";
-import {questionCreation_clear, questionCreation_createQuestion} from "../../../actions/createQuestion";
-import {Table} from "material-ui";
-import {TableRow} from "material-ui";
-import {TableHeader} from "material-ui";
-import {TableHeaderColumn} from "material-ui";
-import {TableBody} from "material-ui";
-import {TableRowColumn} from "material-ui";
+import {questionCreation_clear, questionCreation_createQuestion} from "../../../actions/create-question";
 import PropTypes = React.PropTypes;
 import {ApplicationState} from "../../../reducers/index";
 import {CardText} from "material-ui";
@@ -70,6 +63,7 @@ export interface QuestionFormFields {
     correctAnswer : string;
 };
 
+
 export default class QuestionBoxComponent extends Component<any, any> {
 
     static contextTypes = {
@@ -77,33 +71,30 @@ export default class QuestionBoxComponent extends Component<any, any> {
     };
 
     onSubmitHandle(questionData : QuestionFormFields) {
-        this.props.questionCreation_createQuestion(questionData);
+        this.props.questionCreation(questionData);
     }
 
     render () {
         const {fields, handleSubmit} = this.props;
         const {question, existsAnswers, answerA, answerB, answerC, answerD, correctAnswer} = fields;
 
-        const questionCreationErrors = this.props.questionCreation_createQuestion.error;
+        existsAnswers.value = true;
+        existsAnswers.onChange = (newValue : boolean) => {
+            existsAnswers.value = newValue};
 
+        correctAnswer.value = undefined;
+        correctAnswer.onChange = (newValue : string) => {correctAnswer.value = newValue};
+
+        const questionCreationErrors = this.props.questionCreation.error;
         if (questionCreationErrors) {
             Object.keys(questionCreationErrors).forEach((field) => {
                 fields[field].error = (questionCreationErrors[field]) ? 'empty-field' + questionCreationErrors[field] : '';
             });
         }
 
-        if (questionCreationErrors) {
-            question.error = questionCreationErrors.question;
-            answerA.error = questionCreationErrors.answerA;
-            answerB.error = questionCreationErrors.answerB;
-            answerC.error = questionCreationErrors.answerC;
-            answerD.error = questionCreationErrors.answerD;
-            correctAnswer.error = questionCreationErrors.correctAnswer;
-        }
-
         return (
             <div className="row center-md">
-                <div className="row">
+                 <div className="row">
                     <form onSubmit={handleSubmit(this.onSubmitHandle.bind(this))}>
                         <Card style={{paddingBottom: '30px'}}>
                             <TextField
@@ -115,22 +106,22 @@ export default class QuestionBoxComponent extends Component<any, any> {
                             <div className="row">
                                     <div className="col-md-2">
                                         <CardHeader title="Respuesta correcta" style={{margin: '20px 0px 0px 50px'}}>
-                                            <RadioButtonGroup name="correctAnswer" labelPosition="left">
-                                                <RadioButton value="A" label="A" disabled={!fields[existsAnswers]} style={{margin: '70px 0px 0px 0px'}}/>
-                                                <RadioButton value="B" label="B" disabled={!fields[existsAnswers]} style={{margin: '70px 0px 0px 0px'}}/>
-                                                <RadioButton value="C" label="C" disabled={!fields[existsAnswers]} style={{margin: '70px 0px 0px 0px'}}/>
-                                                <RadioButton value="D" label="D" disabled={!fields[existsAnswers]} style={{margin: '70px 0px 0px 0px'}}/>
+                                            <RadioButtonGroup name="correctAnswer" valueSelected={correctAnswer.value} onChange={correctAnswer.onChange(correctAnswer.value)} labelPosition="left">
+                                                <RadioButton value="A" label="A" disabled={!existsAnswers.value} style={{margin: '70px 0px 0px 0px'}}/>
+                                                <RadioButton value="B" label="B" disabled={!existsAnswers.value} style={{margin: '70px 0px 0px 0px'}}/>
+                                                <RadioButton value="C" label="C" disabled={!existsAnswers.value} style={{margin: '70px 0px 0px 0px'}}/>
+                                                <RadioButton value="D" label="D" disabled={!existsAnswers.value} style={{margin: '70px 0px 0px 0px'}}/>
                                             </RadioButtonGroup>
                                         </CardHeader>
                                     </div>
 
                                     <div className="col-md-8">
                                         <CardText>
-
                                             <Toggle
                                                 label="¿La pregunta tiene respuestas?"
                                                 labelPosition="left"
-                                                defaultChecked={fields[existsAnswers]}
+                                                selected={existsAnswers.value}
+                                                onChange={existsAnswers.onChange(!existsAnswers.value)}
                                                 style={styles.answersCheckBox}
                                             />
 
@@ -138,8 +129,7 @@ export default class QuestionBoxComponent extends Component<any, any> {
                                             <TextField
                                                 floatingLabelText={"Respuesta A"}
                                                 floatingLabelFixed={true}
-                                                disabled={!fields[existsAnswers]}
-                                                multiLine={true}
+                                                disabled={!existsAnswers.value}
                                                 fullWidth={true}
                                                 errorText={questionCreationErrors ? questionCreationErrors.answerA : ''}
                                                 style={styles.answerTextField.standard}
@@ -148,8 +138,7 @@ export default class QuestionBoxComponent extends Component<any, any> {
                                             <TextField
                                                 floatingLabelText={"Respuesta B"}
                                                 floatingLabelFixed={true}
-                                                disabled={!fields[existsAnswers]}
-                                                multiLine={true}
+                                                disabled={!existsAnswers.value}
                                                 fullWidth={true}
                                                 errorText={questionCreationErrors ? questionCreationErrors.answerB : ''}
                                                 style={styles.answerTextField.standard}
@@ -158,8 +147,7 @@ export default class QuestionBoxComponent extends Component<any, any> {
                                             <TextField
                                                 floatingLabelText={"Respuesta C"}
                                                 floatingLabelFixed={true}
-                                                disabled={!fields[existsAnswers]}
-                                                multiLine={true}
+                                                disabled={!existsAnswers.value}
                                                 fullWidth={true}
                                                 errorText={questionCreationErrors ? questionCreationErrors.answerC : ''}
                                                 style={styles.answerTextField.standard}
@@ -169,8 +157,7 @@ export default class QuestionBoxComponent extends Component<any, any> {
                                             <TextField
                                                 floatingLabelText={"Respuesta D"}
                                                 floatingLabelFixed={true}
-                                                disabled={!fields[existsAnswers]}
-                                                multiLine={true}
+                                                disabled={!existsAnswers.value}
                                                 fullWidth={true}
                                                 errorText={questionCreationErrors ? questionCreationErrors.answerD : ''}
                                                 style={styles.answerTextField.standard}
@@ -222,5 +209,6 @@ function mapStateToProps(state : ApplicationState) {
 export const QuestionCreationForm = reduxForm({
     form : 'QuestionForm',
     fields : ['question', 'existsAnswers', 'answerA', 'answerB', 'answerC', 'answerD', 'correctAnswer'],
+    initialValues : {existsAnswers : true},
     validate
 }, mapStateToProps, {questionCreation_createQuestion, questionCreation_clear})(QuestionBoxComponent);
