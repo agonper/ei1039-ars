@@ -67,6 +67,7 @@ export function createLinkedQuestion(courseId: string, questionSetId:string, que
         request
             .then((data) => dispatch(questionCreationSuccess(data)))
             .catch((err) => dispatch(questionCreationFailed(err)));
+        return request;
     };
 }
 
@@ -96,5 +97,6 @@ export function createIndependentQuestion(courseId: string, question : InputQues
         request
             .then((data) => dispatch(questionCreationSuccess(data)))
             .catch((err) => dispatch(questionCreationFailed(err)));
+        return request;
     };
 }

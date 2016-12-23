@@ -17,7 +17,7 @@ import {HintOnlyTextField} from "../ui/hint-only-text-field";
 import {toggleAddQuestionModal} from "../../actions/dashboard";
 import {SelectedCourseState} from "../../reducers/selected-course";
 import {SelectedQuestionSetState} from "../../reducers/selected-question-set";
-import {InputQuestion, createLinkedQuestion} from "../../actions/question";
+import {InputQuestion, createLinkedQuestion, createIndependentQuestion} from "../../actions/question";
 
 export interface NewQuestionData {
     title: string,
@@ -36,6 +36,7 @@ interface AddQuestionModalProps extends ReduxFormProps<any> {
     /*create: CreateQuestionSetState,*/
     toggleAddQuestionModal(): any,
     createLinkedQuestion(courseId: string, questionSetId: string, question: InputQuestion): any,
+    createIndependentQuestion(courseId: string, question: InputQuestion): any,
     /*createQuestionSet(courseId: string, questionSet: NewQuestionSetData): Promise<any>,*/
     resetForm(): any
 }
@@ -57,7 +58,12 @@ class AddQuestionModalComponent extends Component<any & AddQuestionModalProps, a
 
 
         if (this.props.dashboard.selectedItemType === 'course') {
-            console.log(`Selected course id: ${this.props.selectedCourse.course.id}`);
+            const courseId = this.props.selectedCourse.course.id;
+            this.props.createIndependentQuestion(courseId, inputQuestion)
+                .then(() => {
+                    this.props.toggleAddQuestionModal();
+                    this.props.resetForm();
+                });
         }
 
         if (this.props.dashboard.selectedItemType === 'question-set') {
@@ -65,14 +71,13 @@ class AddQuestionModalComponent extends Component<any & AddQuestionModalProps, a
 
             const courseId = this.props.selectedQuestionSet.questionSet.course.id;
             const questionSetId = this.props.selectedQuestionSet.questionSet.id;
-            this.props.createLinkedQuestion(courseId, questionSetId, inputQuestion);
+            this.props.createLinkedQuestion(courseId, questionSetId, inputQuestion)
+                .then(() => {
+                    this.props.toggleAddQuestionModal();
+                    this.props.resetForm();
+                });
 
         }
-        /*return this.props.createQuestionSet(this.props.dashboard.selectedItemId, questionSet)
-            .then(() => {
-                this.props.toggleAddQuestionModal();
-                this.props.resetForm();
-            });*/
     }
 
     clearAnswers() {
@@ -233,5 +238,5 @@ export const AddQuestionModal = reduxForm({
     form: 'addQuestion',
     fields: ['title', 'withAnswers', 'answerA', 'answerB', 'answerC', 'answerD', 'correctAnswer'],
     validate
-}, mapStateToProps, {toggleAddQuestionModal, createLinkedQuestion/*, createQuestionSet*/})(AddQuestionModalComponent);
+}, mapStateToProps, {toggleAddQuestionModal, createLinkedQuestion, createIndependentQuestion})(AddQuestionModalComponent);
 
