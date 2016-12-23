@@ -81,7 +81,7 @@ class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
 
         if (fetching) return <div className="center-xs"><MoreHorizIcon/></div>;
 
-        if (courses.length == 0) return (
+        if (!courses || courses.length == 0) return (
             <div className="center-xs">
                 <FormattedMessage id="dashboard.courses.empty" defaultMessage="You have no courses"/>
             </div>
