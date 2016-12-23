@@ -10,13 +10,13 @@ interface HintOnlyTextFieldProps {
     field: FieldProp<any>,
     hint: string,
     defaultHint: string,
-    type: string,
-    focus: boolean
+    disabled?: boolean,
+    type: string
 }
 
 export class HintOnlyTextField extends Component<HintOnlyTextFieldProps, any> {
     render() {
-        const {field, hint, defaultHint, type, focus} = this.props;
+        const {field, hint, defaultHint, type, disabled} = this.props;
         const inputFields = omit(field, fieldsToOmitFromInput);
 
         return (
@@ -24,6 +24,7 @@ export class HintOnlyTextField extends Component<HintOnlyTextFieldProps, any> {
                 hintText={<FormattedMessage id={hint} defaultMessage={defaultHint}/>}
                 fullWidth={true}
                 errorText={field.touched && field.error ? <FormattedMessage id={field.error} defaultMessage={field.error}/> : ''}
+                disabled={disabled}
                 type={type}
                 {...inputFields}/>
         );

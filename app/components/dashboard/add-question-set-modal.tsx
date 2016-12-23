@@ -62,7 +62,6 @@ class AddQuestionSetModalComponent extends Component<any & AddQuestionSetModalPr
                     actions={actions}>
                     <form onSubmit={handleSubmit(this.onCreateQuestionSet.bind(this))}>
                         <HintOnlyTextField
-                            focus={true}
                             field={name}
                             hint="dashboard.question-set.create.name"
                             defaultHint="Question set name"

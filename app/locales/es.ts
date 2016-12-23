@@ -50,5 +50,13 @@ export const esTranslationStrings = {
     'dashboard.question-set.create.empty-name': "Introduce un nombre",
 
     'dashboard.question-set.content.title': "¿Quieres añadir una pregunta?",
-    'dashboard.question-set.content.create-question': "Añadir una pregunta"
+    'dashboard.question-set.content.create-question': "Añadir una pregunta",
+
+    'dashboard.question.create.submit': "Crear pregunta",
+    'dashboard.question.create.title': "Crear una pregunta",
+    'dashboard.question.create.answerA': "A",
+    'dashboard.question.create.answerB': "B",
+    'dashboard.question.create.answerC': "C",
+    'dashboard.question.create.answerD': "D",
+    'dashboard.question.create.empty-answer': "Introduce una respuesta"
 };

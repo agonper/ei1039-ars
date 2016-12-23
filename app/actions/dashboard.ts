@@ -7,6 +7,7 @@ import {fetchQuestionSet} from "./question-set";
 
 export const TOGGLE_ADD_COURSE_MODAL = 'TOGGLE_ADD_COURSE_MODAL';
 export const TOGGLE_ADD_QUESTION_SET_MODAL = 'TOGGLE_ADD_QUESTION_SET_MODAL';
+export const TOGGLE_ADD_QUESTION_MODAL = 'TOGGLE_ADD_QUESTION_MODAL';
 export const SELECT_COURSE = 'SELECT_COURSE';
 export const SELECT_QUESTION_SET = 'SELECT_QUESTION_SET';
 
@@ -19,6 +20,12 @@ export function toggleAddCourseModal(): Action {
 export function toggleAddQuestionSetModal(): Action {
     return {
         type: TOGGLE_ADD_QUESTION_SET_MODAL
+    }
+}
+
+export function toggleAddQuestionModal(): Action {
+    return {
+        type: TOGGLE_ADD_QUESTION_MODAL
     }
 }
 

@@ -13,12 +13,13 @@ import {DashboardState} from "../../reducers/dashboard";
 import {ApplicationState} from "../../reducers/index";
 import {FormattedMessage, FormattedDate} from 'react-intl';
 import {SelectedQuestionSetState} from "../../reducers/selected-question-set";
-import {selectCourse} from "../../actions/dashboard";
+import {selectCourse, toggleAddQuestionModal} from "../../actions/dashboard";
 
 interface QuestionSetContainerProps {
     dashboard: DashboardState,
     selectedQuestionSet: SelectedQuestionSetState,
-    selectCourse(courseId: string): any
+    selectCourse(courseId: string): any,
+    toggleAddQuestionModal(): any
 }
 
 const buttonStyle = {
@@ -68,6 +69,7 @@ class QuestionSetContainerComponent extends Component<QuestionSetContainerProps,
                                     primary={true}
                                     fullWidth={true}
                                     style={buttonStyle}
+                                    onTouchTap={this.props.toggleAddQuestionModal}
                                     label={<FormattedMessage id="dashboard.question-set.content.create-question" defaultMessage="Add a question"/>}/>
                             </div>
                         </div>
@@ -85,4 +87,4 @@ function mapStateToProps(state: ApplicationState) {
     }
 }
 
-export const QuestionSetContainer = connect(mapStateToProps, {selectCourse})(QuestionSetContainerComponent);
+export const QuestionSetContainer = connect(mapStateToProps, {selectCourse, toggleAddQuestionModal})(QuestionSetContainerComponent);
