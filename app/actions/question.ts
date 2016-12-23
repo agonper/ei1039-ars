@@ -2,29 +2,28 @@ import {Action, Dispatch} from "redux";
 import {GenericAction} from "./common";
 import {ApplicationState} from "../reducers/index";
 import {ThunkAction} from "redux-thunk";
-import {RestAdapter} from "../adapters/rest";
 import gql from "graphql-tag/index";
 import {apolloClient} from "../adapters/graphql";
 
-export const QUESTION_CREATION_PENDING = 'QUESTION_CREATION_PENDING';
-export const QUESTION_CREATION_SUCCESS = 'QUESTION_CREATION_SUCCESS';
-export const QUESTION_CREATION_ERROR = 'QUESTION_CREATION_ERROR';
+export const CREATE_QUESTION_PENDING = 'CREATE_QUESTION_PENDING';
+export const CREATE_QUESTION_SUCCESS = 'CREATE_QUESTION_SUCCESS';
+export const CREATE_QUESTION_ERROR = 'CREATE_QUESTION_ERROR';
 
 
 function questionCreationPending() : Action {
-    return {type: QUESTION_CREATION_PENDING};
+    return {type: CREATE_QUESTION_PENDING};
 }
 
 function questionCreationSuccess(data : any) : GenericAction {
     return {
-        type: QUESTION_CREATION_SUCCESS,
+        type: CREATE_QUESTION_SUCCESS,
         payload: data
     };
 }
 
 function questionCreationFailed(err : any) : GenericAction {
     return {
-      type : QUESTION_CREATION_ERROR,
+      type : CREATE_QUESTION_ERROR,
       error : err
     };
 }
