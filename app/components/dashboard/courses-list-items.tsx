@@ -9,18 +9,23 @@ import {connect} from 'react-redux';
 import {ApplicationState} from "../../reducers/index";
 import {fetchUserCourses} from "../../actions/courses";
 import {UserCoursesState, LimitedCourse, LimitedQuestionSet} from "../../reducers/user-courses";
-import {selectCourse} from "../../actions/dashboard";
+import {selectCourse, selectQuestionSet} from "../../actions/dashboard";
 
 interface CoursesListItemsProps {
     userCourses: UserCoursesState,
     fetchUserCourses(): any,
-    selectCourse(courseId: string): any
+    selectCourse(courseId: string): any,
+    selectQuestionSet(questionSetId: string): any
 }
 
 class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
 
     componentWillMount() {
         this.props.fetchUserCourses();
+    }
+
+    handleQuestionSetClick(questionSet: LimitedQuestionSet) {
+        this.props.selectQuestionSet(questionSet.id);
     }
 
     renderQuestionSets(questionSets: LimitedQuestionSet[]) {
@@ -34,8 +39,10 @@ class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
             return (
                 <ListItem
                     key={questionSet.id}
-                    title={(questionSet.name !== "") ? questionSet.name : questionSet.createdAt}
-                    primaryText={(questionSet.name !== "") ? questionSet.name : formattedDate}/>
+                    value={questionSet.id}
+                    onTouchTap={() => this.handleQuestionSetClick(questionSet)}
+                    primaryText={(questionSet.name !== "") ? questionSet.name : formattedDate}
+                    title={(questionSet.name !== "") ? questionSet.name : questionSet.createdAt}/>
             );
         })
     }
@@ -79,4 +86,4 @@ function mapStateToProps(state: ApplicationState) {
     }
 }
 
-export const CoursesListItems = connect(mapStateToProps, {fetchUserCourses, selectCourse})(CoursesListItemsComponent);
+export const CoursesListItems = connect(mapStateToProps, {fetchUserCourses, selectCourse, selectQuestionSet})(CoursesListItemsComponent);

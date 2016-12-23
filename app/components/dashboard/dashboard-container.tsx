@@ -7,6 +7,7 @@ import {NoSelection} from "./no-selection";
 import {ApplicationState} from "../../reducers/index";
 import {DashboardState} from "../../reducers/dashboard";
 import {CourseContainer} from "./course-container";
+import {QuestionSetContainer} from "./question-set-container";
 
 const containerStyle = {
     position: 'fixed',
@@ -29,6 +30,8 @@ class DashboardContainerComponent extends Component<DashboardContainerProps, any
         switch (selectedItemType) {
             case 'course':
                 return <CourseContainer/>;
+            case 'question-set':
+                return <QuestionSetContainer/>
             default:
                 return <NoSelection/>;
         }

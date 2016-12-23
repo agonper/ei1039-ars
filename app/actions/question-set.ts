@@ -52,3 +52,50 @@ export function createQuestionSet(courseId: string, questionSet: NewQuestionSetD
         return request;
     }
 }
+
+export const FETCH_QUESTION_SET_PENDING = 'FETCH_QUESTION_SET_PENDING';
+export const FETCH_QUESTION_SET_SUCCESS = 'FETCH_QUESTION_SET_SUCCESS';
+export const FETCH_QUESTION_SET_ERROR = 'FETCH_QUESTION_SET_ERROR';
+
+function fetchQuestionSetPending(): Action {
+    return {
+        type: FETCH_QUESTION_SET_PENDING
+    }
+}
+
+function fetchQuestionSetSuccess(data: any): GenericAction {
+    return {
+        type: FETCH_QUESTION_SET_SUCCESS,
+        payload: data
+    }
+}
+
+function fetchQuestionSetFailed(err: any): GenericAction {
+    return {
+        type: FETCH_QUESTION_SET_ERROR,
+        payload: err
+    }
+}
+
+const FetchQuestionSetQuery = gql`
+ query questionSet($id: String!) {
+   questionSet(id: $id) {
+     id
+     name
+     createdAt
+     course {
+        id
+     }
+   }
+ }`;
+
+export function fetchQuestionSet(id: string): ThunkAction<void, ApplicationState, void> {
+    const request = apolloClient.query({query: FetchQuestionSetQuery, variables: {id}});
+    return (dispatch: Dispatch<ApplicationState>) => {
+        dispatch(fetchQuestionSetPending());
+        request
+            .then((data) => dispatch(fetchQuestionSetSuccess(data)))
+            .catch((err) => dispatch(fetchQuestionSetFailed(err)));
+        return request;
+    }
+}

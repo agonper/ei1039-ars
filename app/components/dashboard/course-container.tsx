@@ -1,21 +1,21 @@
 import * as React from 'react';
 const {Component} = React;
 import {
+    AppBar,
     RaisedButton
 } from 'material-ui';
+import {lightGreen400} from 'material-ui/styles/colors';
 import MoreHorizIcon from 'material-ui/svg-icons/navigation/more-horiz';
 import {connect} from 'react-redux';
 import {DashboardState} from "../../reducers/dashboard";
 import {ApplicationState} from "../../reducers/index";
 import {SelectedCourseState} from "../../reducers/selected-course";
-import {ItemAppBar} from "../ui/item-app-bar";
 import {FormattedMessage} from 'react-intl';
 import {toggleAddQuestionSetModal} from "../../actions/dashboard";
 
 interface CourseContainerProps {
     dashboard: DashboardState,
     selectedCourse: SelectedCourseState,
-    fetchCourse(id: string): any,
     toggleAddQuestionSetModal(): void
 }
 
@@ -36,7 +36,9 @@ class CourseContainerComponent extends Component<CourseContainerProps, any> {
 
         return (
             <div style={{height: '100%'}}>
-                <ItemAppBar
+                <AppBar
+                    iconElementLeft={<span></span>}
+                    style={{backgroundColor: lightGreen400}}
                     title={this.props.selectedCourse.course.name}/>
 
                 <div style={{height: '100%'}} className="row middle-xs center-xs col-xs-offset-2 col-xs-8">

@@ -1,5 +1,8 @@
 import {GenericAction} from "../actions/common";
-import {TOGGLE_ADD_COURSE_MODAL, SELECT_COURSE, TOGGLE_ADD_QUESTION_SET_MODAL} from "../actions/dashboard";
+import {
+    TOGGLE_ADD_COURSE_MODAL, SELECT_COURSE, TOGGLE_ADD_QUESTION_SET_MODAL,
+    SELECT_QUESTION_SET
+} from "../actions/dashboard";
 
 export interface DashboardState {
     showAddCourseModal: boolean,
@@ -26,6 +29,9 @@ export const DashboardReducer = (state: DashboardState = INITIAL_STATE, action: 
         case  SELECT_COURSE:
             const {courseId} = action.payload;
             return {...state, isItemSelected: true, selectedItemType: 'course', selectedItemId: courseId};
+        case SELECT_QUESTION_SET:
+            const {questionSetId} = action.payload;
+            return {...state, isItemSelected: true, selectedItemType: 'question-set', selectedItemId: questionSetId};
         default:
             return state;
     }
