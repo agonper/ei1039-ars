@@ -14,7 +14,7 @@ const QueryQuestionSet = {
     resolve: (root: any, args: any, context: any) => {
         return questionSetRepository.findById(args.id)
             .then((questionSet) => {
-                if (!questionSet) throw new Error('Course not found');
+                if (!questionSet) throw new Error('Question set not found');
                 return questionSet;
             });
     }

@@ -43,7 +43,7 @@ export const UserCoursesReducer = (state: UserCoursesState = INITIAL_SATE, actio
             const course = action.payload.data.createCourse;
             return {...state, courses: [course, ...state.courses]};
         case CREATE_QUESTION_SET_SUCCESS:
-            const createQuestionSet = action.payload.data.createQuestionSet;
+            const createQuestionSet = action.payload.data.createQuestion;
             const {id, name, createdAt} = createQuestionSet;
             const questionSet: LimitedQuestionSet = {id, name, createdAt};
 

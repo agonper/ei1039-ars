@@ -9,7 +9,7 @@ export interface Course {
     name: string,
     createdAt: Date,
     teacher: User,
-    students: [User]
+    students: User[]
 }
 
 class CourseRepository {

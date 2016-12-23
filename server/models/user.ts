@@ -17,7 +17,7 @@ export interface UserSignupData extends LoginData{
 
 export interface User extends UserSignupData {
     _id: Types.ObjectId,
-    courses: [Course]
+    courses: Course[]
 }
 
 export interface UserWithMethods extends User {

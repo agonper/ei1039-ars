@@ -29,7 +29,7 @@ interface AddQuestionSetModalProps extends ReduxFormProps<any> {
 class AddQuestionSetModalComponent extends Component<any & AddQuestionSetModalProps, any> {
 
     onCreateQuestionSet(questionSet: NewQuestionSetData) {
-        return this.props.createQuestionSet(this.props.dashboard.selectedItemId, questionSet)
+        return this.props.createQuestion(this.props.dashboard.selectedItemId, questionSet)
             .then(() => {
                 this.props.toggleAddQuestionSetModal();
                 this.props.resetForm();

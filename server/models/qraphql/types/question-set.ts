@@ -1,7 +1,9 @@
 import {GraphQLObjectType} from "graphql";
+import {GraphQLList} from "graphql";
 import {GraphQLID} from "graphql";
 import {GraphQLString} from "graphql";
 import CourseType from "./course";
+import QuestionType from "./question";
 
 const QuestionSetType: any = new GraphQLObjectType({
     name: 'QuestionSet',
@@ -23,6 +25,11 @@ const QuestionSetType: any = new GraphQLObjectType({
                 type: CourseType,
                 resolve: questionSet => questionSet.populate('course').execPopulate()
                     .then((questionSet: any) => questionSet.course)
+            },
+            questions: {
+                type: new GraphQLList(QuestionType),
+                resolve: questionSet => questionSet.populate({path: 'questions', options: {sort: {createdAt: 1}}}).execPopulate()
+                    .then((questionSet: any) => questionSet.questions)
             }
         }
     }
