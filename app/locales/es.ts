@@ -38,7 +38,7 @@ export const esTranslationStrings = {
     'dashboard.question.label': "Pregunta {number}",
 
 
-        'dashboard.course.create.title': "Crear un curso",
+    'dashboard.course.create.title': "Crear un curso",
     'dashboard.course.create.submit': "Crear curso",
     'dashboard.course.create.name': "Nombre del curso",
     'dashboard.course.create.empty-name': "Introduce un nombre",

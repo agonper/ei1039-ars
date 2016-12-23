@@ -77,6 +77,7 @@ function createStateFrom(state: UserCoursesState, questionSet: LimitedQuestionSe
     const rightCourses = takeWhile(state.courses, notEqualsCourse);
     const leftCourses = drop(dropWhile(state.courses, notEqualsCourse));
 
+    // TODO review
     const notEqualsQuestionSet = (prevQuestionSet: LimitedQuestionSet) => prevQuestionSet.id !== questionSet.id;
     const rightQuestionSets = takeWhile(updatedCourse.questionSets, notEqualsQuestionSet);
     const leftQuestionSets = drop(dropWhile(updatedCourse.questionSets, notEqualsQuestionSet));

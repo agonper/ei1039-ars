@@ -9,19 +9,24 @@ import {connect} from 'react-redux';
 import {ApplicationState} from "../../reducers/index";
 import {fetchUserCourses} from "../../actions/courses";
 import {UserCoursesState, LimitedCourse, LimitedQuestionSet, LimitedQuestion} from "../../reducers/user-courses";
-import {selectCourse, selectQuestionSet} from "../../actions/dashboard";
+import {selectCourse, selectQuestionSet, selectQuestion} from "../../actions/dashboard";
 
 interface CoursesListItemsProps {
     userCourses: UserCoursesState,
     fetchUserCourses(): any,
     selectCourse(courseId: string): any,
-    selectQuestionSet(questionSetId: string): any
+    selectQuestionSet(questionSetId: string): any,
+    selectQuestion(questionId: string): any
 }
 
 class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
 
     componentWillMount() {
         this.props.fetchUserCourses();
+    }
+
+    handleQuestionClick(question: LimitedQuestion) {
+        this.props.selectQuestion(question.id);
     }
 
     renderQuestions(questions: LimitedQuestion[]) {
@@ -37,6 +42,7 @@ class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
                 <ListItem
                     key={question.id}
                     value={question.id}
+                    onTouchTap={() => this.handleQuestionClick(question)}
                     primaryText={(question.title !== '') ? question.title : formattedName}/>
             )
         });
@@ -105,4 +111,4 @@ function mapStateToProps(state: ApplicationState) {
     }
 }
 
-export const CoursesListItems = connect(mapStateToProps, {fetchUserCourses, selectCourse, selectQuestionSet})(CoursesListItemsComponent);
+export const CoursesListItems = connect(mapStateToProps, {fetchUserCourses, selectCourse, selectQuestionSet, selectQuestion})(CoursesListItemsComponent);

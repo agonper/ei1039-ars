@@ -47,7 +47,7 @@ class QuestionResponseComponent extends Component<any, any> {
 
 function mapStateToProps(state : ApplicationState) {
     return {
-        questionState : state.questionCreation
+        questionState : state.createQuestion
     };
 }
 

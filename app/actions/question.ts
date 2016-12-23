@@ -99,3 +99,58 @@ export function createIndependentQuestion(courseId: string, question : InputQues
         return request;
     };
 }
+
+export const FETCH_QUESTION_PENDING = 'FETCH_QUESTION_PENDING';
+export const FETCH_QUESTION_SUCCESS = 'FETCH_QUESTION_SUCCESS';
+export const FETCH_QUESTION_ERROR = 'FETCH_QUESTION_ERROR';
+
+function fetchQuestionPending(): Action {
+    return {
+        type: FETCH_QUESTION_PENDING
+    }
+}
+
+function fetchQuestionSuccess(data: any): GenericAction {
+    return {
+        type: FETCH_QUESTION_SUCCESS,
+        payload: data
+    }
+}
+
+function fetchQuestionFailed(err: any): GenericAction {
+    return {
+        type: FETCH_QUESTION_ERROR,
+        payload: err
+    }
+}
+
+const FetchQuestionQuery = gql`
+ query question($id: String!) {
+   question(id: $id) {
+     id
+     title
+     createdAt
+     questionSet {
+        id
+        questions {
+            id
+        }
+     }
+     answers {
+        option
+        text
+        isCorrect
+     }
+   }
+ }`;
+
+export function fetchQuestion(id: string): ThunkAction<void, ApplicationState, void> {
+    const request = apolloClient.query({query: FetchQuestionQuery, variables: {id}});
+    return (dispatch: Dispatch<ApplicationState>) => {
+        dispatch(fetchQuestionPending());
+        request
+            .then((data) => dispatch(fetchQuestionSuccess(data)))
+            .catch((err) => dispatch(fetchQuestionFailed(err)));
+        return request;
+    }
+}

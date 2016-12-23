@@ -2,27 +2,31 @@ import {GenericAction} from "../actions/common";
 import {
     CREATE_QUESTION_PENDING, CREATE_QUESTION_SUCCESS, CREATE_QUESTION_ERROR
 } from "../actions/question";
+import {LimitedQuestionSet} from "./user-courses";
 
-export interface QuestionCreationState {
-    creatingQuestion : boolean,
-    questionCreated : boolean,
+export interface CreateQuestionState {
+    creating : boolean,
+    questionSet: LimitedQuestionSet,
     error : string
 }
 
-const INITIAL_STATE : QuestionCreationState = {
-    creatingQuestion: false,
-    questionCreated : false,
+const INITIAL_STATE : CreateQuestionState = {
+    creating: false,
+    questionSet: undefined,
     error : undefined
 };
 
-export const QuestionCreationReducer = (state: QuestionCreationState = INITIAL_STATE, action : GenericAction): QuestionCreationState => {
+export const CreateQuestionReducer = (state: CreateQuestionState = INITIAL_STATE, action : GenericAction): CreateQuestionState => {
     switch (action.type) {
         case CREATE_QUESTION_PENDING:
-            return {creatingQuestion : true, questionCreated : false, error : undefined};
+            return {...state, creating: true};
         case CREATE_QUESTION_SUCCESS:
-            return {creatingQuestion : false, questionCreated : true, error : undefined};
+            const data = action.payload.data;
+            const {id, name, createdAt, questions} = (data.createIndependentQuestion) ? data.createIndependentQuestion : data.createLinkedQuestion;
+            const questionSet: LimitedQuestionSet = {id, name, createdAt, questions};
+            return {creating: false, questionSet , error: undefined};
         case CREATE_QUESTION_ERROR:
-            return {creatingQuestion : true, questionCreated : false, error : 'empty-field'};
+            return {creating: false, questionSet: undefined, error: action.error.data.errors};
         default:
             return state;
     }
