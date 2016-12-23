@@ -39,6 +39,10 @@ const CreateQuestionSetMutation = gql`
        course {
         id
        }
+       questions {
+        id
+        title
+       }
     }
  }`;
 

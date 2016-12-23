@@ -6,10 +6,16 @@ import {
 import {CREATE_QUESTION_SET_SUCCESS} from "../actions/question-set";
 import {dropWhile, takeWhile, drop, find} from 'lodash';
 
+export interface LimitedQuestion {
+    id: string
+    title: string
+}
+
 export interface LimitedQuestionSet {
     id: string,
     name: string,
     createdAt: string
+    questions: LimitedQuestion[]
 }
 
 export interface LimitedCourse {
@@ -43,9 +49,9 @@ export const UserCoursesReducer = (state: UserCoursesState = INITIAL_SATE, actio
             const course = action.payload.data.createCourse;
             return {...state, courses: [course, ...state.courses]};
         case CREATE_QUESTION_SET_SUCCESS:
-            const createQuestionSet = action.payload.data.createQuestion;
-            const {id, name, createdAt} = createQuestionSet;
-            const questionSet: LimitedQuestionSet = {id, name, createdAt};
+            const createQuestionSet = action.payload.data.createQuestionSet;
+            const {id, name, createdAt, questions} = createQuestionSet;
+            const questionSet: LimitedQuestionSet = {id, name, createdAt, questions};
 
             const courseId = createQuestionSet.course.id.toString();
             const updatedCourse = find(state.courses, (course) => course.id === courseId);

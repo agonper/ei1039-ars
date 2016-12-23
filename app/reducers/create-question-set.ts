@@ -22,8 +22,8 @@ export const CreateQuestionSetReducer = (state: CreateQuestionSetState = INITIAL
         case CREATE_QUESTION_SET_PENDING:
             return {...state, creating: true};
         case CREATE_QUESTION_SET_SUCCESS:
-            const {id, name, createdAt} = action.payload.data.createQuestion;
-            const questionSet: LimitedQuestionSet = {id, name, createdAt};
+            const {id, name, createdAt, questions} = action.payload.data.createQuestionSet;
+            const questionSet: LimitedQuestionSet = {id, name, createdAt, questions};
             return {creating: false, questionSet, error: undefined};
         case CREATE_QUESTION_SET_ERROR:
             return {creating: false, questionSet: undefined, error: action.error.data.errors};

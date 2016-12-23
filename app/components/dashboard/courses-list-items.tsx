@@ -8,7 +8,7 @@ import {FormattedMessage, FormattedDate} from 'react-intl';
 import {connect} from 'react-redux';
 import {ApplicationState} from "../../reducers/index";
 import {fetchUserCourses} from "../../actions/courses";
-import {UserCoursesState, LimitedCourse, LimitedQuestionSet} from "../../reducers/user-courses";
+import {UserCoursesState, LimitedCourse, LimitedQuestionSet, LimitedQuestion} from "../../reducers/user-courses";
 import {selectCourse, selectQuestionSet} from "../../actions/dashboard";
 
 interface CoursesListItemsProps {
@@ -22,6 +22,24 @@ class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
 
     componentWillMount() {
         this.props.fetchUserCourses();
+    }
+
+    renderQuestions(questions: LimitedQuestion[]) {
+
+        return questions.map((question, i) => {
+            const number = i+1;
+            const formattedName = <FormattedMessage
+                                        id="dashboard.question.label"
+                                        defaultMessage="Question {number}"
+                                        values={{number: number}}/>;
+
+            return (
+                <ListItem
+                    key={question.id}
+                    value={question.id}
+                    primaryText={(question.title !== '') ? question.title : formattedName}/>
+            )
+        });
     }
 
     handleQuestionSetClick(questionSet: LimitedQuestionSet) {
@@ -42,7 +60,8 @@ class CoursesListItemsComponent extends Component<CoursesListItemsProps, any> {
                     value={questionSet.id}
                     onTouchTap={() => this.handleQuestionSetClick(questionSet)}
                     primaryText={(questionSet.name !== "") ? questionSet.name : formattedDate}
-                    title={(questionSet.name !== "") ? questionSet.name : questionSet.createdAt}/>
+                    title={(questionSet.name !== "") ? questionSet.name : questionSet.createdAt}
+                    nestedItems={(questionSet.questions.length > 0) ? this.renderQuestions(questionSet.questions) : []}/>
             );
         })
     }

@@ -40,6 +40,10 @@ const UserCoursesQuery = gql`
       id
       name
       createdAt
+      questions {
+        id
+        title
+      }
     }
   }
 }`;
@@ -97,14 +101,8 @@ export function createCourse(course: NewCourseData): ThunkAction<void, Applicati
     return (dispatch: Dispatch<ApplicationState>) => {
         dispatch(createCoursePending());
         request
-            .then((data) => {
-                console.log(data);
-                dispatch(createCourseSuccess(data))
-            })
-            .catch((err) => {
-                console.log(err);
-                dispatch(createCourseFailed(err))
-            });
+            .then((data) => dispatch(createCourseSuccess(data)))
+            .catch((err) => dispatch(createCourseFailed(err)));
         return request;
     }
 }
