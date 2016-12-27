@@ -3,7 +3,7 @@ import {MongooseDocument, Types} from "mongoose";
 import {User} from "./user";
 import {CourseModel} from './mongodb/course';
 import {QuestionSet} from "./question-set";
-import {Question} from "./question";
+import {Question, questionRepository} from "./question";
 
 
 export interface Course {
@@ -27,10 +27,25 @@ class CourseRepository {
         });
     }
 
-    public addStudent(user: User & MongooseDocument, course: any): Promise<MongooseDocument & Course> {
+    public addStudent(user: User & MongooseDocument, course: any & MongooseDocument): Promise<MongooseDocument & Course> {
         if (user.type !== 'student') throw new Error('user-not-a-student');
         course.students.push(user);
         return course.save();
+    }
+
+    public displayQuestion(course: any & MongooseDocument, questionId: string): Promise<MongooseDocument & Course> {
+        return questionRepository.findById(questionId).then((question) => {
+            if (!question) throw new Error('Question not found');
+
+            return question.populate('questionSet').execPopulate().then((question: any) => {
+                if (question.questionSet.course.toString() !== course._id.toString()) {
+                    throw new Error('Question not belongs to course');
+                }
+
+                course.displayedQuestion = questionId;
+                return course.save();
+            })
+        })
     }
 
     public findById(id: string): Promise<MongooseDocument & Course> {
