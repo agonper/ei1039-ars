@@ -40,16 +40,12 @@ class QuestionSetRepository {
         const today = moment().startOf('day');
         const tomorrow = moment(today).add(1, 'day');
 
-        return <any>QuestionSetModel.find({name: '', createdAt: {
+        return <any>QuestionSetModel.findOne({name: '', course: courseId, createdAt: {
             $gte: today.toDate(),
             $lt: tomorrow.toDate()
-        }}).populate({path: 'course', match: {_id: courseId}}).exec()
-            .then((questionSets) => {
-                return [null].concat(questionSets).reduce((prev: any, curr: any) =>
-                    (curr && curr.course && curr.course._id.toString() === courseId) ? curr : prev);
-            }).catch((err) => {
+        }}).exec().catch((err) => {
                 return Promise.reject(new Error("question-set-not-found"));
-            })
+        });
     }
 }
 

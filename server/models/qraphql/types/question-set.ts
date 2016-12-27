@@ -4,6 +4,7 @@ import {GraphQLID} from "graphql";
 import {GraphQLString} from "graphql";
 import CourseType from "./course";
 import QuestionType from "./question";
+import {QuestionSet} from "../../question-set";
 
 const QuestionSetType: any = new GraphQLObjectType({
     name: 'QuestionSet',
@@ -24,12 +25,12 @@ const QuestionSetType: any = new GraphQLObjectType({
             course: {
                 type: CourseType,
                 resolve: questionSet => questionSet.populate('course').execPopulate()
-                    .then((questionSet: any) => questionSet.course)
+                    .then((questionSet: QuestionSet) => questionSet.course)
             },
             questions: {
                 type: new GraphQLList(QuestionType),
                 resolve: questionSet => questionSet.populate({path: 'questions', options: {sort: {createdAt: 1}}}).execPopulate()
-                    .then((questionSet: any) => questionSet.questions)
+                    .then((questionSet: QuestionSet) => questionSet.questions)
             }
         }
     }
