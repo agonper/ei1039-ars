@@ -48,6 +48,11 @@ class CourseRepository {
         })
     }
 
+    public clearDisplayedQuestion(course: any & MongooseDocument): Promise<MongooseDocument & Course> {
+        course.displayedQuestion = null;
+        return course.save();
+    }
+
     public findById(id: string): Promise<MongooseDocument & Course> {
         return <any>CourseModel.findOne({_id: id}).exec().catch((err) => {
             log.error(`Error fetching course by id: ${id}`, err);

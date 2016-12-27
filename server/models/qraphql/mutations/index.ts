@@ -4,6 +4,7 @@ import MutationCreateQuestionSet from "./create-question-set";
 import MutationCreateLinkedQuestion from "./create-linked-question";
 import MutationCreateIndependentQuestion from "./create-independent-question";
 import MutationDisplayQuestion from "./display-question";
+import MutationClearDisplayedQuestion from "./clear-displayed-question";
 
 export const MutationType = new GraphQLObjectType({
     name: 'Mutation',
@@ -13,6 +14,7 @@ export const MutationType = new GraphQLObjectType({
         createQuestionSet: MutationCreateQuestionSet,
         createLinkedQuestion: MutationCreateLinkedQuestion,
         createIndependentQuestion: MutationCreateIndependentQuestion,
-        displayQuestion: MutationDisplayQuestion
+        displayQuestion: MutationDisplayQuestion,
+        clearDisplayedQuestion: MutationClearDisplayedQuestion
     }
 });
