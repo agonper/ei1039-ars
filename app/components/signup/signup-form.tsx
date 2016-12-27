@@ -117,8 +117,8 @@ export class SignupFormComponent extends Component<any, any> {
                 </div>
                 <Snackbar
                     open={this.props.signup.signedUp}
-                    message="Successfully signed up"
-                    action="login"
+                    message={<FormattedMessage id="signup.success" defaultMessage="Successfully signed up"/>}
+                    action={<FormattedMessage id="login.main.button" defaultMessage="login"/>}
                     onActionTouchTap={() => this.context.router.push('/login')}
                     autoHideDuration={5000}
                     onRequestClose={this.props.clearSignup}/>
