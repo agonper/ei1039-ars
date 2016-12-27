@@ -16,8 +16,8 @@ export const Dashboard =  () => {
         <div>
             <CustomAppBar/>
             <div style={dashboardViewStyle}>
-                <DashboardContainer/>
                 <CoursesPanel/>
+                <DashboardContainer/>
             </div>
             <AddCourseModal/>
             <AddQuestionSetModal/>
