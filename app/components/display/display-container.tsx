@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {ApplicationState} from "../../reducers/index";
 import {DisplayedCourseState} from "../../reducers/display-course";
 import {IdleDisplay} from "./idle-display";
+import {QuestionDisplay} from "../questions/question-display";
 
 interface DisplayContainerProps {
     displayedCourse: DisplayedCourseState
@@ -27,7 +28,7 @@ class DisplayContainerComponent extends Component<DisplayContainerProps, any> {
         if (!displayedQuestion) {
             return <IdleDisplay/>;
         }
-        return <div>{JSON.stringify(displayedQuestion)}</div>;
+        return <QuestionDisplay question={displayedQuestion}/>;
     }
 
     render() {

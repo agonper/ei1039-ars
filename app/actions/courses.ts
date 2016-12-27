@@ -184,6 +184,7 @@ const DisplayCourseQuery = gql`
      id
      name
      displayedQuestion {
+      id
       title
       createdAt
       answers {

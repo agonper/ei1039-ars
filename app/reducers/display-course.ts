@@ -4,6 +4,7 @@ import {DISPLAY_COURSE_PENDING, DISPLAY_COURSE_SUCCESS, DISPLAY_COURSE_ERROR} fr
 import {SHORT_COURSE_URL_SUCCESS} from "../actions/shorten-course-url";
 
 export interface DisplayedQuestion {
+    id: string,
     title: string
     createdAt: string
     answers: QuestionAnswer[]

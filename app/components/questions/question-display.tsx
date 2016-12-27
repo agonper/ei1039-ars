@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {SelectedQuestion} from "../../reducers/selected-question";
 import {
     List,
     ListItem,
@@ -18,9 +17,10 @@ import {
 } from 'material-ui/styles/colors';
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import {DisplayedQuestion} from "../../reducers/display-course";
 
 interface QuestionDisplayProps {
-    question: SelectedQuestion
+    question: DisplayedQuestion
 }
 
 export const QuestionDisplay = (props: QuestionDisplayProps) => {
@@ -29,8 +29,8 @@ export const QuestionDisplay = (props: QuestionDisplayProps) => {
     const colors = [blue700, orange700, green700, yellow700];
 
     return (
-        <div style={{height: '450px', width: '400px'}}>
-            <h1>{(question.title) ? question.title: ''}</h1>
+        <div style={{height: '400px', width: '400px'}}>
+            <h1>{(question.title) ? question.title: ' '}</h1>
             <div className="start-xs">
                 <Paper>
                     <List>
