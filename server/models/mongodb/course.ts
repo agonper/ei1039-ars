@@ -5,7 +5,8 @@ export const CourseSchema = new Schema({
     createdAt: {type: Date, required: true},
     teacher: {type: Schema.Types.ObjectId, ref: 'User'},
     students: [{type: Schema.Types.ObjectId, ref: 'User'}],
-    questionSets: [{type: Schema.Types.ObjectId, ref: 'QuestionSet'}]
+    questionSets: [{type: Schema.Types.ObjectId, ref: 'QuestionSet'}],
+    displayedQuestion: {type: Schema.Types.ObjectId, ref: 'Question'}
 });
 
 export const CourseModel = model('Course', CourseSchema);

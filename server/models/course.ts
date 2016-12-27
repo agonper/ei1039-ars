@@ -2,6 +2,8 @@ import * as log from 'winston';
 import {MongooseDocument, Types} from "mongoose";
 import {User} from "./user";
 import {CourseModel} from './mongodb/course';
+import {QuestionSet} from "./question-set";
+import {Question} from "./question";
 
 
 export interface Course {
@@ -9,7 +11,9 @@ export interface Course {
     name: string,
     createdAt: Date,
     teacher: User,
-    students: User[]
+    students: User[],
+    questionSets: QuestionSet[],
+    displayedQuestion: Question
 }
 
 class CourseRepository {
