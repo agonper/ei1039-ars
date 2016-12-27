@@ -1,5 +1,6 @@
 import {applicationStore} from '../store';
 import {Router} from 'react-router';
+import {displayCourse} from "../actions/courses";
 
 export const checkIfLoggedIn: Router.EnterHook = (nextState, replace) => {
 
@@ -16,7 +17,7 @@ export const checkIfNotLoggedIn: Router.EnterHook = (nextState, replace) => {
 
 export const checkIfNotLoggedInForDisplay: Router.EnterHook = (nextState: any, replace) => {
     checkIfNotLoggedIn(nextState, replace);
-    console.log(nextState.params.courseId)
+    applicationStore.dispatch(<any>displayCourse(nextState.params.courseId));
 };
 
 const isLoggedIn = () => applicationStore.getState().login.loggedIn;

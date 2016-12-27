@@ -10,7 +10,8 @@ var plugins = [
         { from: 'node_modules/flexboxgrid/dist/flexboxgrid.min.css', to: 'css'}
     ]),
     new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+        'process.env.SERVER_URL': JSON.stringify(process.env.SERVER_URL)
     })
 ];
 

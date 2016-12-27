@@ -1,4 +1,3 @@
-var CopyWebpackPlugin = require('copy-webpack-plugin');
 var path = require('path');
 var fs = require('fs');
 

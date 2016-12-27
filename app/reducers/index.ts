@@ -5,7 +5,7 @@ import {SignupState, SignupReducer} from "./signup";
 import {LoginState, LoginReducer} from "./login";
 import {
     CreateQuestionState, CreateQuestionReducer
-} from "./question-creation";
+} from "./create-question";
 import {QuestionResponseReducer} from "./question-response";
 import {UserCoursesReducer, UserCoursesState} from "./user-courses";
 import {DashboardState, DashboardReducer} from "./dashboard";
@@ -14,6 +14,7 @@ import {SelectedCourseState, SelectedCourseReducer} from "./selected-course";
 import {CreateQuestionSetState, CreateQuestionSetReducer} from "./create-question-set";
 import {SelectedQuestionSetState, SelectedQuestionSetReducer} from "./selected-question-set";
 import {SelectedQuestionState, SelectedQuestionReducer} from "./selected-question";
+import {DisplayedCourseState, DisplayedCourseReducer} from "./display-course";
 
 export interface ApplicationState {
     login: LoginState,
@@ -25,7 +26,8 @@ export interface ApplicationState {
     dashboard: DashboardState,
     selectedCourse: SelectedCourseState,
     selectedQuestionSet: SelectedQuestionSetState,
-    selectedQuestion: SelectedQuestionState
+    selectedQuestion: SelectedQuestionState,
+    displayedCourse: DisplayedCourseState
 }
 
 const rootReducer = combineReducers({
@@ -39,6 +41,7 @@ const rootReducer = combineReducers({
     selectedCourse: SelectedCourseReducer,
     selectedQuestionSet: SelectedQuestionSetReducer,
     selectedQuestion: SelectedQuestionReducer,
+    displayedCourse: DisplayedCourseReducer,
     form: formReducer,
     intl: intlReducer
 });

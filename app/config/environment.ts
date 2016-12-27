@@ -1,17 +1,29 @@
 export interface AppConfig {
-    rootUrl: string
+    rootUrl: string,
+    urlShortenerBaseURL: string,
+    gglAPIkey: string,
+    qrGeneratorBaseURL: string
 }
 
 const developmentConfig: AppConfig = {
-    rootUrl: ''
+    rootUrl: 'http://localhost:8080',
+    urlShortenerBaseURL: 'https://www.googleapis.com/urlshortener/v1/url',
+    gglAPIkey: 'AIzaSyColYHxcP365GqWMi14Dx5Jhied0GK5uq0',
+    qrGeneratorBaseURL: 'https://api.qrserver.com/v1/create-qr-code'
 };
 
 const testConfig: AppConfig = {
-    rootUrl: ''
+    rootUrl: 'http://localhost:8080',
+    urlShortenerBaseURL: 'https://www.googleapis.com/urlshortener/v1/url',
+    gglAPIkey: 'AIzaSyColYHxcP365GqWMi14Dx5Jhied0GK5uq0',
+    qrGeneratorBaseURL: 'https://api.qrserver.com/v1/create-qr-code'
 };
 
 const productionConfig: AppConfig = {
-    rootUrl: ''
+    rootUrl: process.env.SERVER_URL || 'http://localhost:8080',
+    urlShortenerBaseURL: 'https://www.googleapis.com/urlshortener/v1/url',
+    gglAPIkey: 'AIzaSyColYHxcP365GqWMi14Dx5Jhied0GK5uq0',
+    qrGeneratorBaseURL: 'https://api.qrserver.com/v1/create-qr-code'
 };
 
 export const appConfigLoader = (): AppConfig => {
@@ -24,3 +36,5 @@ export const appConfigLoader = (): AppConfig => {
             return productionConfig;
     }
 };
+
+export const appConfig = appConfigLoader();

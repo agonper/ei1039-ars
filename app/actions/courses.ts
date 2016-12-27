@@ -153,3 +153,55 @@ export function fetchCourse(id: string): ThunkAction<void, ApplicationState, voi
         return request;
     }
 }
+
+export const DISPLAY_COURSE_PENDING = 'DISPLAY_COURSE_PENDING';
+export const DISPLAY_COURSE_SUCCESS = 'DISPLAY_COURSE_SUCCESS';
+export const DISPLAY_COURSE_ERROR = 'DISPLAY_COURSE_ERROR';
+
+function displayCoursePending(): Action {
+    return {
+        type: DISPLAY_COURSE_PENDING
+    }
+}
+
+function displayCourseSuccess(data: any): GenericAction {
+    return {
+        type: DISPLAY_COURSE_SUCCESS,
+        payload: data
+    }
+}
+
+function displayCourseFailed(err: any): GenericAction {
+    return {
+        type: DISPLAY_COURSE_ERROR,
+        payload: err
+    }
+}
+
+const DisplayCourseQuery = gql`
+ query course($id: String!) {
+   course(id: $id) {
+     id
+     name
+     displayedQuestion {
+      title
+      createdAt
+      answers {
+        option
+        text
+        isCorrect
+      }
+    }
+   }
+ }`;
+
+export function displayCourse(id: string): ThunkAction<void, ApplicationState, void> {
+    const request = apolloClient.query({query: DisplayCourseQuery, variables: {id}});
+    return (dispatch: Dispatch<ApplicationState>) => {
+        dispatch(displayCoursePending());
+        request
+            .then((data) => dispatch(displayCourseSuccess(data)))
+            .catch((err) => dispatch(displayCourseFailed(err)));
+        return request;
+    }
+}
