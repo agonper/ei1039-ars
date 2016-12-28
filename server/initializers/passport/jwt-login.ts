@@ -11,8 +11,6 @@ export const jwtLogin = (config: ServerConfig): passport.Strategy => {
         secretOrKey: config.jwtSecret,
         passReqToCallback: true
     }, (req: express.Request, {sub}:any , done: any) => {
-        const error = new Error('Invalid token');
-        error.name = 'IncorrectCredentialsError';
 
         userRepository.findByEmail(sub)
             .then((user) => {
