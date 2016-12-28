@@ -40,7 +40,6 @@ export const DisplayedCourseReducer = (state: DisplayedCourseState = INITIAL_STA
         case DISPLAY_COURSE_ERROR:
             return {...state, fetching: false, course: undefined, error: action.error.data.errors};
         case SHORT_COURSE_URL_SUCCESS:
-            console.log(action.payload);
             return {...state, shortenedUrl: action.payload.data.id};
         default:
             return state;
