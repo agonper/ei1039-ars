@@ -65,6 +65,7 @@
     "@types/redux-form": "^4.0.31",
     "@types/validator": "^5.7.35",
     "@types/winston": "0.0.32",
+    "@types/ws": "0.0.37",
     "apollo-client": "^0.5.23",
     "axios": "^0.15.3",
     "bcrypt": "^1.0.1",
@@ -98,7 +99,8 @@
     "redux-thunk": "^2.1.0",
     "typed-graphql": "^1.0.2",
     "validator": "^6.2.0",
-    "winston": "^2.3.0"
+    "winston": "^2.3.0",
+    "ws": "^1.1.1"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^3.0.0-beta.17",

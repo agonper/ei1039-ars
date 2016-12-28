@@ -1,10 +1,9 @@
 import * as express from 'express';
 import * as passport from 'passport';
 import * as log from 'winston';
-import {Server} from "../initializers/server";
 import {userRepository, UserSignupData} from "../models/user";
 
-export const AuthRouter = (server: Server): express.Router => {
+export const createAuthRouter = (): express.Router => {
     const router = express.Router();
 
     router.post('/signup', (req, res) => {

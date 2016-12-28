@@ -1,9 +1,8 @@
 import * as express from 'express';
-import {Server} from "../initializers/server";
 import {graphqlExpress, graphiqlExpress} from "graphql-server-express";
 import appGraphQLSchema from "../models/qraphql/index";
 
-export const ApiRouter = (server: Server): express.Router => {
+export const createApiRouter = (): express.Router => {
     const router = express.Router();
 
     router.use('/graphql', graphqlExpress(request => ({

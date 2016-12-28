@@ -3,19 +3,22 @@ import * as path from 'path';
 import * as bodyparser from 'body-parser';
 import * as morgan from 'morgan';
 import * as log from 'winston';
-import {AuthRouter} from '../routes/auth-router';
+import {createAuthRouter} from '../routes/auth-router';
 import {ServerConfig} from '../config/environment';
-import {ApiRouter} from '../routes/api-router';
+import {createApiRouter} from '../routes/api-router';
 import {PassportInitializer} from './passport';
 import * as passport from 'passport';
+import {Server} from "http";
 
-export class Server {
+export class AppServer {
     private _app: express.Application;
     private _config: ServerConfig;
+    private _server: Server;
 
-    constructor(config: ServerConfig) {
+    constructor(config: ServerConfig, server: Server) {
         this._app = express();
         this._config = config;
+        this._server = server;
     }
 
     public get app() {
@@ -30,12 +33,8 @@ export class Server {
         this.configure();
         this.addRoutes();
 
-        const http = this._config.http;
-
-        this._app.listen(http.port);
-
-        const protocol = this._config.http.secure ? 'https' : 'http';
-        log.info(`(UJI | ARS) Server running at ${protocol}://${http.host}:${http.port}`);
+        this._server.on('request', this._app);
+        log.info("ExpressApp: Initialized");
     }
 
     private configure() {
@@ -55,18 +54,22 @@ export class Server {
 
         // Protect /api with token access
         app.use('/api', passport.authenticate(['basic-login', 'jwt-login'], { session: false }));
+
+        log.info("ExpressApp: Configured");
     }
 
     private addRoutes() {
         const app = this._app;
 
-        app.use('/auth', AuthRouter(this));
+        app.use('/auth', createAuthRouter());
 
-        app.use('/api', ApiRouter(this));
+        app.use('/api', createApiRouter());
 
         app.use('*', (req: express.Request, res: express.Response) =>
             res.sendFile(path.resolve('dist', 'public', 'index.html'))
         );
+
+        log.info("ExpressApp: Routes added");
     }
 
 }
