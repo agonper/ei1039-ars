@@ -8,6 +8,7 @@ import {ApplicationState} from "../../reducers/index";
 import {DisplayedCourseState} from "../../reducers/display-course";
 import {IdleDisplay} from "./idle-display";
 import {QuestionDisplay} from "../questions/question-display";
+import {webSocketClient} from "../../adapters/websocket";
 
 interface DisplayContainerProps {
     displayedCourse: DisplayedCourseState
@@ -24,6 +25,10 @@ const fullSizeContainerStyle = {
 
 class DisplayContainerComponent extends Component<DisplayContainerProps, any> {
     renderContent() {
+        webSocketClient.start().then((connection) => {
+            connection.onmessage = (msg: any) => console.log(msg.data);
+            connection.send('Ping');
+        });
         const {displayedQuestion} = this.props.displayedCourse.course;
         if (!displayedQuestion) {
             return <IdleDisplay/>;

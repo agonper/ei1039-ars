@@ -1,6 +1,7 @@
 import * as ws from 'ws';
 import * as log from 'winston';
 import {Server} from "http";
+import * as url from 'url';
 import * as jwt from 'jsonwebtoken';
 import {serverConfig} from "../config/environment";
 import {userRepository} from "../models/user";
@@ -22,6 +23,9 @@ export class WebSocketServer {
     private configure() {
         const wss = this._wss;
         wss.on('connection', (ws) => {
+            const origUrl = url.parse(ws.upgradeReq.url, true);
+            console.info(origUrl.query.token);
+
             ws.on('message', (msg) => {
                 log.info("WebSocketServer | Message received:", msg);
                 ws.send("Pong!");
@@ -32,13 +36,11 @@ export class WebSocketServer {
 }
 
 const verifyClient = (options: any, cb: any) => {
-    const authHeader = options.req.headers['Authorization'];
-    if (!authHeader) return cb(false);
+    const origUrl = url.parse(options.req.url, true /* Parse query as object */);
 
-    const headerParts = authHeader.split(' ');
-    if (headerParts[0] !== 'JWT') return cb(false, 400, "Bad request");
+    const token = origUrl.query.token;
+    if (!token) return cb(false, 400, "Bad request");
 
-    const token = headerParts[1];
     jwt.verify(token, serverConfig.jwtSecret, (err: any, decoded: any) => {
 
         if (err) {
