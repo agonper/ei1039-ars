@@ -1,8 +1,4 @@
-import {Action, Dispatch} from "redux";
-import {GenericAction, performGraphQLQuery, performGraphQLMutation} from "./common";
-import {ApplicationState} from "../reducers/index";
-import {ThunkAction} from "redux-thunk";
-import {apolloClient} from "../adapters/graphql";
+import {performGraphQLQuery, performGraphQLMutation} from "./common";
 import gql from "graphql-tag/index";
 import {NewQuestionSetData} from "../components/dashboard/add-question-set-modal";
 
