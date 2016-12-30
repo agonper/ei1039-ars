@@ -27,15 +27,16 @@ import {connect} from 'react-redux';
 import {DashboardState} from "../../reducers/dashboard";
 import {ApplicationState} from "../../reducers/index";
 import {FormattedMessage} from 'react-intl';
-import {selectQuestionSet} from "../../actions/dashboard";
-import {SelectedQuestionState} from "../../reducers/selected-question";
+import {selectQuestionSet, selectQuestion} from "../../actions/dashboard";
+import {SelectedQuestionState, SelectedQuestion} from "../../reducers/selected-question";
 import {findIndex} from 'lodash';
 import {QuestionDisplay} from "../questions/question-display";
 
 interface QuestionContainerProps {
     dashboard: DashboardState,
     selectedQuestion: SelectedQuestionState,
-    selectQuestionSet(questionSetId: string): any
+    selectQuestionSet(questionSetId: string): any,
+    selectQuestion(questionId: string): any,
 }
 
 class QuestionContainerComponent extends Component<QuestionContainerProps, any> {
@@ -43,6 +44,49 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
     goBackToQuestionSet() {
         const questionSetId = this.props.selectedQuestion.question.questionSet.id;
         this.props.selectQuestionSet(questionSetId);
+    }
+
+    renderVisibilityButton(question: SelectedQuestion) {
+        const {questionSet: {course: {displayedQuestion}}} = question;
+        if (!displayedQuestion || displayedQuestion.id !== question.id) {
+            return <IconButton><VisibilityIcon color={white}/></IconButton>
+        }
+        return <IconButton><VisibilityOffIcon color={white}/></IconButton>
+    }
+
+    renderToolbar(question: SelectedQuestion, questionIndex: number) {
+        const {questionSet: {course, questions}} = question;
+        return (
+            <Toolbar>
+                <ToolbarGroup firstChild={true}/>
+                <ToolbarGroup>
+
+                    {this.renderVisibilityButton(question)}
+                    <IconButton
+                        disabled={questionIndex === 0}
+                        onTouchTap={() => this.props.selectQuestion(questions[questionIndex - 1].id)}>
+                        <SkipPreviousIcon color={white}/>
+                    </IconButton>
+
+                    <IconButton><PlayArrowIcon color={white}/></IconButton>
+
+                    <IconButton
+                        disabled={questionIndex + 1 === questions.length}
+                        onTouchTap={() => this.props.selectQuestion(questions[questionIndex + 1].id)}>
+                        <SkipNextIcon color={white}/>
+                    </IconButton>
+
+                    <ToolbarSeparator/>
+                    <Link to={`/display/${course.id}`} target="_blank">
+                        <RaisedButton
+                            primary={true}
+                            label={<FormattedMessage id="dashboard.question.project" defaultMessage="Project"/>}
+                            icon={<OpenInNewIcon color={white}/>}/>
+                    </Link>
+                </ToolbarGroup>
+            </Toolbar>
+
+        );
     }
 
     render() {
@@ -55,13 +99,13 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
         }
 
         const question = this.props.selectedQuestion.question;
-        const {title, questionSet: {questions, course}} = question;
+        const {title, questionSet: {questions}} = question;
         const id = this.props.dashboard.selectedItemId;
-        const questionNumber = findIndex(questions, {id}) + 1;
+        const questionIndex = findIndex(questions, {id});
         const secondaryTitle = <FormattedMessage
                                     id="dashboard.question.label"
                                     defaultMessage="Question (number)"
-                                    values={{number: questionNumber}}/>;
+                                    values={{number: questionIndex + 1}}/>;
         return (
             <div style={{height: '100%'}}>
                 <AppBar
@@ -73,30 +117,8 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
                     }
                     style={{backgroundColor: lightGreen400}}
                     title={(title !== '' ? title : secondaryTitle)}/>
-                <Toolbar>
-                    <ToolbarGroup firstChild={true}/>
-                    <ToolbarGroup>
-                        <IconButton>
-                            <VisibilityIcon color={white}/>
-                        </IconButton>
-                        <IconButton>
-                            <SkipPreviousIcon color={white}/>
-                        </IconButton>
-                        <IconButton>
-                            <PlayArrowIcon color={white}/>
-                        </IconButton>
-                        <IconButton>
-                            <SkipNextIcon color={white}/>
-                        </IconButton>
-                        <ToolbarSeparator/>
-                        <Link to={`/display/${course.id}`} target="_blank">
-                            <RaisedButton
-                                primary={true}
-                                label={<FormattedMessage id="dashboard.question.project" defaultMessage="Project"/>}
-                                icon={<OpenInNewIcon color={white}/>}/>
-                        </Link>
-                    </ToolbarGroup>
-                </Toolbar>
+
+                {this.renderToolbar(question, questionIndex)}
 
                 <div style={{height: '100%'}} className="row middle-xs center-xs col-xs-offset-2 col-xs-8">
                     <QuestionDisplay question={question}/>
@@ -113,4 +135,4 @@ function mapStateToProps(state: ApplicationState) {
     }
 }
 
-export const QuestionContainer = connect(mapStateToProps, {selectQuestionSet})(QuestionContainerComponent);
+export const QuestionContainer = connect(mapStateToProps, {selectQuestionSet, selectQuestion})(QuestionContainerComponent);
