@@ -106,13 +106,13 @@ const FetchQuestionQuery = gql`
    }
  }`;
 
-export function fetchQuestion(id: string, force?: boolean) {
+export function fetchQuestion(id: string) {
     const actionTypes = {
         pending: FETCH_QUESTION_PENDING,
         success: FETCH_QUESTION_SUCCESS,
         failure: FETCH_QUESTION_ERROR
     };
-    return performGraphQLQuery({query: FetchQuestionQuery, variables: {id}, forceFetch: force}, actionTypes);
+    return performGraphQLQuery({query: FetchQuestionQuery, variables: {id}, forceFetch: true}, actionTypes);
 }
 
 const DisplayQuestionMutation = gql`

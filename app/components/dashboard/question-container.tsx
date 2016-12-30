@@ -40,7 +40,7 @@ interface QuestionContainerProps {
     selectQuestion(questionId: string): any,
     displayQuestion(courseId: string, questionId: string): Promise<any>,
     clearDisplayedQuestion(courseId: string): Promise<any>,
-    fetchQuestion(questionId: string, force?: boolean): Promise<any>
+    fetchQuestion(questionId: string): Promise<any>
 }
 
 class QuestionContainerComponent extends Component<QuestionContainerProps, any> {
@@ -56,7 +56,7 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
             return (
                 <IconButton
                     onTouchTap={() => this.props.displayQuestion(course.id, question.id)
-                                          .then(() => this.props.fetchQuestion(question.id, true))}>
+                                          .then(() => this.props.fetchQuestion(question.id))}>
                     <VisibilityIcon color={white}/>
                 </IconButton>
             );
@@ -64,7 +64,7 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
         return (
             <IconButton
                 onTouchTap={() => this.props.clearDisplayedQuestion(course.id)
-                                      .then(() => this.props.fetchQuestion(question.id, true))}>
+                                      .then(() => this.props.fetchQuestion(question.id))}>
                 <VisibilityOffIcon color={white}/>
             </IconButton>);
     }
