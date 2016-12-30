@@ -2,7 +2,7 @@ import {GenericAction} from "../actions/common";
 import {
     LIST_COURSES_PENDING, LIST_COURSES_SUCCESS, LIST_COURSES_ERROR,
     CREATE_COURSE_SUCCESS
-} from "../actions/courses";
+} from "../actions/course";
 import {CREATE_QUESTION_SET_SUCCESS} from "../actions/question-set";
 import {dropWhile, takeWhile, drop, find} from 'lodash';
 import {CREATE_QUESTION_SUCCESS, createLinkedQuestion} from "../actions/question";

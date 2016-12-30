@@ -1,6 +1,6 @@
 import {GenericAction} from "../actions/common";
 import {QuestionAnswer} from "../../server/models/question";
-import {DISPLAY_COURSE_PENDING, DISPLAY_COURSE_SUCCESS, DISPLAY_COURSE_ERROR} from "../actions/courses";
+import {DISPLAY_COURSE_PENDING, DISPLAY_COURSE_SUCCESS, DISPLAY_COURSE_ERROR} from "../actions/course";
 import {SHORT_COURSE_URL_SUCCESS} from "../actions/shorten-course-url";
 
 export interface DisplayedQuestion {

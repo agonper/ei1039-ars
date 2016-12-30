@@ -1,6 +1,6 @@
 import {applicationStore} from '../store';
 import {Router} from 'react-router';
-import {displayCourse} from "../actions/courses";
+import {displayCourse} from "../actions/course";
 
 export const checkIfLoggedIn: Router.EnterHook = (nextState, replace) => {
 

@@ -12,7 +12,7 @@ import {DashboardState} from "../../reducers/dashboard";
 import {toggleAddCourseModal} from "../../actions/dashboard";
 import {HintOnlyTextField} from "../ui/hint-only-text-field";
 import {CreateCourseState} from "../../reducers/create-course";
-import {createCourse} from "../../actions/courses";
+import {createCourse} from "../../actions/course";
 
 export interface NewCourseData {
     name: string

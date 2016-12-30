@@ -1,5 +1,5 @@
 import {GenericAction} from "../actions/common";
-import {FETCH_COURSE_PENDING, FETCH_COURSE_SUCCESS, FETCH_COURSE_ERROR} from "../actions/courses";
+import {FETCH_COURSE_PENDING, FETCH_COURSE_SUCCESS, FETCH_COURSE_ERROR} from "../actions/course";
 
 export interface BasicStudent {
     name: string,

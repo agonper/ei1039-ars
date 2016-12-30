@@ -7,7 +7,7 @@ import MoreHorizIcon from 'material-ui/svg-icons/navigation/more-horiz';
 import {FormattedMessage, FormattedDate} from 'react-intl';
 import {connect} from 'react-redux';
 import {ApplicationState} from "../../reducers/index";
-import {fetchUserCourses} from "../../actions/courses";
+import {fetchUserCourses} from "../../actions/course";
 import {UserCoursesState, LimitedCourse, LimitedQuestionSet, LimitedQuestion} from "../../reducers/user-courses";
 import {selectCourse, selectQuestionSet, selectQuestion} from "../../actions/dashboard";
 

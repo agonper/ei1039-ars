@@ -1,6 +1,6 @@
 import {LimitedCourse} from "./user-courses";
 import {GenericAction} from "../actions/common";
-import {CREATE_COURSE_PENDING, CREATE_COURSE_SUCCESS, CREATE_COURSE_ERROR} from "../actions/courses";
+import {CREATE_COURSE_PENDING, CREATE_COURSE_SUCCESS, CREATE_COURSE_ERROR} from "../actions/course";
 
 export interface CreateCourseState {
     creating: boolean,

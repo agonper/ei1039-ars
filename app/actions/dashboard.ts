@@ -2,7 +2,7 @@ import {Action} from "redux";
 import {GenericAction} from "./common";
 import {ThunkAction} from "redux-thunk";
 import {ApplicationState} from "../reducers/index";
-import {fetchCourse} from "./courses";
+import {fetchCourse} from "./course";
 import {fetchQuestionSet} from "./question-set";
 import {fetchQuestion} from "./question";
 
