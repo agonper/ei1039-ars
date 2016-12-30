@@ -29,7 +29,7 @@ export const QuestionDisplay = (props: QuestionDisplayProps) => {
     const colors = [blue700, orange700, green700, yellow700];
 
     return (
-        <div style={{height: '400px', width: '400px'}}>
+        <div style={{height: '500px', width: '400px'}}>
             <h1>{(question.title) ? question.title: ' '}</h1>
             <div className="start-xs">
                 <Paper>

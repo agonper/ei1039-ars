@@ -6,16 +6,22 @@ export interface BasicQuestion {
     id: string
 }
 
+export interface BasicCourse {
+    id: string,
+    displayedQuestion: BasicQuestion
+}
+
 export interface BasicQuestionSet {
-    id: string
+    id: string,
+    course: BasicCourse,
     questions: BasicQuestion[]
 }
 
 export interface SelectedQuestion {
-    id: string
-    title: string
-    createdAt: string
-    questionSet: BasicQuestionSet
+    id: string,
+    title: string,
+    createdAt: string,
+    questionSet: BasicQuestionSet,
     answers: QuestionAnswer[]
 }
 

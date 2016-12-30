@@ -62,6 +62,7 @@ export const esTranslationStrings = {
     'dashboard.question.create.answerC': "C",
     'dashboard.question.create.answerD': "D",
     'dashboard.question.create.empty-answer': "Introduce una respuesta",
+    'dashboard.question.project': "Proyectar",
 
     'display.course.not-found': "Curso no encontrado"
 };

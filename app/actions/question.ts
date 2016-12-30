@@ -132,6 +132,12 @@ const FetchQuestionQuery = gql`
      createdAt
      questionSet {
         id
+        course {
+            id
+            displayedQuestion {
+                id
+            }
+        }
         questions {
             id
         }
