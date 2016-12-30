@@ -31,12 +31,16 @@ import {selectQuestionSet, selectQuestion} from "../../actions/dashboard";
 import {SelectedQuestionState, SelectedQuestion} from "../../reducers/selected-question";
 import {findIndex} from 'lodash';
 import {QuestionDisplay} from "../questions/question-display";
+import {displayQuestion, fetchQuestion, clearDisplayedQuestion} from "../../actions/question";
 
 interface QuestionContainerProps {
     dashboard: DashboardState,
     selectedQuestion: SelectedQuestionState,
     selectQuestionSet(questionSetId: string): any,
     selectQuestion(questionId: string): any,
+    displayQuestion(courseId: string, questionId: string): Promise<any>,
+    clearDisplayedQuestion(courseId: string): Promise<any>,
+    fetchQuestion(questionId: string, force?: boolean): Promise<any>
 }
 
 class QuestionContainerComponent extends Component<QuestionContainerProps, any> {
@@ -47,11 +51,22 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
     }
 
     renderVisibilityButton(question: SelectedQuestion) {
-        const {questionSet: {course: {displayedQuestion}}} = question;
-        if (!displayedQuestion || displayedQuestion.id !== question.id) {
-            return <IconButton><VisibilityIcon color={white}/></IconButton>
+        const {questionSet: {course}} = question;
+        if (!course.displayedQuestion || course.displayedQuestion.id !== question.id) {
+            return (
+                <IconButton
+                    onTouchTap={() => this.props.displayQuestion(course.id, question.id)
+                                          .then(() => this.props.fetchQuestion(question.id, true))}>
+                    <VisibilityIcon color={white}/>
+                </IconButton>
+            );
         }
-        return <IconButton><VisibilityOffIcon color={white}/></IconButton>
+        return (
+            <IconButton
+                onTouchTap={() => this.props.clearDisplayedQuestion(course.id)
+                                      .then(() => this.props.fetchQuestion(question.id, true))}>
+                <VisibilityOffIcon color={white}/>
+            </IconButton>);
     }
 
     renderToolbar(question: SelectedQuestion, questionIndex: number) {
@@ -135,4 +150,6 @@ function mapStateToProps(state: ApplicationState) {
     }
 }
 
-export const QuestionContainer = connect(mapStateToProps, {selectQuestionSet, selectQuestion})(QuestionContainerComponent);
+export const QuestionContainer = connect(mapStateToProps, {
+    selectQuestionSet, selectQuestion, displayQuestion, clearDisplayedQuestion, fetchQuestion
+})(QuestionContainerComponent);

@@ -1,6 +1,8 @@
 import {GenericAction} from "../actions/common";
 import {QuestionAnswer} from "../../server/models/question";
-import {FETCH_QUESTION_ERROR, FETCH_QUESTION_SUCCESS, FETCH_QUESTION_PENDING} from "../actions/question";
+import {
+    FETCH_QUESTION_ERROR, FETCH_QUESTION_SUCCESS, FETCH_QUESTION_PENDING
+} from "../actions/question";
 
 export interface BasicQuestion {
     id: string
