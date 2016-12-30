@@ -1,5 +1,5 @@
 import {Action, Dispatch} from "redux";
-import {GenericAction} from "./common";
+import {GenericAction, performGraphQLQuery, performGraphQLMutation} from "./common";
 import {ApplicationState} from "../reducers/index";
 import {ThunkAction} from "redux-thunk";
 import {apolloClient} from "../adapters/graphql";
@@ -10,25 +10,9 @@ export const CREATE_QUESTION_SET_PENDING = 'CREATE_QUESTION_SET_PENDING';
 export const CREATE_QUESTION_SET_SUCCESS = 'CREATE_QUESTION_SET_SUCCESS';
 export const CREATE_QUESTION_SET_ERROR = 'CREATE_QUESTION_SET_ERROR';
 
-function createQuestionSetPending(): Action {
-    return {
-        type: CREATE_QUESTION_SET_PENDING
-    }
-}
-
-function createQuestionSetSuccess(data: any): GenericAction {
-    return {
-        type: CREATE_QUESTION_SET_SUCCESS,
-        payload: data
-    }
-}
-
-function createQuestionSetFailed(error: any): GenericAction {
-    return {
-        type: CREATE_QUESTION_SET_ERROR,
-        error
-    }
-}
+export const FETCH_QUESTION_SET_PENDING = 'FETCH_QUESTION_SET_PENDING';
+export const FETCH_QUESTION_SET_SUCCESS = 'FETCH_QUESTION_SET_SUCCESS';
+export const FETCH_QUESTION_SET_ERROR = 'FETCH_QUESTION_SET_ERROR';
 
 const CreateQuestionSetMutation = gql`
  mutation createQuestionSet($courseId: String!, $name: String!) {
@@ -46,39 +30,14 @@ const CreateQuestionSetMutation = gql`
     }
  }`;
 
-export function createQuestionSet(courseId: string, questionSet: NewQuestionSetData): ThunkAction<void, ApplicationState, void> {
-    const request = apolloClient.mutate({mutation: CreateQuestionSetMutation, variables: {courseId, name: questionSet.name}});
-    return (dispatch: Dispatch<ApplicationState>) => {
-        dispatch(createQuestionSetPending());
-        request
-            .then((data) => dispatch(createQuestionSetSuccess(data)))
-            .catch((err) => dispatch(createQuestionSetFailed(err)));
-        return request;
-    }
-}
+export function createQuestionSet(courseId: string, questionSet: NewQuestionSetData) {
+    const actionTypes = {
+        pending: CREATE_QUESTION_SET_PENDING,
+        success: CREATE_QUESTION_SET_SUCCESS,
+        failure: CREATE_QUESTION_SET_ERROR
+    };
 
-export const FETCH_QUESTION_SET_PENDING = 'FETCH_QUESTION_SET_PENDING';
-export const FETCH_QUESTION_SET_SUCCESS = 'FETCH_QUESTION_SET_SUCCESS';
-export const FETCH_QUESTION_SET_ERROR = 'FETCH_QUESTION_SET_ERROR';
-
-function fetchQuestionSetPending(): Action {
-    return {
-        type: FETCH_QUESTION_SET_PENDING
-    }
-}
-
-function fetchQuestionSetSuccess(data: any): GenericAction {
-    return {
-        type: FETCH_QUESTION_SET_SUCCESS,
-        payload: data
-    }
-}
-
-function fetchQuestionSetFailed(err: any): GenericAction {
-    return {
-        type: FETCH_QUESTION_SET_ERROR,
-        payload: err
-    }
+    return performGraphQLMutation({mutation: CreateQuestionSetMutation, variables: {courseId, name: questionSet.name}}, actionTypes);
 }
 
 const FetchQuestionSetQuery = gql`
@@ -93,13 +52,12 @@ const FetchQuestionSetQuery = gql`
    }
  }`;
 
-export function fetchQuestionSet(id: string): ThunkAction<void, ApplicationState, void> {
-    const request = apolloClient.query({query: FetchQuestionSetQuery, variables: {id}});
-    return (dispatch: Dispatch<ApplicationState>) => {
-        dispatch(fetchQuestionSetPending());
-        request
-            .then((data) => dispatch(fetchQuestionSetSuccess(data)))
-            .catch((err) => dispatch(fetchQuestionSetFailed(err)));
-        return request;
-    }
+export function fetchQuestionSet(id: string) {
+    const actionTypes = {
+        pending: FETCH_QUESTION_SET_PENDING,
+        success: FETCH_QUESTION_SET_SUCCESS,
+        failure: FETCH_QUESTION_SET_ERROR
+    };
+
+    return performGraphQLQuery({query: FetchQuestionSetQuery, variables: {id}}, actionTypes);
 }
