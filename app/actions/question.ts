@@ -1,32 +1,13 @@
-import {Action, Dispatch} from "redux";
-import {GenericAction} from "./common";
-import {ApplicationState} from "../reducers/index";
-import {ThunkAction} from "redux-thunk";
+import {performGraphQLQuery, performGraphQLMutation} from "./common";
 import gql from "graphql-tag/index";
-import {apolloClient} from "../adapters/graphql";
 
 export const CREATE_QUESTION_PENDING = 'CREATE_QUESTION_PENDING';
 export const CREATE_QUESTION_SUCCESS = 'CREATE_QUESTION_SUCCESS';
 export const CREATE_QUESTION_ERROR = 'CREATE_QUESTION_ERROR';
 
-
-function questionCreationPending() : Action {
-    return {type: CREATE_QUESTION_PENDING};
-}
-
-function questionCreationSuccess(data : any) : GenericAction {
-    return {
-        type: CREATE_QUESTION_SUCCESS,
-        payload: data
-    };
-}
-
-function questionCreationFailed(err : any) : GenericAction {
-    return {
-      type : CREATE_QUESTION_ERROR,
-      error : err
-    };
-}
+export const FETCH_QUESTION_PENDING = 'FETCH_QUESTION_PENDING';
+export const FETCH_QUESTION_SUCCESS = 'FETCH_QUESTION_SUCCESS';
+export const FETCH_QUESTION_ERROR = 'FETCH_QUESTION_ERROR';
 
 export interface InputAnswer {
     option: string,
@@ -55,19 +36,14 @@ const MutationCreateLinkedQuestion = gql`
    }
  }`;
 
-export function createLinkedQuestion(courseId: string, questionSetId:string, question : InputQuestion) : ThunkAction<void, ApplicationState, void> {
-    const request = apolloClient.mutate({mutation: MutationCreateLinkedQuestion, variables: {
-        courseId,
-        questionSetId,
-        question
-    }});
-    return (dispatch: Dispatch<ApplicationState>) => {
-        dispatch(questionCreationPending());
-        request
-            .then((data) => dispatch(questionCreationSuccess(data)))
-            .catch((err) => dispatch(questionCreationFailed(err)));
-        return request;
+export function createLinkedQuestion(courseId: string, questionSetId:string, question : InputQuestion) {
+    const actionTypes = {
+        pending: CREATE_QUESTION_PENDING,
+        success: CREATE_QUESTION_SUCCESS,
+        failure: CREATE_QUESTION_ERROR
     };
+
+    return performGraphQLMutation({mutation: MutationCreateLinkedQuestion, variables: {courseId, questionSetId, question}}, actionTypes);
 }
 
 const MutationCreateIndependentQuestion = gql`
@@ -86,42 +62,14 @@ const MutationCreateIndependentQuestion = gql`
    }
  }`;
 
-export function createIndependentQuestion(courseId: string, question : InputQuestion) : ThunkAction<void, ApplicationState, void> {
-    const request = apolloClient.mutate({mutation: MutationCreateIndependentQuestion, variables: {
-        courseId,
-        question
-    }});
-    return (dispatch: Dispatch<ApplicationState>) => {
-        dispatch(questionCreationPending());
-        request
-            .then((data) => dispatch(questionCreationSuccess(data)))
-            .catch((err) => dispatch(questionCreationFailed(err)));
-        return request;
+export function createIndependentQuestion(courseId: string, question : InputQuestion) {
+    const actionTypes = {
+        pending: CREATE_QUESTION_PENDING,
+        success: CREATE_QUESTION_SUCCESS,
+        failure: CREATE_QUESTION_ERROR
     };
-}
 
-export const FETCH_QUESTION_PENDING = 'FETCH_QUESTION_PENDING';
-export const FETCH_QUESTION_SUCCESS = 'FETCH_QUESTION_SUCCESS';
-export const FETCH_QUESTION_ERROR = 'FETCH_QUESTION_ERROR';
-
-function fetchQuestionPending(): Action {
-    return {
-        type: FETCH_QUESTION_PENDING
-    }
-}
-
-function fetchQuestionSuccess(data: any): GenericAction {
-    return {
-        type: FETCH_QUESTION_SUCCESS,
-        payload: data
-    }
-}
-
-function fetchQuestionFailed(err: any): GenericAction {
-    return {
-        type: FETCH_QUESTION_ERROR,
-        payload: err
-    }
+    return performGraphQLMutation({mutation: MutationCreateIndependentQuestion, variables: {courseId, question}}, actionTypes);
 }
 
 const FetchQuestionQuery = gql`
@@ -150,13 +98,11 @@ const FetchQuestionQuery = gql`
    }
  }`;
 
-export function fetchQuestion(id: string): ThunkAction<void, ApplicationState, void> {
-    const request = apolloClient.query({query: FetchQuestionQuery, variables: {id}});
-    return (dispatch: Dispatch<ApplicationState>) => {
-        dispatch(fetchQuestionPending());
-        request
-            .then((data) => dispatch(fetchQuestionSuccess(data)))
-            .catch((err) => dispatch(fetchQuestionFailed(err)));
-        return request;
-    }
+export function fetchQuestion(id: string) {
+    const actionTypes = {
+        pending: FETCH_QUESTION_PENDING,
+        success: FETCH_QUESTION_SUCCESS,
+        failure: FETCH_QUESTION_ERROR
+    };
+    return performGraphQLQuery({query: FetchQuestionQuery, variables: {id}}, actionTypes);
 }

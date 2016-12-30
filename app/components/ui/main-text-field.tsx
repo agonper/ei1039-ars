@@ -6,7 +6,7 @@ import {TextField} from 'material-ui';
 import {FormattedMessage} from 'react-intl';
 
 export const fieldsToOmitFromInput = ['initialValue', 'autofill', 'onUpdate', 'valid',
-    'invalid', 'dirty', 'pristine', 'error',
+    'invalid', 'dirty', 'pristine', 'failure',
     'active', 'touched', 'visited', 'autofilled'];
 
 interface MainTextFieldProps {
