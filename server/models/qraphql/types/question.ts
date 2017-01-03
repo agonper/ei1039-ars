@@ -3,6 +3,7 @@ import {GraphQLList} from "graphql";
 import {GraphQLID} from "graphql";
 import {GraphQLString} from "graphql";
 import {GraphQLBoolean} from "graphql";
+import {GraphQLInt} from "graphql";
 import QuestionSetType from "./question-set";
 import {Question} from "../../question";
 
@@ -37,6 +38,16 @@ const QuestionType: any = new GraphQLObjectType({
             createdAt: {
                 type: GraphQLString,
                 resolve: question => question.createdAt.toISOString()
+            },
+            time: {
+                type: GraphQLInt
+            },
+            state: {
+                type: GraphQLString
+            },
+            openedAt: {
+                type: GraphQLString,
+                resolve: question => (question.openedAt) ? question.openedAt.toISOString() : null
             },
             questionSet: {
                 type: QuestionSetType,

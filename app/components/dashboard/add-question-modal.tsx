@@ -21,6 +21,7 @@ import {InputQuestion, createLinkedQuestion, createIndependentQuestion} from "..
 
 export interface NewQuestionData {
     title: string,
+    time?: number,
     withAnswers: boolean,
     answerA: string,
     answerB: string,
@@ -28,6 +29,8 @@ export interface NewQuestionData {
     answerD: string,
     correctAnswer: string
 }
+
+const DEFAULT_QUESTION_TIME = 15;
 
 interface AddQuestionModalProps extends ReduxFormProps<any> {
     dashboard: DashboardState,
@@ -53,6 +56,7 @@ class AddQuestionModalComponent extends Component<any & AddQuestionModalProps, a
 
         const inputQuestion: InputQuestion = {
             title: question.title,
+            time: (question.time) ? question.time : DEFAULT_QUESTION_TIME,
             answers
         };
 
@@ -89,7 +93,7 @@ class AddQuestionModalComponent extends Component<any & AddQuestionModalProps, a
     }
 
     render() {
-        const {fields: {title, withAnswers, answerA, answerB, answerC, answerD, correctAnswer}, handleSubmit} = this.props;
+        const {fields: {title, time, withAnswers, answerA, answerB, answerC, answerD, correctAnswer}, handleSubmit} = this.props;
 
         const actions = [
             <RaisedButton
@@ -114,12 +118,19 @@ class AddQuestionModalComponent extends Component<any & AddQuestionModalProps, a
                     actions={actions}>
                     <form onSubmit={handleSubmit(this.onCreateQuestion.bind(this))}>
                         <div className="row middle-xs">
-                            <div className="col-md-9 col-xs-12">
+                            <div className="col-md-7 col-xs-10">
                                 <HintOnlyTextField
                                     field={title}
-                                    hint="dashboard.question.create.title"
+                                    hint="dashboard.question.create.title_field"
                                     defaultHint="Question title"
                                     type="text"/>
+                            </div>
+                            <div className="col-xs-2">
+                                <HintOnlyTextField
+                                    field={time}
+                                    hint="dashboard.question.create.time"
+                                    defaultHint={`${DEFAULT_QUESTION_TIME}s`}
+                                    type="number"/>
                             </div>
                             <div className="col-md-3 col-xs-12">
                                 <Toggle
@@ -216,8 +227,7 @@ function mapStateToProps(state: ApplicationState) {
         dashboard: state.dashboard,
         selectedCourse: state.selectedCourse,
         selectedQuestionSet: state.selectedQuestionSet,
-        initialValues: {withAnswers: false, correctAnswer: 'A'}/*,
-        create: state.createQuestionSet*/
+        initialValues: {withAnswers: false, correctAnswer: 'A'}
     }
 }
 
@@ -236,7 +246,7 @@ function validate(questionSetData: NewQuestionData) {
 
 export const AddQuestionModal = reduxForm({
     form: 'addQuestion',
-    fields: ['title', 'withAnswers', 'answerA', 'answerB', 'answerC', 'answerD', 'correctAnswer'],
+    fields: ['title', 'time', 'withAnswers', 'answerA', 'answerB', 'answerC', 'answerD', 'correctAnswer'],
     validate
 }, mapStateToProps, {toggleAddQuestionModal, createLinkedQuestion, createIndependentQuestion})(AddQuestionModalComponent);
 

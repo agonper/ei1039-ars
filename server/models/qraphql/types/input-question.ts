@@ -3,6 +3,7 @@ import {GraphQLList} from "graphql";
 import {GraphQLNonNull} from "graphql";
 import {GraphQLString} from "graphql";
 import {GraphQLBoolean} from "graphql";
+import {GraphQLInt} from "graphql";
 
 const InputAnswerType: any = new GraphQLInputObjectType({
     name: 'InputAnswer',
@@ -27,6 +28,9 @@ const InputQuestionType: any = new GraphQLInputObjectType({
         return {
             title: {
                 type: GraphQLString
+            },
+            time: {
+                type: GraphQLInt
             },
             answers: {
                 type: new GraphQLList(InputAnswerType)

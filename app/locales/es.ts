@@ -57,6 +57,7 @@ export const esTranslationStrings = {
 
     'dashboard.question.create.submit': "Crear pregunta",
     'dashboard.question.create.title': "Crear una pregunta",
+    'dashboard.question.create.title_field': "Pregunta",
     'dashboard.question.create.answerA': "A",
     'dashboard.question.create.answerB': "B",
     'dashboard.question.create.answerC': "C",

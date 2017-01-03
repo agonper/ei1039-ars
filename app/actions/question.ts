@@ -25,6 +25,7 @@ export interface InputAnswer {
 
 export interface InputQuestion {
     title: string,
+    time: number,
     answers: InputAnswer[]
 }
 

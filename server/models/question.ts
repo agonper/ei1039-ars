@@ -1,7 +1,8 @@
 import * as log from 'winston';
 import {MongooseDocument, Types} from "mongoose";
 import {QuestionModel} from './mongodb/question';
-import {QuestionSet, questionSetRepository} from "./question-set";
+import {QuestionSet} from "./question-set";
+import {QUESTION_CLOSED} from "../../common/states/question-states";
 
 export interface QuestionAnswer {
     option: string,
@@ -11,12 +12,15 @@ export interface QuestionAnswer {
 
 export interface InputQuestion {
     title: string,
+    time: number,
     answers: QuestionAnswer[]
 }
 
 export interface Question extends InputQuestion {
     _id: Types.ObjectId,
     createdAt: Date,
+    state: string,
+    openedAt: Date,
     questionSet: QuestionSet
 }
 
@@ -33,6 +37,8 @@ class QuestionRepository {
         const questionProperties = {
             title: (inputQuestion.title) ? inputQuestion.title : '',
             createdAt: Date.now(),
+            time: inputQuestion.time,
+            state: QUESTION_CLOSED,
             questionSet: questionSet._id,
             answers
         };
