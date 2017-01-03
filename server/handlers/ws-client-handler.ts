@@ -32,6 +32,7 @@ export const wsClientHandler = (ws: WebSocket, user: User) => {
                 }
                 return;
             case PUBLISH_TOPIC:
+                // TODO finish this with access control
             default:
                 sendMessageToClient(ws, 'Wrong command');
         }

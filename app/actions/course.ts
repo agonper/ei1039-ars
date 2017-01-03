@@ -107,12 +107,12 @@ const DisplayCourseQuery = gql`
    }
  }`;
 
-export function displayCourse(id: string) {
+export function displayCourse(id: string, force?: boolean) {
     const actionTypes = {
         pending: DISPLAY_COURSE_PENDING,
         success: DISPLAY_COURSE_SUCCESS,
         failure: DISPLAY_COURSE_ERROR
     };
 
-    return performGraphQLQuery({query: DisplayCourseQuery, variables: {id}}, actionTypes);
+    return performGraphQLQuery({query: DisplayCourseQuery, variables: {id}, forceFetch: force}, actionTypes);
 }

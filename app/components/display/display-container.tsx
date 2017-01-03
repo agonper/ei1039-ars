@@ -10,9 +10,12 @@ import {IdleDisplay} from "./idle-display";
 import {QuestionDisplay} from "../questions/question-display";
 import {webSocketClient} from "../../adapters/websocket";
 import {COURSES_TOPIC} from "../../../common/messages/ws-messages";
+import {subscribeToCourseChanges, unsubscribeToCourseChanges} from "../../actions/display";
 
 interface DisplayContainerProps {
     displayedCourse: DisplayedCourseState
+    subscribeToCourseChanges(courseId: string): void
+    unsubscribeToCourseChanges(courseId: string): void
 }
 
 const fullSizeContainerStyle = {
@@ -25,10 +28,15 @@ const fullSizeContainerStyle = {
 };
 
 class DisplayContainerComponent extends Component<DisplayContainerProps, any> {
+    componentWillMount() {
+        this.props.subscribeToCourseChanges(this.props.displayedCourse.course.id);
+    }
+
+    componentWillUnmount() {
+        this.props.unsubscribeToCourseChanges(this.props.displayedCourse.course.id);
+    }
+
     renderContent() {
-        webSocketClient.start().then(() => {
-            webSocketClient.subscribe(`${COURSES_TOPIC}.${this.props.displayedCourse.course.id}`, (msg) => console.log(msg));
-        });
         const {displayedQuestion} = this.props.displayedCourse.course;
         if (!displayedQuestion) {
             return <IdleDisplay/>;
@@ -55,4 +63,4 @@ function mapStateToProps(state: ApplicationState) {
     }
 }
 
-export const DisplayContainer = connect(mapStateToProps)(DisplayContainerComponent);
+export const DisplayContainer = connect(mapStateToProps, {subscribeToCourseChanges, unsubscribeToCourseChanges})(DisplayContainerComponent);
