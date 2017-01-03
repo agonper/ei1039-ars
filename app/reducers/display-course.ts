@@ -5,21 +5,24 @@ import {SHORT_COURSE_URL_SUCCESS} from "../actions/shorten-course-url";
 
 export interface DisplayedQuestion {
     id: string,
-    title: string
-    createdAt: string
+    title: string,
+    createdAt: string,
+    time: number,
+    state: string,
+    askedAt: string,
     answers: QuestionAnswer[]
 }
 
 export interface DisplayedCourse {
-    id: string
-    name: string
+    id: string,
+    name: string,
     displayedQuestion: DisplayedQuestion
 }
 
 export interface DisplayedCourseState {
     fetching: boolean,
     course: DisplayedCourse,
-    shortenedUrl: string
+    shortenedUrl: string,
     error: any
 }
 

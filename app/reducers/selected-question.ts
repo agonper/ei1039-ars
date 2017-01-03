@@ -23,6 +23,8 @@ export interface SelectedQuestion {
     id: string,
     title: string,
     createdAt: string,
+    time: number,
+    state: string,
     questionSet: BasicQuestionSet,
     answers: QuestionAnswer[]
 }

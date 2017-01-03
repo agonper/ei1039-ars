@@ -98,6 +98,9 @@ const DisplayCourseQuery = gql`
       id
       title
       createdAt
+      time
+      state
+      askedAt
       answers {
         option
         text
