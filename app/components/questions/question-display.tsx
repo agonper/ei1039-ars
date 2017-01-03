@@ -20,7 +20,8 @@ import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import {DisplayedQuestion} from "../../reducers/display-course";
 
 interface QuestionDisplayProps {
-    question: DisplayedQuestion
+    question: DisplayedQuestion,
+    displayResponse: boolean
 }
 
 export const QuestionDisplay = (props: QuestionDisplayProps) => {
@@ -38,9 +39,9 @@ export const QuestionDisplay = (props: QuestionDisplayProps) => {
                             return (
                                 <ListItem
                                     rightIcon={
-                                        (answer.isCorrect) ?
+                                        (props.displayResponse) ? ((answer.isCorrect) ?
                                         <CheckIcon color={lightGreen500}/> :
-                                        <CloseIcon color={red500}/>
+                                        <CloseIcon color={red500}/>) : null
                                     }
                                     leftAvatar={
                                         <Avatar

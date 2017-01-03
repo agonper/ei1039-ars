@@ -33,7 +33,7 @@ class DisplayContainerComponent extends Component<DisplayContainerProps, any> {
         if (!displayedQuestion) {
             return <IdleDisplay/>;
         }
-        return <QuestionDisplay question={displayedQuestion}/>;
+        return <QuestionDisplay question={displayedQuestion} displayResponse={false}/>;
     }
 
     render() {

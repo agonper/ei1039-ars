@@ -136,7 +136,7 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
                 {this.renderToolbar(question, questionIndex)}
 
                 <div style={{height: '100%'}} className="row middle-xs center-xs col-xs-offset-2 col-xs-8">
-                    <QuestionDisplay question={question}/>
+                    <QuestionDisplay question={question} displayResponse={true}/>
                 </div>
             </div>
         );
