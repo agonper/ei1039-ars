@@ -32,6 +32,7 @@ import {SelectedQuestionState, SelectedQuestion} from "../../reducers/selected-q
 import {findIndex} from 'lodash';
 import {QuestionDisplay} from "../questions/question-display";
 import {displayQuestion, fetchQuestion, clearDisplayedQuestion} from "../../actions/question";
+import {LinearTimeProgress} from "../questions/linear-time-progress";
 
 interface QuestionContainerProps {
     dashboard: DashboardState,

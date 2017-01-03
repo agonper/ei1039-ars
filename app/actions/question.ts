@@ -89,6 +89,7 @@ const FetchQuestionQuery = gql`
      createdAt
      time
      state
+     askedAt
      questionSet {
         id
         course {

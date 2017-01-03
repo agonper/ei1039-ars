@@ -5,7 +5,6 @@ import {
     Paper,
     Avatar
 } from 'material-ui';
-import {} from ''
 import {
     transparent,
     blue700,
@@ -18,6 +17,7 @@ import {
 import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import {DisplayedQuestion} from "../../reducers/display-course";
+import {LinearTimeProgress} from "./linear-time-progress";
 
 interface QuestionDisplayProps {
     question: DisplayedQuestion,
@@ -30,7 +30,8 @@ export const QuestionDisplay = (props: QuestionDisplayProps) => {
     const colors = [blue700, orange700, green700, yellow700];
 
     return (
-        <div style={{height: '500px', width: '400px'}}>
+        <div style={{height: '530px', width: '400px'}}>
+            <LinearTimeProgress question={question}/>
             <h1>{(question.title) ? question.title: ' '}</h1>
             <div className="start-xs">
                 <Paper>

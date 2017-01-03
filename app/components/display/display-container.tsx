@@ -11,6 +11,7 @@ import {QuestionDisplay} from "../questions/question-display";
 import {webSocketClient} from "../../adapters/websocket";
 import {COURSES_TOPIC} from "../../../common/messages/ws-messages";
 import {subscribeToCourseChanges, unsubscribeToCourseChanges} from "../../actions/display";
+import {LinearTimeProgress} from "../questions/linear-time-progress";
 
 interface DisplayContainerProps {
     displayedCourse: DisplayedCourseState

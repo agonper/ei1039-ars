@@ -25,6 +25,7 @@ export interface SelectedQuestion {
     createdAt: string,
     time: number,
     state: string,
+    askedAt: string,
     questionSet: BasicQuestionSet,
     answers: QuestionAnswer[]
 }
