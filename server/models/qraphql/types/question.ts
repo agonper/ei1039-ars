@@ -45,9 +45,9 @@ const QuestionType: any = new GraphQLObjectType({
             state: {
                 type: GraphQLString
             },
-            openedAt: {
+            askedAt: {
                 type: GraphQLString,
-                resolve: question => (question.openedAt) ? question.openedAt.toISOString() : null
+                resolve: question => (question.askedAt) ? question.askedAt.toISOString() : null
             },
             questionSet: {
                 type: QuestionSetType,

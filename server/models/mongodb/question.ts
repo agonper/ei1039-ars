@@ -11,7 +11,7 @@ export const QuestionSchema = new Schema({
     createdAt: {type: Date, required: true},
     time: {type: Number, required: true},
     state: {type: "string", required: true},
-    openedAt: {type: Date},
+    askedAt: {type: Date},
     questionSet: {type: Schema.Types.ObjectId, ref: 'QuestionSet'},
     answers: [QuestionAnswerSchema]
 });

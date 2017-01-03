@@ -1,3 +1,3 @@
-export const QUESTION_CLOSED = 'closed';
-export const QUESTION_OPENED = 'opened';
-export const QUESTION_BURNED = 'burned';
+export const QUESTION_UNASKED = 'unasked';
+export const QUESTION_ASKED = 'asked';
+export const QUESTION_ANSWERED = 'answered';

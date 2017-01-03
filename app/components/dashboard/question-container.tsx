@@ -52,7 +52,7 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
 
     renderVisibilityButton(question: SelectedQuestion) {
         const {questionSet: {course}} = question;
-        if (!course.displayedQuestion || course.displayedQuestion.id !== question.id) {
+        if (notIsQuestionDisplayed(question)) {
             return (
                 <IconButton
                     onTouchTap={() => this.props.displayQuestion(course.id, question.id)
@@ -83,7 +83,10 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
                         <SkipPreviousIcon color={white}/>
                     </IconButton>
 
-                    <IconButton><PlayArrowIcon color={white}/></IconButton>
+                    <IconButton
+                        disabled={notIsQuestionDisplayed(question)}>
+                        <PlayArrowIcon color={white}/>
+                    </IconButton>
 
                     <IconButton
                         disabled={questionIndex + 1 === questions.length}
@@ -141,6 +144,11 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
             </div>
         );
     }
+}
+
+function notIsQuestionDisplayed(question: SelectedQuestion) {
+    const {questionSet: {course}} = question;
+    return !course.displayedQuestion || course.displayedQuestion.id !== question.id;
 }
 
 function mapStateToProps(state: ApplicationState) {
