@@ -2,12 +2,12 @@ import * as log from "winston";
 import {MongooseDocument, Types} from "mongoose";
 import {QuestionModel} from "./mongodb/question";
 import {QuestionSet} from "./question-set";
-import {QUESTION_UNASKED, QUESTION_ASKED} from "../../common/states/question-states";
+import {QUESTION_UNASKED, QUESTION_ASKED, QUESTION_ANSWERED} from "../../common/states/question-states";
 import {Course} from "./course";
 import * as PubSub from 'pubsub-js';
 import {
     COURSES_TOPIC, QUESTION_ASKING_STARTED,
-    QUESTION_ASKING_STOPPED
+    QUESTION_ASKING_STOPPED, QUESTION_ASKING_ENDED
 } from "../../common/messages/ws-messages";
 
 export interface QuestionAnswer {
@@ -31,6 +31,8 @@ export interface Question extends InputQuestion {
 }
 
 class QuestionRepository {
+
+    private _scheduledJobs: {[questionId: string]: any} = {}; //FIXME this won't scale
 
     public createQuestion(questionSet: any & MongooseDocument, inputQuestion: InputQuestion): Promise<MongooseDocument & Question> {
         if (inputQuestion.answers.length !== 4) throw new Error('4 answers are needed');
@@ -77,24 +79,50 @@ class QuestionRepository {
 
     public askQuestion(questionId: string, course: MongooseDocument & Course): Promise<MongooseDocument & Question> {
         return this.findByIdIfFromCourse(questionId, course).then((question: any) => {
-            question.state = QUESTION_ASKED;
-            question.askedAt = Date.now();
-            return question.save().then((question: any) => {
-                PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: QUESTION_ASKING_STARTED});
-                return question;
-            });
+            if (question.state === QUESTION_UNASKED) {
+                question.state = QUESTION_ASKED;
+                question.askedAt = Date.now();
+                return question.save().then((question: any) => {
+
+                    this._scheduledJobs[question.id] =
+                        setTimeout(() => this.markQuestionAsAnswered(questionId, course), question.time * 1000);
+
+                    PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: QUESTION_ASKING_STARTED});
+                    return question;
+                });
+            }
+            return question;
         });
     }
 
     public stopAskingQuestion(questionId: string, course: MongooseDocument & Course): Promise<MongooseDocument & Question> {
         return this.findByIdIfFromCourse(questionId, course).then((question: any) => {
-            question.state = QUESTION_UNASKED;
-            question.askedAt = null;
-            return question.save().then((question: any) => {
-                PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: QUESTION_ASKING_STOPPED});
-                return question;
-            });
+            // if (question.state === QUESTION_ASKED) {
+                question.state = QUESTION_UNASKED;
+                question.askedAt = null;
+                return question.save().then((question: any) => {
+
+                    clearTimeout(this._scheduledJobs[question.id]);
+
+                    PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: QUESTION_ASKING_STOPPED});
+                    return question;
+                });
+            // }
+            // return question;
         });
+    }
+
+    public markQuestionAsAnswered(questionId: string, course: MongooseDocument & Course): Promise<MongooseDocument & Question> {
+        return this.findByIdIfFromCourse(questionId, course).then((question: any) => {
+            if (question.state === QUESTION_ASKED) {
+                question.state = QUESTION_ANSWERED;
+                return question.save().then((question: any) => {
+                    PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: QUESTION_ASKING_ENDED});
+                    return question;
+                });
+            }
+            return question;
+        })
     }
 }
 

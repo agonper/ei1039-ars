@@ -8,7 +8,7 @@ import {ApplicationState} from "../../reducers/index";
 import {DisplayedCourseState} from "../../reducers/display-course";
 import {IdleDisplay} from "./idle-display";
 import {QuestionDisplay} from "../questions/question-display";
-import {subscribeDisplayToCourseChanges, unsubscribeToCourseChanges} from "../../actions/display";
+import {subscribeDisplayToCourseChanges, unsubscribeToCourseChanges} from "../../actions/subscription";
 
 interface DisplayContainerProps {
     displayedCourse: DisplayedCourseState

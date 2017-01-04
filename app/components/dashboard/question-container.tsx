@@ -33,7 +33,8 @@ import {findIndex} from 'lodash';
 import {QuestionDisplay} from "../questions/question-display";
 import {displayQuestion, clearDisplayedQuestion} from "../../actions/course";
 import {fetchQuestion, askQuestion, stopAskingQuestion} from "../../actions/question";
-import {QUESTION_ASKED, QUESTION_ANSWERED} from "../../../common/states/question-states";
+import {QUESTION_ANSWERED, QUESTION_UNASKED} from "../../../common/states/question-states";
+import {subscribeQuestionContainerToCourseChanges, unsubscribeToCourseChanges} from "../../actions/subscription";
 
 interface QuestionContainerProps {
     dashboard: DashboardState,
@@ -44,20 +45,24 @@ interface QuestionContainerProps {
     clearDisplayedQuestion(courseId: string): Promise<any>,
     askQuestion(questionId: string, courseId: string): Promise<any>,
     stopAskingQuestion(questionId: string, courseId: string): Promise<any>,
+    subscribeQuestionContainerToCourseChanges(courseId: string, questionId: string): void,
+    unsubscribeToCourseChanges(courseId: string): void,
     fetchQuestion(questionId: string): Promise<any>
 }
 
 class QuestionContainerComponent extends Component<QuestionContainerProps, any> {
 
-    componentWillMount() {
-        console.log("MOUNTED");
-    }
-
     componentWillReceiveProps(nextProps: QuestionContainerProps) {
         const actualQuestion = this.props.selectedQuestion.question;
         const nextQuestion = nextProps.selectedQuestion.question;
-        if (actualQuestion && nextQuestion && actualQuestion.id !== nextQuestion.id)
-            console.log("UNSUBSCRIBE / SUBSCRIBE");
+        if (!actualQuestion && nextQuestion) {
+            this.props.subscribeQuestionContainerToCourseChanges(nextQuestion.questionSet.course.id, nextQuestion.id);
+        }
+
+        if (actualQuestion && nextQuestion && actualQuestion.id !== nextQuestion.id) {
+            this.props.unsubscribeToCourseChanges(actualQuestion.questionSet.course.id);
+            this.props.subscribeQuestionContainerToCourseChanges(nextQuestion.questionSet.course.id, nextQuestion.id);
+        }
     }
 
     goBackToQuestionSet() {
@@ -85,9 +90,10 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
     }
 
     renderActionButton(question: SelectedQuestion) {
-        if (question.state === QUESTION_ASKED) {
+        if (question.state !== QUESTION_UNASKED) {
             return (
                 <IconButton
+                    disabled={question.state === QUESTION_ANSWERED}
                     onTouchTap={() => this.props.stopAskingQuestion(question.id, question.questionSet.course.id)
                                           .then(() => this.props.fetchQuestion(question.id))}>
                     <StopIcon color={white}/>
@@ -96,7 +102,7 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
         }
         return (
             <IconButton
-                disabled={notIsQuestionDisplayed(question) || question.state === QUESTION_ANSWERED}
+                disabled={notIsQuestionDisplayed(question)}
                 onTouchTap={() => this.props.askQuestion(question.id, question.questionSet.course.id)
                                       .then(() => this.props.fetchQuestion(question.id))}>
                 <PlayArrowIcon color={white}/>
@@ -195,5 +201,6 @@ export const QuestionContainer = connect(mapStateToProps, {
     selectQuestionSet, selectQuestion,
     displayQuestion, clearDisplayedQuestion,
     askQuestion, stopAskingQuestion,
+    subscribeQuestionContainerToCourseChanges, unsubscribeToCourseChanges,
     fetchQuestion
 })(QuestionContainerComponent);
