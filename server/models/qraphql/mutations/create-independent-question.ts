@@ -20,29 +20,21 @@ const MutationCreateIndependentQuestion = {
     },
     resolve: (root: any, args: any, context: any) => {
 
-        return courseRepository.findById(args.courseId)
+        return courseRepository.findByIdIfOwner(args.courseId, context.user)
             .then((course) => {
-                if (!course) throw new Error('Course not found');
 
-                return course.populate('teacher').execPopulate()
-                    .then((course: any) => {
-                        if (course.teacher._id.toString() !== context.user._id.toString()) {
-                            throw new Error('Forbidden access');
+                return questionSetRepository.findNoNamedOfToday(args.courseId)
+                    .then((questionSet) => {
+                        if (!questionSet) {
+                            return questionSetRepository.createQuestionSet(course, "")
+                                .then((questionSet) => {
+                                    return questionRepository.createQuestion(questionSet, args.question)
+                                        .then((question: any) => questionSet);
+                                });
                         }
 
-                        return questionSetRepository.findNoNamedOfToday(args.courseId)
-                            .then((questionSet) => {
-                                if (!questionSet) {
-                                    return questionSetRepository.createQuestionSet(course, "")
-                                        .then((questionSet) => {
-                                            return questionRepository.createQuestion(questionSet, args.question)
-                                                .then((question: any) => questionSet);
-                                        });
-                                }
-
-                                return questionRepository.createQuestion(questionSet, args.question)
-                                    .then((question: any) => questionSet);
-                            });
+                        return questionRepository.createQuestion(questionSet, args.question)
+                            .then((question: any) => questionSet);
                     });
             });
     }

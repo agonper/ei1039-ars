@@ -28,7 +28,7 @@ class CourseRepository {
         });
     }
 
-    public addStudent(user: User & MongooseDocument, course: any & MongooseDocument): Promise<MongooseDocument & Course> {
+    public addStudent(course: any & MongooseDocument, user: User & MongooseDocument): Promise<MongooseDocument & Course> {
         if (user.type !== 'student') throw new Error('user-not-a-student');
         course.students.push(user);
         return course.save();
@@ -64,6 +64,19 @@ class CourseRepository {
         return <any>CourseModel.findOne({_id: id}).exec().catch((err) => {
             log.error(`Error fetching course by id: ${id}`, err);
             return Promise.reject(new Error("course-not-found"));
+        });
+    }
+
+    public findByIdIfOwner(courseId: string, user: any & MongooseDocument): Promise<MongooseDocument & Course> {
+        return courseRepository.findById(courseId).then((course) => {
+            if (!course) throw new Error('Course not found');
+
+            return course.populate('teacher').execPopulate().then((course: any) => {
+                if (course.teacher._id.toString() !== user._id.toString()) {
+                    throw new Error('Forbidden access');
+                }
+                return course;
+            });
         });
     }
 }

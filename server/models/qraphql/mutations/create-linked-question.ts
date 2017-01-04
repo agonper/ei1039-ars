@@ -24,23 +24,14 @@ const MutationCreateLinkedQuestion = {
     },
     resolve: (root: any, args: any, context: any) => {
 
-        return courseRepository.findById(args.courseId)
+        return courseRepository.findByIdIfOwner(args.courseId, context.user)
             .then((course) => {
-                if (!course) throw new Error('Course not found');
+                return questionSetRepository.findById(args.questionSetId)
+                    .then((questionSet) => {
+                        if (!questionSet) throw new Error('Question set not found');
 
-                return course.populate('teacher').execPopulate()
-                    .then((course: any) => {
-                        if (course.teacher._id.toString() !== context.user._id.toString()) {
-                            throw new Error('Forbidden access');
-                        }
-
-                        return questionSetRepository.findById(args.questionSetId)
-                            .then((questionSet) => {
-                                if (!questionSet) throw new Error('Question set not found');
-
-                                return questionRepository.createQuestion(questionSet, args.question)
-                                    .then((question) => questionSet);
-                            });
+                        return questionRepository.createQuestion(questionSet, args.question)
+                            .then((question) => questionSet);
                     });
             });
     }

@@ -16,16 +16,10 @@ const MutationDisplayQuestion = {
         }
     },
     resolve: (root: any, args: any, context: any) => {
-        return courseRepository.findById(args.courseId).then((course) => {
-            if (!course) throw new Error('Course not found');
-
-            return course.populate('teacher').execPopulate().then((course: any) => {
-                if (course.teacher._id.toString() !== context.user._id.toString()) {
-                    throw new Error('Forbidden access');
-                }
+        return courseRepository.findByIdIfOwner(args.courseId, context.user)
+            .then((course) => {
                 return courseRepository.displayQuestion(course, args.questionId);
             });
-        })
     }
 };
 
