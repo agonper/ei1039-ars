@@ -46,6 +46,17 @@ interface QuestionContainerProps {
 
 class QuestionContainerComponent extends Component<QuestionContainerProps, any> {
 
+    componentWillMount() {
+        console.log("MOUNTED");
+    }
+
+    componentWillReceiveProps(nextProps: QuestionContainerProps) {
+        const actualQuestion = this.props.selectedQuestion.question;
+        const nextQuestion = nextProps.selectedQuestion.question;
+        if (actualQuestion && nextQuestion && actualQuestion.id !== nextQuestion.id)
+            console.log("UNSUBSCRIBE / SUBSCRIBE");
+    }
+
     goBackToQuestionSet() {
         const questionSetId = this.props.selectedQuestion.question.questionSet.id;
         this.props.selectQuestionSet(questionSetId);

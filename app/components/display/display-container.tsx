@@ -10,7 +10,7 @@ import {IdleDisplay} from "./idle-display";
 import {QuestionDisplay} from "../questions/question-display";
 import {webSocketClient} from "../../adapters/websocket";
 import {COURSES_TOPIC} from "../../../common/messages/ws-messages";
-import {subscribeToCourseChanges, unsubscribeToCourseChanges} from "../../actions/display";
+import {subscribeDisplayToCourseChanges, unsubscribeToCourseChanges} from "../../actions/display";
 import {LinearTimeProgress} from "../questions/linear-time-progress";
 
 interface DisplayContainerProps {
@@ -30,7 +30,7 @@ const fullSizeContainerStyle = {
 
 class DisplayContainerComponent extends Component<DisplayContainerProps, any> {
     componentWillMount() {
-        this.props.subscribeToCourseChanges(this.props.displayedCourse.course.id);
+        this.props.subscribeDisplayToCourseChanges(this.props.displayedCourse.course.id);
     }
 
     componentWillUnmount() {
@@ -64,4 +64,4 @@ function mapStateToProps(state: ApplicationState) {
     }
 }
 
-export const DisplayContainer = connect(mapStateToProps, {subscribeToCourseChanges, unsubscribeToCourseChanges})(DisplayContainerComponent);
+export const DisplayContainer = connect(mapStateToProps, {subscribeDisplayToCourseChanges, unsubscribeToCourseChanges})(DisplayContainerComponent);
