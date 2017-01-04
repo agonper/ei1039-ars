@@ -47,6 +47,21 @@ class QuestionSetRepository {
                 return Promise.reject(new Error("question-set-not-found"));
         });
     }
+
+    public findByIdIfFromCourse(questionSetId: string, course: MongooseDocument & Course)
+            : Promise<MongooseDocument & QuestionSet> {
+
+        return this.findById(questionSetId).then((questionSet) => {
+            if (!questionSet) throw new Error('Question set not found');
+
+            return questionSet.populate('course').execPopulate().then((questionSet: any) => {
+                if (questionSet.course._id.toString() !== course._id.toString()) {
+                    throw new Error('Forbidden access')
+                }
+                return questionSet;
+            })
+        })
+    }
 }
 
 export const questionSetRepository = new QuestionSetRepository();

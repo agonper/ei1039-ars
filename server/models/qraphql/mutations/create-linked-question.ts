@@ -26,7 +26,7 @@ const MutationCreateLinkedQuestion = {
 
         return courseRepository.findByIdIfOwner(args.courseId, context.user)
             .then((course) => {
-                return questionSetRepository.findById(args.questionSetId)
+                return questionSetRepository.findByIdIfFromCourse(args.questionSetId, course)
                     .then((questionSet) => {
                         if (!questionSet) throw new Error('Question set not found');
 
