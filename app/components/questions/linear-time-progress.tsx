@@ -31,9 +31,13 @@ export class LinearTimeProgress extends Component<LinearTimeProgressProps, Linea
         const progressColor = this.calculateProgressColor(currentProgress);
         this.state = {currentProgress, progressColor};
 
-        if (props.question.state === QUESTION_ASKED) {
-            this.performCountDown();
-        }
+        this.performCountDown();
+    }
+
+    componentWillReceiveProps(nextProps: LinearTimeProgressProps) {
+        const currentProgress = this.calculateInitialProgress(nextProps);
+        const progressColor = this.calculateProgressColor(currentProgress);
+        this.setState({currentProgress, progressColor});
     }
 
     calculateInitialProgress(props: LinearTimeProgressProps) {
@@ -53,17 +57,17 @@ export class LinearTimeProgress extends Component<LinearTimeProgressProps, Linea
     }
 
     performCountDown() {
-        if (this.state.currentProgress > 0) {
             setTimeout(() => {
-                const {currentProgress} = this.state;
-                const progressColor = this.calculateProgressColor(currentProgress);
-                this.setState({
-                    currentProgress: currentProgress - 1,
-                    progressColor
-                });
+                if (this.props.question.state === QUESTION_ASKED && this.state.currentProgress > 0) {
+                    const {currentProgress} = this.state;
+                    const progressColor = this.calculateProgressColor(currentProgress);
+                    this.setState({
+                        currentProgress: currentProgress - 1,
+                        progressColor
+                    });
+                }
                 this.performCountDown();
             }, 1000)
-        }
     }
 
     render() {

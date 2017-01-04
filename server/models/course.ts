@@ -5,7 +5,7 @@ import {CourseModel} from './mongodb/course';
 import {QuestionSet} from "./question-set";
 import {Question, questionRepository} from "./question";
 import * as PubSub from 'pubsub-js';
-import {COURSES_TOPIC} from "../../common/messages/ws-messages";
+import {COURSES_TOPIC, DISPLAYED_QUESTION_CHANGED, DISPLAYED_QUESTION_CLEARED} from "../../common/messages/ws-messages";
 
 export interface Course {
     _id: Types.ObjectId,
@@ -38,7 +38,7 @@ class CourseRepository {
         return questionRepository.findByIdIfFromCourse(questionId, course).then((question) => {
             course.displayedQuestion = questionId;
             return course.save().then((course: any) => {
-                PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: "DISPLAYED_QUESTION_CHANGED"});
+                PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: DISPLAYED_QUESTION_CHANGED});
                 return course;
             });
         });
@@ -47,7 +47,7 @@ class CourseRepository {
     public clearDisplayedQuestion(course: any & MongooseDocument): Promise<MongooseDocument & Course> {
         course.displayedQuestion = null;
         return course.save().then((course: any) => {
-            PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: "DISPLAYED_QUESTION_CLEARED"});
+            PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: DISPLAYED_QUESTION_CLEARED});
             return course;
         });
     }

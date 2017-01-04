@@ -5,6 +5,8 @@ import MutationCreateLinkedQuestion from "./create-linked-question";
 import MutationCreateIndependentQuestion from "./create-independent-question";
 import MutationDisplayQuestion from "./display-question";
 import MutationClearDisplayedQuestion from "./clear-displayed-question";
+import MutationAskQuestion from "./ask-question";
+import MutationStopAskingQuestion from "./stop-asking-question";
 
 export const MutationType = new GraphQLObjectType({
     name: 'Mutation',
@@ -15,6 +17,8 @@ export const MutationType = new GraphQLObjectType({
         createLinkedQuestion: MutationCreateLinkedQuestion,
         createIndependentQuestion: MutationCreateIndependentQuestion,
         displayQuestion: MutationDisplayQuestion,
-        clearDisplayedQuestion: MutationClearDisplayedQuestion
+        clearDisplayedQuestion: MutationClearDisplayedQuestion,
+        askQuestion: MutationAskQuestion,
+        stopAskingQuestion: MutationStopAskingQuestion
     }
 });

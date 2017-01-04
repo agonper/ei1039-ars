@@ -1,9 +1,14 @@
-import * as log from 'winston';
+import * as log from "winston";
 import {MongooseDocument, Types} from "mongoose";
-import {QuestionModel} from './mongodb/question';
+import {QuestionModel} from "./mongodb/question";
 import {QuestionSet} from "./question-set";
-import {QUESTION_UNASKED} from "../../common/states/question-states";
+import {QUESTION_UNASKED, QUESTION_ASKED} from "../../common/states/question-states";
 import {Course} from "./course";
+import * as PubSub from 'pubsub-js';
+import {
+    COURSES_TOPIC, QUESTION_ASKING_STARTED,
+    QUESTION_ASKING_STOPPED
+} from "../../common/messages/ws-messages";
 
 export interface QuestionAnswer {
     option: string,
@@ -21,7 +26,7 @@ export interface Question extends InputQuestion {
     _id: Types.ObjectId,
     createdAt: Date,
     state: string,
-    askedAt: Date,
+    askedAt: Date | number,
     questionSet: QuestionSet
 }
 
@@ -66,6 +71,28 @@ class QuestionRepository {
                    throw new Error('Forbidden access')
                }
                return question;
+            });
+        });
+    }
+
+    public askQuestion(questionId: string, course: MongooseDocument & Course): Promise<MongooseDocument & Question> {
+        return this.findByIdIfFromCourse(questionId, course).then((question: any) => {
+            question.state = QUESTION_ASKED;
+            question.askedAt = Date.now();
+            return question.save().then((question: any) => {
+                PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: QUESTION_ASKING_STARTED});
+                return question;
+            });
+        });
+    }
+
+    public stopAskingQuestion(questionId: string, course: MongooseDocument & Course): Promise<MongooseDocument & Question> {
+        return this.findByIdIfFromCourse(questionId, course).then((question: any) => {
+            question.state = QUESTION_UNASKED;
+            question.askedAt = null;
+            return question.save().then((question: any) => {
+                PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: QUESTION_ASKING_STOPPED});
+                return question;
             });
         });
     }
