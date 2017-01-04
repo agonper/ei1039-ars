@@ -9,6 +9,14 @@ export const FETCH_QUESTION_PENDING = 'FETCH_QUESTION_PENDING';
 export const FETCH_QUESTION_SUCCESS = 'FETCH_QUESTION_SUCCESS';
 export const FETCH_QUESTION_ERROR = 'FETCH_QUESTION_ERROR';
 
+export const ASK_QUESTION_PENDING = 'ASK_QUESTION_PENDING';
+export const ASK_QUESTION_SUCCESS = 'ASK_QUESTION_SUCCESS';
+export const ASK_QUESTION_ERROR = 'ASK_QUESTION_ERROR';
+
+export const STOP_ASKING_QUESTION_PENDING = 'STOP_ASKING_QUESTION_PENDING';
+export const STOP_ASKING_QUESTION_SUCCESS = 'STOP_ASKING_QUESTION_SUCCESS';
+export const STOP_ASKING_QUESTION_ERROR = 'STOP_ASKING_QUESTION_ERROR';
+
 export interface InputAnswer {
     option: string,
     text: string,
@@ -109,4 +117,38 @@ export function fetchQuestion(id: string) {
         failure: FETCH_QUESTION_ERROR
     };
     return performGraphQLQuery({query: FetchQuestionQuery, variables: {id}, forceFetch: true}, actionTypes);
+}
+
+const AskQuestionMutation = gql`
+ mutation askQuestion($questionId: String!, $courseId: String!) {
+  askQuestion(questionId: $questionId, courseId: $courseId) {
+    id
+  }
+ }`;
+
+export function askQuestion(questionId: string, courseId: string) {
+    const actionTypes = {
+        pending: ASK_QUESTION_PENDING,
+        success: ASK_QUESTION_SUCCESS,
+        failure: ASK_QUESTION_ERROR
+    };
+
+    return performGraphQLMutation({mutation: AskQuestionMutation, variables: {questionId, courseId}}, actionTypes);
+}
+
+const StopAskingQuestionMutation = gql`
+ mutation stopAskingQuestion($questionId: String!, $courseId: String!) {
+  stopAskingQuestion(questionId: $questionId, courseId: $courseId) {
+    id
+  }
+ }`;
+
+export function stopAskingQuestion(questionId: string, courseId: string) {
+    const actionTypes = {
+        pending: STOP_ASKING_QUESTION_PENDING,
+        success: STOP_ASKING_QUESTION_SUCCESS,
+        failure: STOP_ASKING_QUESTION_ERROR
+    };
+
+    return performGraphQLMutation({mutation: StopAskingQuestionMutation, variables: {questionId, courseId}}, actionTypes);
 }

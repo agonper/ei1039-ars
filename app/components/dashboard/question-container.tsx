@@ -32,7 +32,8 @@ import {SelectedQuestionState, SelectedQuestion} from "../../reducers/selected-q
 import {findIndex} from 'lodash';
 import {QuestionDisplay} from "../questions/question-display";
 import {displayQuestion, clearDisplayedQuestion} from "../../actions/course";
-import {fetchQuestion} from "../../actions/question";
+import {fetchQuestion, askQuestion, stopAskingQuestion} from "../../actions/question";
+import {QUESTION_ASKED, QUESTION_ANSWERED} from "../../../common/states/question-states";
 
 interface QuestionContainerProps {
     dashboard: DashboardState,
@@ -41,6 +42,8 @@ interface QuestionContainerProps {
     selectQuestion(questionId: string): any,
     displayQuestion(courseId: string, questionId: string): Promise<any>,
     clearDisplayedQuestion(courseId: string): Promise<any>,
+    askQuestion(questionId: string, courseId: string): Promise<any>,
+    stopAskingQuestion(questionId: string, courseId: string): Promise<any>,
     fetchQuestion(questionId: string): Promise<any>
 }
 
@@ -81,6 +84,26 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
             </IconButton>);
     }
 
+    renderActionButton(question: SelectedQuestion) {
+        if (question.state === QUESTION_ASKED) {
+            return (
+                <IconButton
+                    onTouchTap={() => this.props.stopAskingQuestion(question.id, question.questionSet.course.id)
+                                          .then(() => this.props.fetchQuestion(question.id))}>
+                    <StopIcon color={white}/>
+                </IconButton>
+            );
+        }
+        return (
+            <IconButton
+                disabled={notIsQuestionDisplayed(question) || question.state === QUESTION_ANSWERED}
+                onTouchTap={() => this.props.askQuestion(question.id, question.questionSet.course.id)
+                                      .then(() => this.props.fetchQuestion(question.id))}>
+                <PlayArrowIcon color={white}/>
+            </IconButton>
+        );
+    }
+
     renderToolbar(question: SelectedQuestion, questionIndex: number) {
         const {questionSet: {course, questions}} = question;
         return (
@@ -89,16 +112,14 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
                 <ToolbarGroup>
 
                     {this.renderVisibilityButton(question)}
+
                     <IconButton
                         disabled={questionIndex === 0}
                         onTouchTap={() => this.props.selectQuestion(questions[questionIndex - 1].id)}>
                         <SkipPreviousIcon color={white}/>
                     </IconButton>
 
-                    <IconButton
-                        disabled={notIsQuestionDisplayed(question)}>
-                        <PlayArrowIcon color={white}/>
-                    </IconButton>
+                    {this.renderActionButton(question)}
 
                     <IconButton
                         disabled={questionIndex + 1 === questions.length}
@@ -171,5 +192,8 @@ function mapStateToProps(state: ApplicationState) {
 }
 
 export const QuestionContainer = connect(mapStateToProps, {
-    selectQuestionSet, selectQuestion, displayQuestion, clearDisplayedQuestion, fetchQuestion
+    selectQuestionSet, selectQuestion,
+    displayQuestion, clearDisplayedQuestion,
+    askQuestion, stopAskingQuestion,
+    fetchQuestion
 })(QuestionContainerComponent);
