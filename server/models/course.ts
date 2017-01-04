@@ -35,21 +35,13 @@ class CourseRepository {
     }
 
     public displayQuestion(course: any & MongooseDocument, questionId: string): Promise<MongooseDocument & Course> {
-        return questionRepository.findById(questionId).then((question) => {
-            if (!question) throw new Error('Question not found');
-
-            return question.populate('questionSet').execPopulate().then((question: any) => {
-                if (question.questionSet.course.toString() !== course._id.toString()) {
-                    throw new Error('Question not belongs to course');
-                }
-
-                course.displayedQuestion = questionId;
-                return course.save().then((course: any) => {
-                    PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: "DISPLAYED_QUESTION_CHANGED"});
-                    return course;
-                });
-            })
-        })
+        return questionRepository.findByIdIfFromCourse(questionId, course).then((question) => {
+            course.displayedQuestion = questionId;
+            return course.save().then((course: any) => {
+                PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: "DISPLAYED_QUESTION_CHANGED"});
+                return course;
+            });
+        });
     }
 
     public clearDisplayedQuestion(course: any & MongooseDocument): Promise<MongooseDocument & Course> {

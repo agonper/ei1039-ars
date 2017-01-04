@@ -3,6 +3,7 @@ import {MongooseDocument, Types} from "mongoose";
 import {QuestionModel} from './mongodb/question';
 import {QuestionSet} from "./question-set";
 import {QUESTION_UNASKED} from "../../common/states/question-states";
+import {Course} from "./course";
 
 export interface QuestionAnswer {
     option: string,
@@ -53,6 +54,19 @@ class QuestionRepository {
         return <any>QuestionModel.findOne({_id: id}).exec().catch((err) => {
             log.error(`Error fetching question by id: ${id}`, err);
             return Promise.reject(new Error("question-not-found"));
+        });
+    }
+
+    public findByIdIfFromCourse(questionId: string, course: MongooseDocument & Course): Promise<MongooseDocument & Question> {
+        return this.findById(questionId).then((question) => {
+            if (!question) throw new Error('Question not found');
+
+            return question.populate('questionSet').execPopulate().then((question: any) => {
+               if (question.questionSet.course.toString() !== course._id.toString()) {
+                   throw new Error('Forbidden access')
+               }
+               return question;
+            });
         });
     }
 }
