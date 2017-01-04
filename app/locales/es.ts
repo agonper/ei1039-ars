@@ -65,5 +65,6 @@ export const esTranslationStrings = {
     'dashboard.question.create.empty-answer': "Introduce una respuesta",
     'dashboard.question.project': "Proyectar",
 
-    'display.course.not-found': "Curso no encontrado"
+    'display.course.not-found': "Curso no encontrado",
+    'keypad.idle.message': "Esperando al profesor..."
 };

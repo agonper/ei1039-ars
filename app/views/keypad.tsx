@@ -10,6 +10,7 @@ import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
 import {ApplicationState} from "../reducers/index";
 import {KeypadState} from "../reducers/keypad";
+import {KeypadContainer} from "../components/keypad/keypad-container";
 
 interface KeypadProps {
     params: {
@@ -54,7 +55,7 @@ export const KeypadComponent = (props: KeypadProps) => {
             <AppBar
                 iconElementLeft={<IconButton><RecordVoiceOverIcon color={white}/></IconButton>}
                 title={course.name}/>
-            {JSON.stringify(props.keypad.course)}
+            <KeypadContainer/>
         </div>
     );
 };

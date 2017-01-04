@@ -11,9 +11,10 @@ import {
 import {DisplayedQuestion} from "../../reducers/display-course";
 import moment = require("moment");
 import {QUESTION_UNASKED, QUESTION_ANSWERED, QUESTION_ASKED} from "../../../common/states/question-states";
+import {KeypadQuestion} from "../../reducers/keypad";
 
 interface LinearTimeProgressProps {
-    question: DisplayedQuestion
+    question: DisplayedQuestion | KeypadQuestion
 }
 
 interface LinearTimeProgressState {
@@ -74,7 +75,7 @@ export class LinearTimeProgress extends Component<LinearTimeProgressProps, Linea
         const {question: {time}} = this.props;
 
         return (
-            <div style={{height: '40px', width: '400px'}}>
+            <div style={{height: '40px'}}>
                 <h3 style={{color: this.state.progressColor}}>{`${this.state.currentProgress}s`}</h3>
                 <LinearProgress
                     mode="determinate"
