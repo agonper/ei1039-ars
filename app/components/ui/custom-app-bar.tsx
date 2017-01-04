@@ -20,7 +20,8 @@ import {apolloClient} from "../../adapters/graphql";
 
 interface CustomAppBarProps {
     login: LoginState,
-    logout(): any
+    logout(): any,
+    title?: string
 }
 
 class CustomAppBarComponent extends Component<CustomAppBarProps, any> {

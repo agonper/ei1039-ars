@@ -6,7 +6,6 @@ import {LoginState, LoginReducer} from "./login";
 import {
     CreateQuestionState, CreateQuestionReducer
 } from "./create-question";
-import {QuestionResponseReducer} from "./question-response";
 import {UserCoursesReducer, UserCoursesState} from "./user-courses";
 import {DashboardState, DashboardReducer} from "./dashboard";
 import {CreateCourseReducer, CreateCourseState} from "./create-course";
@@ -15,6 +14,7 @@ import {CreateQuestionSetState, CreateQuestionSetReducer} from "./create-questio
 import {SelectedQuestionSetState, SelectedQuestionSetReducer} from "./selected-question-set";
 import {SelectedQuestionState, SelectedQuestionReducer} from "./selected-question";
 import {DisplayedCourseState, DisplayedCourseReducer} from "./display-course";
+import {KeypadState, KeypadReducer} from "./keypad";
 
 export interface ApplicationState {
     login: LoginState,
@@ -27,7 +27,8 @@ export interface ApplicationState {
     selectedCourse: SelectedCourseState,
     selectedQuestionSet: SelectedQuestionSetState,
     selectedQuestion: SelectedQuestionState,
-    displayedCourse: DisplayedCourseState
+    displayedCourse: DisplayedCourseState,
+    keypad: KeypadState
 }
 
 const rootReducer = combineReducers({
@@ -42,6 +43,7 @@ const rootReducer = combineReducers({
     selectedQuestionSet: SelectedQuestionSetReducer,
     selectedQuestion: SelectedQuestionReducer,
     displayedCourse: DisplayedCourseReducer,
+    keypad: KeypadReducer,
     form: formReducer,
     intl: intlReducer
 });

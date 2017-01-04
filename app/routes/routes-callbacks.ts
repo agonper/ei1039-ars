@@ -1,6 +1,6 @@
 import {applicationStore} from '../store';
 import {Router} from 'react-router';
-import {displayCourse} from "../actions/course";
+import {displayCourse, fetchCourseForKeypad} from "../actions/course";
 import {storeCourseIdForLogin} from "../actions/auth";
 import {ApplicationState} from "../reducers/index";
 
@@ -33,6 +33,7 @@ export const checkIfNotLoggedInForKeypad: Router.EnterHook = (nextState: any, re
         applicationStore.dispatch(<any>storeCourseIdForLogin(nextState.params.courseId));
     }
     checkIfNotLoggedIn(nextState, replace);
+    applicationStore.dispatch(<any>fetchCourseForKeypad(nextState.params.courseId));
 };
 
 const isLoggedIn = () => applicationStore.getState().login.loggedIn;

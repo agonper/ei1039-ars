@@ -26,6 +26,10 @@ export const CLEAR_DISPLAYED_QUESTION_PENDING = 'CLEAR_DISPLAYED_QUESTION_PENDIN
 export const CLEAR_DISPLAYED_QUESTION_SUCCESS = 'CLEAR_DISPLAYED_QUESTION_SUCCESS';
 export const CLEAR_DISPLAYED_QUESTION_ERROR = 'CLEAR_DISPLAYED_QUESTION_ERROR';
 
+export const FETCH_COURSE_FOR_KEYPAD_PENDING = 'FETCH_COURSE_FOR_KEYPAD_PENDING';
+export const FETCH_COURSE_FOR_KEYPAD_SUCCESS = 'FETCH_COURSE_FOR_KEYPAD_SUCCESS';
+export const FETCH_COURSE_FOR_KEYPAD_ERROR = 'FETCH_COURSE_FOR_KEYPAD_ERROR';
+
 const UserCoursesQuery = gql`
  query {
   userCourses {
@@ -166,4 +170,34 @@ export function clearDisplayedQuestion(courseId: string) {
     };
 
     return performGraphQLMutation({mutation: ClearDisplayedQuestionMutation, variables: {courseId}}, actionTypes);
+}
+
+const FetchCourseForKeypadQuery = gql`
+ query course($id: String!) {
+   course(id: $id) {
+     id
+     name
+     displayedQuestion {
+      id
+      title
+      createdAt
+      time
+      state
+      askedAt
+      answers {
+        option
+        text
+      }
+    }
+   }
+ }`;
+
+export function fetchCourseForKeypad(id: string, force?: boolean) {
+    const actionTypes = {
+        pending: FETCH_COURSE_FOR_KEYPAD_PENDING,
+        success: FETCH_COURSE_FOR_KEYPAD_SUCCESS,
+        failure: FETCH_COURSE_FOR_KEYPAD_ERROR
+    };
+
+    return performGraphQLQuery({query: FetchCourseForKeypadQuery, variables: {id}, forceFetch: force}, actionTypes);
 }

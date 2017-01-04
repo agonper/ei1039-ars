@@ -7,14 +7,15 @@ import {white} from 'material-ui/styles/colors';
 import RecordVoiceOverIcon from 'material-ui/svg-icons/action/record-voice-over';
 import MoreHorizIcon from 'material-ui/svg-icons/navigation/more-horiz';
 import {FormattedMessage} from 'react-intl';
-import {DisplayContainer} from "../components/display/display-container";
 import {connect} from 'react-redux';
 import {ApplicationState} from "../reducers/index";
+import {KeypadState} from "../reducers/keypad";
 
 interface KeypadProps {
     params: {
         courseId: string
-    }
+    },
+    keypad: KeypadState
 }
 
 const fullSizeStyle = {
@@ -27,8 +28,7 @@ const fullSizeStyle = {
 };
 
 export const KeypadComponent = (props: KeypadProps) => {
-    return <div>Hello from keypad</div>;
-    /*const {fetching, course, error} = props.displayedCourse;
+    const {fetching, course, error} = props.keypad;
     if (fetching && !course) {
         return (
             <div style={fullSizeStyle}>
@@ -54,15 +54,15 @@ export const KeypadComponent = (props: KeypadProps) => {
             <AppBar
                 iconElementLeft={<IconButton><RecordVoiceOverIcon color={white}/></IconButton>}
                 title={course.name}/>
-            <DisplayContainer/>
+            {JSON.stringify(props.keypad.course)}
         </div>
-    );*/
+    );
 };
 
 function mapStateToProps(state: ApplicationState) {
     return {
-        // displayedCourse: state.displayedCourse
+        keypad: state.keypad
     }
 }
 
-export const Keypad = connect(/*mapStateToProps*/)(KeypadComponent);
+export const Keypad = connect(mapStateToProps)(KeypadComponent);
