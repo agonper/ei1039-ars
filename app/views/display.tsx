@@ -29,7 +29,8 @@ const fullSizeStyle = {
 };
 
 export const DisplayComponent = (props: DisplayProps) => {
-    if (props.displayedCourse.fetching) {
+    const {fetching, course, error} = props.displayedCourse;
+    if (fetching && !course) {
         return (
             <div style={fullSizeStyle}>
                 <div style={{height: '100%'}} className="row middle-xs center-xs">
@@ -39,7 +40,7 @@ export const DisplayComponent = (props: DisplayProps) => {
         );
     }
 
-    if (props.displayedCourse.error) {
+    if (error) {
         return (
             <div style={fullSizeStyle}>
                 <div style={{height: '100%'}} className="row middle-xs center-xs">
@@ -53,7 +54,7 @@ export const DisplayComponent = (props: DisplayProps) => {
         <div>
             <AppBar
                 iconElementLeft={<IconButton><RecordVoiceOverIcon color={white}/></IconButton>}
-                title={props.displayedCourse.course.name}/>
+                title={course.name}/>
             <DisplayContainer/>
         </div>
     );

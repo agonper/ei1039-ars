@@ -5,7 +5,7 @@ import {
 } from 'material-ui';
 import {
     lightGreen800,
-    yellow600,
+    yellow800,
     red500
 } from 'material-ui/styles/colors';
 import {DisplayedQuestion} from "../../reducers/display-course";
@@ -49,7 +49,7 @@ export class LinearTimeProgress extends Component<LinearTimeProgressProps, Linea
     }
 
     calculateProgressColor(progress: number) {
-        return (progress > 10) ? lightGreen800 : (progress > 5) ? yellow600 : red500;
+        return (progress > 10) ? lightGreen800 : (progress > 5) ? yellow800 : red500;
     }
 
     performCountDown() {

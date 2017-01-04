@@ -27,7 +27,8 @@ const buttonStyle = {
 class CourseContainerComponent extends Component<CourseContainerProps, any> {
 
     render() {
-        if (this.props.selectedCourse.fetching){
+        const {fetching, course} = this.props.selectedCourse;
+        if (fetching && !course){
             return (
                 <div style={{height: '100%'}} className="row middle-xs center-xs">
                     <div><MoreHorizIcon/></div>

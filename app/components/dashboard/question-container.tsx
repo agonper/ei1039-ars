@@ -109,7 +109,8 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
     }
 
     render() {
-        if (this.props.selectedQuestion.fetching){
+        const {fetching, question} = this.props.selectedQuestion;
+        if (fetching && !question){
             return (
                 <div style={{height: '100%'}} className="row middle-xs center-xs">
                     <div><MoreHorizIcon/></div>
@@ -117,7 +118,6 @@ class QuestionContainerComponent extends Component<QuestionContainerProps, any> 
             );
         }
 
-        const question = this.props.selectedQuestion.question;
         const {title, questionSet: {questions}} = question;
         const id = this.props.dashboard.selectedItemId;
         const questionIndex = findIndex(questions, {id});

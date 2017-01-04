@@ -34,7 +34,8 @@ class QuestionSetContainerComponent extends Component<QuestionSetContainerProps,
     }
 
     render() {
-        if (this.props.selectedQuestionSet.fetching){
+        const {fetching, questionSet} = this.props.selectedQuestionSet;
+        if (fetching && !questionSet){
             return (
                 <div style={{height: '100%'}} className="row middle-xs center-xs">
                     <div><MoreHorizIcon/></div>
