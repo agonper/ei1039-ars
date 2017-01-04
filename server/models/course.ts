@@ -70,13 +70,9 @@ class CourseRepository {
     public findByIdIfOwner(courseId: string, user: any & MongooseDocument): Promise<MongooseDocument & Course> {
         return courseRepository.findById(courseId).then((course) => {
             if (!course) throw new Error('Course not found');
+            if (course.teacher.toString() !== user._id.toString()) throw new Error('Forbidden access');
 
-            return course.populate('teacher').execPopulate().then((course: any) => {
-                if (course.teacher._id.toString() !== user._id.toString()) {
-                    throw new Error('Forbidden access');
-                }
-                return course;
-            });
+            return course;
         });
     }
 }
