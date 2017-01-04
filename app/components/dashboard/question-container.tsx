@@ -11,7 +11,6 @@ import {
 import {white} from 'material-ui/styles/colors';
 
 import ArrowBackIcon from 'material-ui/svg-icons/navigation/arrow-back';
-import InsertChartIcon from 'material-ui/svg-icons/editor/insert-chart';
 import VisibilityIcon from 'material-ui/svg-icons/action/visibility';
 import VisibilityOffIcon from 'material-ui/svg-icons/action/visibility-off';
 import SkipPreviousIcon from 'material-ui/svg-icons/av/skip-previous';

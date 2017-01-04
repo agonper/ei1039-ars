@@ -5,7 +5,7 @@ export const SHORT_COURSE_URL_PENDING = 'SHORT_COURSE_URL_PENDING';
 export const SHORT_COURSE_URL_SUCCESS = 'SHORT_COURSE_URL_SUCCESS';
 export const SHORT_COURSE_URL_ERROR = 'SHORT_COURSE_URL_ERROR';
 
-const BASE_URL_TO_SHORTEN = `${appConfig.rootUrl}/course`;
+const BASE_URL_TO_SHORTEN = `${appConfig.rootUrl}/keypad`;
 const URL_SHORTENER_URL = `${appConfig.urlShortenerBaseURL}?key=${appConfig.gglAPIkey}`;
 
 export function shortenCourseUrl(courseId: string) {

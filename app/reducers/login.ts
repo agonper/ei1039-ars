@@ -1,5 +1,5 @@
 import {GenericAction} from "../actions/common";
-import {LOGIN_PENDING, LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT} from "../actions/auth";
+import {LOGIN_PENDING, LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT, STORE_COURSE_ID_FOR_LOGIN} from "../actions/auth";
 
 export interface LoginState {
     loggingIn: boolean,
@@ -8,7 +8,8 @@ export interface LoginState {
     errors: {
         email: string,
         password: string
-    }
+    },
+    courseId?: string
 }
 
 const storageTokenKey = 'session-token';
@@ -35,6 +36,8 @@ export const LoginReducer = (state: LoginState = INITIAL_SATE, action: GenericAc
         case LOGOUT:
             removeToken();
             return {...state, loggedIn: false, token: undefined};
+        case STORE_COURSE_ID_FOR_LOGIN:
+            return {...state, courseId: action.payload};
         default:
             return state;
     }

@@ -32,9 +32,10 @@ export class LoginFormComponent extends Component<any, any> {
     };
 
     onSubmitHandle(loginData: LoginData) {
+        const {courseId} = this.props.login;
         this.props.loginUser(loginData)
             .then(() => this.props.resetForm())
-            .then(() => this.context.router.push('/dashboard'));
+            .then(() => this.context.router.push((courseId) ? `/keypad/${courseId}` : '/dashboard'));
     }
 
     render() {

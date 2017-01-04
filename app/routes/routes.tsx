@@ -6,12 +6,13 @@ import {MainView} from '../views/main-view';
 import {Login} from '../views/login';
 import {Signup} from '../views/signup';
 import {Dashboard} from "../views/dashboard";
+import {Display} from "../views/display";
+import {Keypad} from "../views/keypad";
 import {
     checkIfLoggedIn,
     checkIfNotLoggedIn,
-    checkIfNotLoggedInForDisplay
+    checkIfNotLoggedInForDisplay, checkIfNotLoggedInForKeypad
 } from "./routes-callbacks";
-import {Display} from "../views/display";
 
 export default (
     <Route path="/" component={App} >
@@ -20,5 +21,6 @@ export default (
         <Route path="signup" component={Signup} onEnter={checkIfLoggedIn}/>
         <Route path="dashboard" component={Dashboard} onEnter={checkIfNotLoggedIn}/>
         <Route path="display/:courseId" component={Display} onEnter={checkIfNotLoggedInForDisplay}/>
+        <Route path="keypad/:courseId" component={Keypad} onEnter={checkIfNotLoggedInForKeypad}/>
     </Route>
 );
