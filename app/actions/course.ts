@@ -6,17 +6,25 @@ export const LIST_COURSES_PENDING = 'LIST_COURSES_PENDING';
 export const LIST_COURSES_SUCCESS = 'LIST_COURSES_SUCCESS';
 export const LIST_COURSES_ERROR = 'LIST_COURSES_ERROR';
 
-export const DISPLAY_COURSE_PENDING = 'DISPLAY_COURSE_PENDING';
-export const DISPLAY_COURSE_SUCCESS = 'DISPLAY_COURSE_SUCCESS';
-export const DISPLAY_COURSE_ERROR = 'DISPLAY_COURSE_ERROR';
+export const CREATE_COURSE_PENDING = 'CREATE_COURSE_PENDING';
+export const CREATE_COURSE_SUCCESS = 'CREATE_COURSE_SUCCESS';
+export const CREATE_COURSE_ERROR = 'CREATE_COURSE_ERROR';
 
 export const FETCH_COURSE_PENDING = 'FETCH_COURSE_PENDING';
 export const FETCH_COURSE_SUCCESS = 'FETCH_COURSE_SUCCESS';
 export const FETCH_COURSE_ERROR = 'FETCH_COURSE_ERROR';
 
-export const CREATE_COURSE_PENDING = 'CREATE_COURSE_PENDING';
-export const CREATE_COURSE_SUCCESS = 'CREATE_COURSE_SUCCESS';
-export const CREATE_COURSE_ERROR = 'CREATE_COURSE_ERROR';
+export const DISPLAY_COURSE_PENDING = 'DISPLAY_COURSE_PENDING';
+export const DISPLAY_COURSE_SUCCESS = 'DISPLAY_COURSE_SUCCESS';
+export const DISPLAY_COURSE_ERROR = 'DISPLAY_COURSE_ERROR';
+
+export const DISPLAY_QUESTION_PENDING = 'DISPLAY_QUESTION_PENDING';
+export const DISPLAY_QUESTION_SUCCESS = 'DISPLAY_QUESTION_SUCCESS';
+export const DISPLAY_QUESTION_ERROR = 'DISPLAY_QUESTION_ERROR';
+
+export const CLEAR_DISPLAYED_QUESTION_PENDING = 'CLEAR_DISPLAYED_QUESTION_PENDING';
+export const CLEAR_DISPLAYED_QUESTION_SUCCESS = 'CLEAR_DISPLAYED_QUESTION_SUCCESS';
+export const CLEAR_DISPLAYED_QUESTION_ERROR = 'CLEAR_DISPLAYED_QUESTION_ERROR';
 
 const UserCoursesQuery = gql`
  query {
@@ -118,4 +126,44 @@ export function displayCourse(id: string, force?: boolean) {
     };
 
     return performGraphQLQuery({query: DisplayCourseQuery, variables: {id}, forceFetch: force}, actionTypes);
+}
+
+const DisplayQuestionMutation = gql`
+ mutation displayQuestion($courseId: String!, $questionId: String!) {
+   displayQuestion(courseId: $courseId, questionId: $questionId) {
+     id
+     displayedQuestion {
+       id
+     }
+   }
+ }`;
+
+export function displayQuestion(courseId: string, questionId: string) {
+    const actionTypes = {
+        pending: DISPLAY_QUESTION_PENDING,
+        success: DISPLAY_QUESTION_SUCCESS,
+        failure: DISPLAY_QUESTION_ERROR
+    };
+
+    return performGraphQLMutation({mutation: DisplayQuestionMutation, variables: {courseId, questionId}}, actionTypes);
+}
+
+const ClearDisplayedQuestionMutation = gql`
+ mutation clearDisplayedQuestion($courseId: String!) {
+   clearDisplayedQuestion(courseId: $courseId) {
+     id
+     displayedQuestion {
+       id
+     }
+   }
+ }`;
+
+export function clearDisplayedQuestion(courseId: string) {
+    const actionTypes = {
+        pending: CLEAR_DISPLAYED_QUESTION_PENDING,
+        success: CLEAR_DISPLAYED_QUESTION_SUCCESS,
+        failure: CLEAR_DISPLAYED_QUESTION_ERROR
+    };
+
+    return performGraphQLMutation({mutation: ClearDisplayedQuestionMutation, variables: {courseId}}, actionTypes);
 }

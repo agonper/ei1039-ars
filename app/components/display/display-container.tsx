@@ -8,14 +8,11 @@ import {ApplicationState} from "../../reducers/index";
 import {DisplayedCourseState} from "../../reducers/display-course";
 import {IdleDisplay} from "./idle-display";
 import {QuestionDisplay} from "../questions/question-display";
-import {webSocketClient} from "../../adapters/websocket";
-import {COURSES_TOPIC} from "../../../common/messages/ws-messages";
 import {subscribeDisplayToCourseChanges, unsubscribeToCourseChanges} from "../../actions/display";
-import {LinearTimeProgress} from "../questions/linear-time-progress";
 
 interface DisplayContainerProps {
     displayedCourse: DisplayedCourseState
-    subscribeToCourseChanges(courseId: string): void
+    subscribeDisplayToCourseChanges(courseId: string): void
     unsubscribeToCourseChanges(courseId: string): void
 }
 

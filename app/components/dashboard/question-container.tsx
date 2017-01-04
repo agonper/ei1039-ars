@@ -31,8 +31,8 @@ import {selectQuestionSet, selectQuestion} from "../../actions/dashboard";
 import {SelectedQuestionState, SelectedQuestion} from "../../reducers/selected-question";
 import {findIndex} from 'lodash';
 import {QuestionDisplay} from "../questions/question-display";
-import {displayQuestion, fetchQuestion, clearDisplayedQuestion} from "../../actions/question";
-import {LinearTimeProgress} from "../questions/linear-time-progress";
+import {displayQuestion, clearDisplayedQuestion} from "../../actions/course";
+import {fetchQuestion} from "../../actions/question";
 
 interface QuestionContainerProps {
     dashboard: DashboardState,
