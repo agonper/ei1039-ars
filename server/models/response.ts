@@ -7,6 +7,8 @@ import {QUESTION_ASKED} from "../../common/states/question-states";
 import {USER_STUDENT} from "../../common/types/user-types";
 import {includes} from "lodash";
 import {courseRepository} from "./course";
+import {COURSES_TOPIC, STUDENT_ANSWERED} from "../../common/messages/ws-messages";
+import * as PubSub from 'pubsub-js';
 
 export interface Response {
     _id: Types.ObjectId
@@ -35,6 +37,7 @@ class ResponseRepository {
             return question.save().then(() => {
                 return question.populate('questionSet').execPopulate().then((question: any) => {
                     const questionSetCourse = question.questionSet.course;
+                    PubSub.publish(`${COURSES_TOPIC}.${questionSetCourse}`, {msg: STUDENT_ANSWERED});
 
                     const studentInCourse =
                         includes(user.courses.map((c: any) => c.toString()), questionSetCourse.toString());

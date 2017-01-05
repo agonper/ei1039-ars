@@ -4,7 +4,7 @@ import {Dispatch} from "redux";
 import {webSocketClient} from "../adapters/websocket";
 import {
     COURSES_TOPIC, QUESTION_ASKING_ENDED, QUESTION_ASKING_STARTED,
-    QUESTION_ASKING_STOPPED
+    QUESTION_ASKING_STOPPED, STUDENT_ANSWERED
 } from "../../common/messages/ws-messages";
 import {displayCourse, fetchCourseForKeypad} from "./course";
 import {fetchQuestion} from "./question";
@@ -13,7 +13,9 @@ export const subscribeDisplayToCourseChanges = (courseId: string): ThunkAction<v
     return (dispatch: Dispatch<ApplicationState>) => {
         webSocketClient.start().then(() => {
             webSocketClient.subscribe(`${COURSES_TOPIC}.${courseId}`, (data) => {
-                dispatch(<any>displayCourse(courseId, true /* Fetch again */))
+                if (data.msg !== STUDENT_ANSWERED) {
+                    dispatch(<any>displayCourse(courseId, true /* Fetch again */))
+                }
             });
         });
     }
@@ -27,6 +29,7 @@ export const subscribeQuestionContainerToCourseChanges = (courseId: string, ques
                     case QUESTION_ASKING_STARTED:
                     case QUESTION_ASKING_STOPPED:
                     case QUESTION_ASKING_ENDED:
+                    case STUDENT_ANSWERED:
                         dispatch(<any>fetchQuestion(questionId))
                 }
             });

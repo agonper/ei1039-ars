@@ -53,7 +53,8 @@ export const QuestionDisplay = (props: QuestionDisplayProps) => {
                                     }
                                     key={`${question.id}_${answer.option}`}>
 
-                                        {(answer.text) ? answer.text : ''}
+                                        <div>{(answer.text) ? answer.text : ''}</div>
+                                        <div></div>
                                 </ListItem>
                             );
                         })}
