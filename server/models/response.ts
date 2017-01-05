@@ -5,6 +5,8 @@ import {User} from "./user";
 import {Question} from "./question";
 import {QUESTION_ASKED} from "../../common/states/question-states";
 import {USER_STUDENT} from "../../common/types/user-types";
+import {includes} from "lodash";
+import {courseRepository} from "./course";
 
 export interface Response {
     _id: Types.ObjectId
@@ -16,7 +18,7 @@ export interface Response {
 
 class ResponseRepository {
 
-    public createResponse(question: MongooseDocument & any, user: MongooseDocument & User, option: string): Promise<MongooseDocument & Response> {
+    public createResponse(question: MongooseDocument & any, user: MongooseDocument & any, option: string): Promise<MongooseDocument & Response> {
         if (question.state !== QUESTION_ASKED) throw new Error('Closed question');
         if (user.type !== USER_STUDENT) throw new Error('Only students are allowed to answer questions');
 
@@ -30,7 +32,22 @@ class ResponseRepository {
         const response = new ResponseModel(responseProperties);
         return response.save().then((response: any) => {
             question.responses.push(response);
-            return question.save().then(() => response);
+            return question.save().then(() => {
+                return question.populate('questionSet').execPopulate().then((question: any) => {
+                    const questionSetCourse = question.questionSet.course;
+
+                    const studentInCourse =
+                        includes(user.courses.map((c: any) => c.toString()), questionSetCourse.toString());
+
+                    if (!studentInCourse) {
+                        return courseRepository.findById(questionSetCourse).then((course: any) => {
+                            console.log("Course id: ", course._id);
+                            return courseRepository.addStudent(course, user).then(() => response);
+                        });
+                    }
+                    return response;
+                });
+            });
         });
     }
 

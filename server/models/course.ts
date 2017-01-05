@@ -29,10 +29,13 @@ class CourseRepository {
         });
     }
 
-    public addStudent(course: any & MongooseDocument, user: User & MongooseDocument): Promise<MongooseDocument & Course> {
+    public addStudent(course: any & MongooseDocument, user: any & MongooseDocument): Promise<MongooseDocument & Course> {
         if (user.type !== USER_STUDENT) throw new Error('user-not-a-student');
         course.students.push(user);
-        return course.save();
+        return course.save().then((course: any) => {
+            user.courses.push(course);
+            return user.save().then(() => course);
+        });
     }
 
     public displayQuestion(course: any & MongooseDocument, questionId: string): Promise<MongooseDocument & Course> {
