@@ -10,16 +10,21 @@ import {
     white
 } from 'material-ui/styles/colors';
 import {LinearTimeProgress} from "./linear-time-progress";
-import {KeypadQuestion} from "../../reducers/keypad";
+import {KeypadState} from "../../reducers/keypad";
 import {QUESTION_ASKED} from "../../../common/states/question-states";
+import {connect} from "react-redux";
+import {answerQuestion} from "../../actions/keypad";
+import {ApplicationState} from "../../reducers/index";
 
 interface QuestionKeypadProps {
-    question: KeypadQuestion
+    keypad: KeypadState,
+    answerQuestion(questionId: string, answer: string): Promise<any>
 }
 
-export const QuestionKeypad = (props: QuestionKeypadProps) => {
+const QuestionKeypadComponent = (props: QuestionKeypadProps) => {
 
-    const {question} = props;
+    const question = props.keypad.course.displayedQuestion;
+    const {answering, hasAnswered} = props.keypad;
     const colors = [blue700, orange700, green700, yellow700];
 
     return (
@@ -30,7 +35,9 @@ export const QuestionKeypad = (props: QuestionKeypadProps) => {
                 {question.answers.map((answer, i) => {
                     return (
                         <RaisedButton
-                            disabled={question.state !== QUESTION_ASKED}
+                            key={answer.option}
+                            onTouchTap={() => props.answerQuestion(question.id, answer.option)}
+                            disabled={question.state !== QUESTION_ASKED || answering || hasAnswered}
                             style={{margin: '5px 0 5px 0'}}
                             backgroundColor={colors[i]}
                             labelColor={white}
@@ -42,3 +49,11 @@ export const QuestionKeypad = (props: QuestionKeypadProps) => {
         </div>
     );
 };
+
+function mapStateToProps(state: ApplicationState) {
+    return {
+        keypad: state.keypad
+    }
+}
+
+export const QuestionKeypad = connect(mapStateToProps, {answerQuestion})(QuestionKeypadComponent);

@@ -7,7 +7,7 @@ import {FormattedMessage} from 'react-intl';
 
 export const fieldsToOmitFromInput = ['initialValue', 'autofill', 'onUpdate', 'valid',
     'invalid', 'dirty', 'pristine', 'failure',
-    'active', 'touched', 'visited', 'autofilled'];
+    'active', 'touched', 'visited', 'autofilled', 'error'];
 
 interface MainTextFieldProps {
     field: FieldProp<any>,

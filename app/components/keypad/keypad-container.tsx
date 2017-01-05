@@ -42,7 +42,7 @@ class KeypadContainerComponent extends Component<KeypadContainerProps, any> {
         if (!displayedQuestion) {
             return <IdleKeypad/>;
         }
-        return <QuestionKeypad question={displayedQuestion}/>;
+        return <QuestionKeypad/>;
     }
 
     render() {

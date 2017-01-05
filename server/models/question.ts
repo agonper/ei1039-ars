@@ -100,7 +100,7 @@ class QuestionRepository {
 
     public stopAskingQuestion(questionId: string, course: MongooseDocument & Course): Promise<MongooseDocument & Question> {
         return this.findByIdIfFromCourse(questionId, course).then((question: any) => {
-            // if (question.state === QUESTION_ASKED) {
+            // if (question.state === QUESTION_ASKED) { //FIXME Uncomment
                 question.state = QUESTION_UNASKED;
                 question.askedAt = null;
                 question.responses = [];
