@@ -9,6 +9,8 @@ import {
     COURSES_TOPIC, QUESTION_ASKING_STARTED,
     QUESTION_ASKING_STOPPED, QUESTION_ASKING_ENDED
 } from "../../common/messages/ws-messages";
+import {Response} from "./response";
+import {ResponseModel} from "./mongodb/response";
 
 export interface QuestionAnswer {
     option: string,
@@ -28,6 +30,7 @@ export interface Question extends InputQuestion {
     state: string,
     askedAt: Date | number,
     questionSet: QuestionSet
+    responses: Response[]
 }
 
 class QuestionRepository {
@@ -100,9 +103,11 @@ class QuestionRepository {
             // if (question.state === QUESTION_ASKED) {
                 question.state = QUESTION_UNASKED;
                 question.askedAt = null;
+                question.responses = [];
                 return question.save().then((question: any) => {
 
                     clearTimeout(this._scheduledJobs[question.id]);
+                    ResponseModel.remove({question: question._id});
 
                     PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: QUESTION_ASKING_STOPPED});
                     return question;

@@ -7,6 +7,7 @@ import MutationDisplayQuestion from "./display-question";
 import MutationClearDisplayedQuestion from "./clear-displayed-question";
 import MutationAskQuestion from "./ask-question";
 import MutationStopAskingQuestion from "./stop-asking-question";
+import MutationAnswerQuestion from "./answer-question";
 
 export const MutationType = new GraphQLObjectType({
     name: 'Mutation',
@@ -19,6 +20,7 @@ export const MutationType = new GraphQLObjectType({
         displayQuestion: MutationDisplayQuestion,
         clearDisplayedQuestion: MutationClearDisplayedQuestion,
         askQuestion: MutationAskQuestion,
-        stopAskingQuestion: MutationStopAskingQuestion
+        stopAskingQuestion: MutationStopAskingQuestion,
+        answerQuestion: MutationAnswerQuestion
     }
 });

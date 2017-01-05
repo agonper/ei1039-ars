@@ -23,7 +23,7 @@ export const QuestionKeypad = (props: QuestionKeypadProps) => {
     const colors = [blue700, orange700, green700, yellow700];
 
     return (
-        <div style={{height: '530px', width: '300px'}}>
+        <div style={{height: '450px', width: '300px'}}>
             <LinearTimeProgress question={question}/>
             <h1>{(question.title) ? question.title: ' '}</h1>
             <div style={{padding: '10px'}}>

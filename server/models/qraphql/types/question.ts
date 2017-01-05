@@ -6,6 +6,7 @@ import {GraphQLBoolean} from "graphql";
 import {GraphQLInt} from "graphql";
 import QuestionSetType from "./question-set";
 import {Question} from "../../question";
+import ResponseType from "./response";
 
 const AnswerType: any = new GraphQLObjectType({
     name: 'Answer',
@@ -56,6 +57,11 @@ const QuestionType: any = new GraphQLObjectType({
             },
             answers: {
                 type: new GraphQLList(AnswerType)
+            },
+            responses: {
+                type: new GraphQLList(ResponseType),
+                resolve: question => question.populate('responses').execPopulate()
+                    .then((question: Question) => question.responses)
             }
         }
     }

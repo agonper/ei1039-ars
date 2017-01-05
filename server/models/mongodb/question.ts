@@ -13,7 +13,8 @@ export const QuestionSchema = new Schema({
     state: {type: "string", required: true},
     askedAt: {type: Date},
     questionSet: {type: Schema.Types.ObjectId, ref: 'QuestionSet'},
-    answers: [QuestionAnswerSchema]
+    answers: [QuestionAnswerSchema],
+    responses: [{type: Schema.Types.ObjectId, ref: 'Response'}]
 });
 
 export const QuestionModel = model('Question', QuestionSchema);

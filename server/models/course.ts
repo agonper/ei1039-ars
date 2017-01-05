@@ -6,6 +6,7 @@ import {QuestionSet} from "./question-set";
 import {Question, questionRepository} from "./question";
 import * as PubSub from 'pubsub-js';
 import {COURSES_TOPIC, DISPLAYED_QUESTION_CHANGED, DISPLAYED_QUESTION_CLEARED} from "../../common/messages/ws-messages";
+import {USER_TEACHER, USER_STUDENT} from "../../common/types/user-types";
 
 export interface Course {
     _id: Types.ObjectId,
@@ -20,7 +21,7 @@ export interface Course {
 class CourseRepository {
 
     public createCourse(user: any & MongooseDocument, name: string): Promise<MongooseDocument & Course> {
-        if (user.type !== 'teacher') throw new Error('user-not-a-teacher');
+        if (user.type !== USER_TEACHER) throw new Error('user-not-a-teacher');
         const course = new CourseModel({name: name, teacher: user._id, createdAt: Date.now()});
         return course.save().then((course) => {
             user.courses.push(course);
@@ -29,7 +30,7 @@ class CourseRepository {
     }
 
     public addStudent(course: any & MongooseDocument, user: User & MongooseDocument): Promise<MongooseDocument & Course> {
-        if (user.type !== 'student') throw new Error('user-not-a-student');
+        if (user.type !== USER_STUDENT) throw new Error('user-not-a-student');
         course.students.push(user);
         return course.save();
     }
