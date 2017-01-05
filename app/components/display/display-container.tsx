@@ -9,6 +9,7 @@ import {DisplayedCourseState} from "../../reducers/display-course";
 import {IdleDisplay} from "./idle-display";
 import {QuestionDisplay} from "../questions/question-display";
 import {subscribeDisplayToCourseChanges, unsubscribeToCourseChanges} from "../../actions/subscription";
+import {QUESTION_ANSWERED} from "../../../common/states/question-states";
 
 interface DisplayContainerProps {
     displayedCourse: DisplayedCourseState
@@ -39,7 +40,11 @@ class DisplayContainerComponent extends Component<DisplayContainerProps, any> {
         if (!displayedQuestion) {
             return <IdleDisplay/>;
         }
-        return <QuestionDisplay question={displayedQuestion} displayResponse={false}/>;
+        const isAnswered = displayedQuestion.state === QUESTION_ANSWERED;
+        return <QuestionDisplay
+            question={displayedQuestion}
+            displayResponse={isAnswered}
+            displayStudentResponses={isAnswered}/>;
     }
 
     render() {

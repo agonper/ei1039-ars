@@ -3,7 +3,8 @@ import {
     List,
     ListItem,
     Paper,
-    Avatar
+    Avatar,
+    LinearProgress
 } from 'material-ui';
 import {
     transparent,
@@ -18,15 +19,18 @@ import CheckIcon from 'material-ui/svg-icons/navigation/check';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import {DisplayedQuestion} from "../../reducers/display-course";
 import {LinearTimeProgress} from "./linear-time-progress";
+import {filter} from "lodash";
 
 interface QuestionDisplayProps {
     question: DisplayedQuestion,
-    displayResponse: boolean
+    displayResponse: boolean,
+    displayStudentResponses?: boolean
 }
 
 export const QuestionDisplay = (props: QuestionDisplayProps) => {
 
     const {question} = props;
+    const {responses} = props.question;
     const colors = [blue700, orange700, green700, yellow700];
 
     return (
@@ -54,7 +58,15 @@ export const QuestionDisplay = (props: QuestionDisplayProps) => {
                                     key={`${question.id}_${answer.option}`}>
 
                                         <div>{(answer.text) ? answer.text : ''}</div>
-                                        <div></div>
+                                        {(props.displayStudentResponses) ?
+                                            <div>
+                                                <LinearProgress
+                                                    mode="determinate"
+                                                    max={responses.length === 0 ? 1 : responses.length}
+                                                    color={colors[i]}
+                                                    value={filter(responses, (response) => response.option === answer.option).length}/>
+                                            </div>
+                                            : null}
                                 </ListItem>
                             );
                         })}

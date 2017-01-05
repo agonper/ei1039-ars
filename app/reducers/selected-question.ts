@@ -27,7 +27,8 @@ export interface SelectedQuestion {
     state: string,
     askedAt: string,
     questionSet: BasicQuestionSet,
-    answers: QuestionAnswer[]
+    answers: QuestionAnswer[],
+    responses: {option: string}[]
 }
 
 export interface SelectedQuestionState {

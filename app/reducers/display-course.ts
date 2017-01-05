@@ -10,7 +10,8 @@ export interface DisplayedQuestion {
     time: number,
     state: string,
     askedAt: string,
-    answers: QuestionAnswer[]
+    answers: QuestionAnswer[],
+    responses: {option: string}[]
 }
 
 export interface DisplayedCourse {

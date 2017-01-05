@@ -118,6 +118,9 @@ const DisplayCourseQuery = gql`
         text
         isCorrect
       }
+      responses {
+        option
+      }
     }
    }
  }`;

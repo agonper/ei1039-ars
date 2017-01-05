@@ -107,6 +107,9 @@ const FetchQuestionQuery = gql`
         text
         isCorrect
      }
+     responses {
+        option
+     }
    }
  }`;
 
