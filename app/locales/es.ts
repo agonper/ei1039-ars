@@ -66,5 +66,7 @@ export const esTranslationStrings = {
     'dashboard.question.project': "Proyectar",
 
     'display.course.not-found': "Curso no encontrado",
+    'display.course.ranking.title': "Ranking del curso",
+    'display.course.ranking.no-records': "No hay registros",
     'keypad.idle.message': "Esperando al profesor..."
 };

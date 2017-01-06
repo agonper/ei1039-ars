@@ -37,26 +37,29 @@ export class CourseStatsContainer extends Component<CourseStatsContainerProps, a
         const studentLinkedStats = this.calculateDisplayedCourseStats();
         return (
             <div>
-                <h1><FormattedMessage id="display.course.ranking" defaultMessage="Course ranking"/></h1>
-                <Paper>
-                    <List>
-                        {studentLinkedStats.map((student) => {
-                            return (
-                                <ListItem
-                                    leftAvatar={renderStudentAvatar(student.name)}
-                                    rightIcon={<Badge badgeContent={student.hits}/>}>
-                                    {student.name}
-                                </ListItem>
-                            );
-                        })}
-                    </List>
-                </Paper>
+                <h1><FormattedMessage id="display.course.ranking.title" defaultMessage="Course ranking"/></h1>
+                    {(studentLinkedStats.length > 0) ?
+                        <Paper>
+                            <List>
+                                {studentLinkedStats.map((student) => {
+                                    return (
+                                        <ListItem
+                                            leftAvatar={StudentAvatar(student.name)}
+                                            rightIcon={<Badge badgeContent={student.hits}/>}>
+                                            {student.name}
+                                        </ListItem>
+                                    );
+                                })}
+                            </List>
+                        </Paper>
+                        : <FormattedMessage id="display.course.ranking.no-records" defaultMessage="No records yet"/>
+                    }
             </div>
         )
     }
 }
 
-export const renderStudentAvatar = (studentName: string) => {
+export const StudentAvatar = (studentName: string) => {
     const nameParts = studentName.split(' ');
     const studentAvatar = [''].concat(nameParts).reduce((prev, curr) => prev + curr.charAt(0).toUpperCase());
     return <Avatar>{studentAvatar}</Avatar>
