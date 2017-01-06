@@ -26,6 +26,10 @@ export const CLEAR_DISPLAYED_QUESTION_PENDING = 'CLEAR_DISPLAYED_QUESTION_PENDIN
 export const CLEAR_DISPLAYED_QUESTION_SUCCESS = 'CLEAR_DISPLAYED_QUESTION_SUCCESS';
 export const CLEAR_DISPLAYED_QUESTION_ERROR = 'CLEAR_DISPLAYED_QUESTION_ERROR';
 
+export const TOGGLE_COURSE_SHOW_STATS_PENDING = 'TOGGLE_COURSE_SHOW_STATS_PENDING';
+export const TOGGLE_COURSE_SHOW_STATS_SUCCESS = 'TOGGLE_COURSE_SHOW_STATS_SUCCESS';
+export const TOGGLE_COURSE_SHOW_STATS_ERROR = 'TOGGLE_COURSE_SHOW_STATS_ERROR';
+
 export const FETCH_COURSE_FOR_KEYPAD_PENDING = 'FETCH_COURSE_FOR_KEYPAD_PENDING';
 export const FETCH_COURSE_FOR_KEYPAD_SUCCESS = 'FETCH_COURSE_FOR_KEYPAD_SUCCESS';
 export const FETCH_COURSE_FOR_KEYPAD_ERROR = 'FETCH_COURSE_FOR_KEYPAD_ERROR';
@@ -84,6 +88,7 @@ const FetchCourseQuery = gql`
    course(id: $id) {
      id
      name
+     showStats
      students {
        name
        email
@@ -98,7 +103,7 @@ export function fetchCourse(id: string) {
         failure: FETCH_COURSE_ERROR
     };
 
-    return performGraphQLQuery({query: FetchCourseQuery, variables: {id}}, actionTypes);
+    return performGraphQLQuery({query: FetchCourseQuery, variables: {id}, forceFetch: true}, actionTypes);
 }
 
 const DisplayCourseQuery = gql`
@@ -192,6 +197,26 @@ export function clearDisplayedQuestion(courseId: string) {
     };
 
     return performGraphQLMutation({mutation: ClearDisplayedQuestionMutation, variables: {courseId}}, actionTypes);
+}
+
+const ToggleCourseShowStatsMutation = gql`
+ mutation toggleCourseShowStats($courseId: String!) {
+   toggleCourseShowStats(courseId: $courseId) {
+     id
+     displayedQuestion {
+       id
+     }
+   }
+ }`;
+
+export function toggleCourseShowStats(courseId: string) {
+    const actionTypes = {
+        pending: TOGGLE_COURSE_SHOW_STATS_PENDING,
+        success: TOGGLE_COURSE_SHOW_STATS_SUCCESS,
+        failure: TOGGLE_COURSE_SHOW_STATS_ERROR
+    };
+
+    return performGraphQLMutation({mutation: ToggleCourseShowStatsMutation, variables: {courseId}}, actionTypes);
 }
 
 const FetchCourseForKeypadQuery = gql`

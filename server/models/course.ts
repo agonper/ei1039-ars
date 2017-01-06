@@ -5,7 +5,10 @@ import {CourseModel} from './mongodb/course';
 import {QuestionSet} from "./question-set";
 import {Question, questionRepository} from "./question";
 import * as PubSub from 'pubsub-js';
-import {COURSES_TOPIC, DISPLAYED_QUESTION_CHANGED, DISPLAYED_QUESTION_CLEARED} from "../../common/messages/ws-messages";
+import {
+    COURSES_TOPIC, DISPLAYED_QUESTION_CHANGED, DISPLAYED_QUESTION_CLEARED,
+    COURSE_SHOW_STATS_CHANGED
+} from "../../common/messages/ws-messages";
 import {USER_TEACHER, USER_STUDENT} from "../../common/types/user-types";
 
 export interface Course {
@@ -39,6 +42,22 @@ class CourseRepository {
         });
     }
 
+    public findById(id: string): Promise<MongooseDocument & Course> {
+        return <any>CourseModel.findOne({_id: id}).exec().catch((err) => {
+            log.error(`Error fetching course by id: ${id}`, err);
+            return Promise.reject(new Error("course-not-found"));
+        });
+    }
+
+    public findByIdIfOwner(courseId: string, user: any & MongooseDocument): Promise<MongooseDocument & Course> {
+        return courseRepository.findById(courseId).then((course) => {
+            if (!course) throw new Error('Course not found');
+            if (course.teacher.toString() !== user._id.toString()) throw new Error('Forbidden access');
+
+            return course;
+        });
+    }
+
     public displayQuestion(course: any & MongooseDocument, questionId: string): Promise<MongooseDocument & Course> {
         return questionRepository.findByIdIfFromCourse(questionId, course).then((question) => {
             course.displayedQuestion = questionId;
@@ -58,18 +77,11 @@ class CourseRepository {
         });
     }
 
-    public findById(id: string): Promise<MongooseDocument & Course> {
-        return <any>CourseModel.findOne({_id: id}).exec().catch((err) => {
-            log.error(`Error fetching course by id: ${id}`, err);
-            return Promise.reject(new Error("course-not-found"));
-        });
-    }
-
-    public findByIdIfOwner(courseId: string, user: any & MongooseDocument): Promise<MongooseDocument & Course> {
-        return courseRepository.findById(courseId).then((course) => {
-            if (!course) throw new Error('Course not found');
-            if (course.teacher.toString() !== user._id.toString()) throw new Error('Forbidden access');
-
+    public toggleShowStats(course: any & MongooseDocument): Promise<MongooseDocument & Course> {
+        course.showStats = !course.showStats;
+        course.displayedQuestion = null;
+        return course.save().then((course: any) => {
+            PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: COURSE_SHOW_STATS_CHANGED});
             return course;
         });
     }

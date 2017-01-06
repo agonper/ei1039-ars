@@ -37,14 +37,14 @@ class DisplayContainerComponent extends Component<DisplayContainerProps, any> {
 
     renderContent() {
         const {displayedQuestion} = this.props.displayedCourse.course;
-        if (!displayedQuestion) {
-            return <IdleDisplay/>;
+        if (displayedQuestion) {
+            const isAnswered = displayedQuestion.state === QUESTION_ANSWERED;
+            return <QuestionDisplay
+                question={displayedQuestion}
+                displayResponse={isAnswered}
+                displayStudentResponses={isAnswered}/>;
         }
-        const isAnswered = displayedQuestion.state === QUESTION_ANSWERED;
-        return <QuestionDisplay
-            question={displayedQuestion}
-            displayResponse={isAnswered}
-            displayStudentResponses={isAnswered}/>;
+        return <IdleDisplay/>;
     }
 
     render() {

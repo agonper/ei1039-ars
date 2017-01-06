@@ -9,6 +9,7 @@ export interface BasicStudent {
 export interface SelectedCourse {
     id: string
     name: string
+    showStats: boolean
     students: BasicStudent[]
 }
 
