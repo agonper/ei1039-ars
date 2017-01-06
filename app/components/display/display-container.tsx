@@ -10,6 +10,7 @@ import {IdleDisplay} from "./idle-display";
 import {QuestionDisplay} from "../questions/question-display";
 import {subscribeDisplayToCourseChanges, unsubscribeToCourseChanges} from "../../actions/subscription";
 import {QUESTION_ANSWERED} from "../../../common/states/question-states";
+import {CourseStatsContainer} from "./course-stats-contanier";
 
 interface DisplayContainerProps {
     displayedCourse: DisplayedCourseState
@@ -36,22 +37,34 @@ class DisplayContainerComponent extends Component<DisplayContainerProps, any> {
     }
 
     renderContent() {
-        const {displayedQuestion} = this.props.displayedCourse.course;
+        const {course} = this.props.displayedCourse;
+        const {displayedQuestion, showStats} = course;
         if (displayedQuestion) {
             const isAnswered = displayedQuestion.state === QUESTION_ANSWERED;
-            return <QuestionDisplay
-                question={displayedQuestion}
-                displayResponse={isAnswered}
-                displayStudentResponses={isAnswered}/>;
+            return (
+                <div className="row middle-xs">
+                    <QuestionDisplay
+                        question={displayedQuestion}
+                        displayResponse={isAnswered}
+                        displayStudentResponses={isAnswered}/>
+                </div>
+            );
         }
-        return <IdleDisplay/>;
+        if (showStats) {
+            return <CourseStatsContainer course={course}/>;
+        }
+        return (
+            <div className="row middle-xs">
+                <IdleDisplay/>
+            </div>
+        );
     }
 
     render() {
         return (
             <div style={fullSizeContainerStyle}>
                 <div style={{height: '100%'}} className="row col-lg-offset-2 col-lg-8 center-xs">
-                    <Paper style={{height: '100%', width: '100%'}} zDepth={2} className="row middle-xs center-xs">
+                    <Paper style={{height: '100%', width: '100%'}} zDepth={2} className="row center-xs">
                         {this.renderContent()}
                     </Paper>
                 </div>

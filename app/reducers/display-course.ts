@@ -14,9 +14,26 @@ export interface DisplayedQuestion {
     responses: {option: string}[]
 }
 
+export interface LimitedStudent {
+    id: string,
+    name: string
+}
+
+export interface LimitedQuestion {
+    answers: {option: string, isCorrect: boolean}[],
+    responses: {option: string, student: {id: string}}[]
+}
+
+export interface LimitedQuestionSet {
+    questions: LimitedQuestion[]
+}
+
 export interface DisplayedCourse {
     id: string,
     name: string,
+    showStats: boolean,
+    questionSets: LimitedQuestionSet[]
+    students: LimitedStudent[]
     displayedQuestion: DisplayedQuestion
 }
 
