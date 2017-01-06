@@ -106,6 +106,25 @@ const DisplayCourseQuery = gql`
    course(id: $id) {
      id
      name
+     showStats
+     questionSets {
+       questions {
+        answers {
+         option
+         isCorrect
+        }
+        responses {
+         option
+         student {
+          id
+         }
+        }
+       }
+     }
+     students {
+      id
+      name
+     }
      displayedQuestion {
       id
       title

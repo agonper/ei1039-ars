@@ -15,6 +15,7 @@ export interface Course {
     teacher: User,
     students: User[],
     questionSets: QuestionSet[],
+    showStats: boolean,
     displayedQuestion: Question
 }
 
@@ -22,7 +23,7 @@ class CourseRepository {
 
     public createCourse(user: any & MongooseDocument, name: string): Promise<MongooseDocument & Course> {
         if (user.type !== USER_TEACHER) throw new Error('user-not-a-teacher');
-        const course = new CourseModel({name: name, teacher: user._id, createdAt: Date.now()});
+        const course = new CourseModel({name: name, teacher: user._id, createdAt: Date.now(), showStats: false});
         return course.save().then((course) => {
             user.courses.push(course);
             return user.save().then(() => course);
@@ -41,6 +42,7 @@ class CourseRepository {
     public displayQuestion(course: any & MongooseDocument, questionId: string): Promise<MongooseDocument & Course> {
         return questionRepository.findByIdIfFromCourse(questionId, course).then((question) => {
             course.displayedQuestion = questionId;
+            course.showStats = false;
             return course.save().then((course: any) => {
                 PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: DISPLAYED_QUESTION_CHANGED});
                 return course;

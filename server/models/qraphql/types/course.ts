@@ -1,6 +1,7 @@
 import {GraphQLObjectType, GraphQLList} from "graphql";
 import {GraphQLID} from "graphql";
 import {GraphQLString} from "graphql";
+import {GraphQLBoolean} from "graphql";
 import UserType from "./user";
 import QuestionSetType from "./question-set";
 import QuestionType from "./question";
@@ -36,6 +37,9 @@ const CourseType: any = new GraphQLObjectType({
                 type: new GraphQLList(QuestionSetType),
                 resolve: course => course.populate({path: 'questionSets', options: {sort: {createdAt: -1}}}).execPopulate()
                     .then((course: Course) => course.questionSets)
+            },
+            showStats: {
+                type: GraphQLBoolean
             },
             displayedQuestion: {
                 type: QuestionType,

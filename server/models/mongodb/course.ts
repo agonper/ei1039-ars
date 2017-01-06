@@ -6,6 +6,7 @@ export const CourseSchema = new Schema({
     teacher: {type: Schema.Types.ObjectId, ref: 'User'},
     students: [{type: Schema.Types.ObjectId, ref: 'User'}],
     questionSets: [{type: Schema.Types.ObjectId, ref: 'QuestionSet'}],
+    showStats: {type: Boolean, required: true},
     displayedQuestion: {type: Schema.Types.ObjectId, ref: 'Question'}
 });
 
