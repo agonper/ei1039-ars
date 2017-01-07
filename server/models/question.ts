@@ -100,7 +100,7 @@ class QuestionRepository {
 
     public stopAskingQuestion(questionId: string, course: MongooseDocument & Course): Promise<MongooseDocument & Question> {
         return this.findByIdIfFromCourse(questionId, course).then((question: any) => {
-            // if (question.state === QUESTION_ASKED) { //FIXME Uncomment
+            if (question.state === QUESTION_ASKED) {
                 question.state = QUESTION_UNASKED;
                 question.askedAt = null;
                 question.responses = [];
@@ -112,8 +112,8 @@ class QuestionRepository {
                     PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: QUESTION_ASKING_STOPPED});
                     return question;
                 });
-            // }
-            // return question;
+            }
+            return question;
         });
     }
 
