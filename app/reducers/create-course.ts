@@ -22,7 +22,7 @@ export const CreateCourseReducer = (state: CreateCourseState = INITIAL_STATE, ac
             const course = action.payload.data.createCourse;
             return {creating: false, course, error: undefined};
         case CREATE_COURSE_ERROR:
-            return {creating: false, course: undefined, error: action.error.data.errors};
+            return {creating: false, course: undefined, error: action.error};
         default:
             return state;
     }

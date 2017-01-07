@@ -65,7 +65,7 @@ export const DisplayedCourseReducer = (state: DisplayedCourseState = INITIAL_STA
             const course = action.payload.data.course;
             return {...state, fetching: false, course, error: undefined};
         case DISPLAY_COURSE_ERROR:
-            return {...state, fetching: false, course: undefined, error: action.error.data.errors};
+            return {...state, fetching: false, course: undefined, error: action.error};
         case SHORT_COURSE_URL_SUCCESS:
             return {...state, shortenedUrl: action.payload.data.id};
         default:

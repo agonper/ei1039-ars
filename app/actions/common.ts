@@ -22,8 +22,13 @@ export function performGraphQLQuery(queryOptions: DeprecatedWatchQueryOptions, a
     return (dispatch: Dispatch<ApplicationState>) => {
         dispatch(generatePendingAction(asyncActionTypes.pending));
         request
-            .then((data) => dispatch(generateSuccessAction(asyncActionTypes.success, data)))
-            .catch((err) => dispatch(generateFailureAction(asyncActionTypes.failure, err)));
+            .then((data: any) => {
+                if (data.errors) {
+                    dispatch(generateFailureAction(asyncActionTypes.failure, data));
+                } else {
+                    dispatch(generateSuccessAction(asyncActionTypes.success, data))
+                }
+            }).catch((err) => dispatch(generateFailureAction(asyncActionTypes.failure, err)));
         return request;
     }
 }
@@ -33,8 +38,13 @@ export function performGraphQLMutation(mutationOptions: MutationOptions, asyncAc
     return (dispatch: Dispatch<ApplicationState>) => {
         dispatch(generatePendingAction(asyncActionTypes.pending));
         request
-            .then((data) => dispatch(generateSuccessAction(asyncActionTypes.success, data)))
-            .catch((err) => dispatch(generateFailureAction(asyncActionTypes.failure, err)));
+            .then((data: any) => {
+                if (data.errors) {
+                    dispatch(generateFailureAction(asyncActionTypes.failure, data));
+                } else {
+                    dispatch(generateSuccessAction(asyncActionTypes.success, data))
+                }
+            }).catch((err) => dispatch(generateFailureAction(asyncActionTypes.failure, err)));
         return request;
     }
 }

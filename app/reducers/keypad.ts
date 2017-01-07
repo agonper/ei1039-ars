@@ -74,14 +74,14 @@ export const KeypadReducer = (state: KeypadState = INITIAL_STATE, action: Generi
 
             return {...state, fetching: false, course, error: undefined, hasAnswered};
         case FETCH_COURSE_FOR_KEYPAD_ERROR:
-            return {...state, fetching: false, course: undefined, error: action.error.data.errors};
+            return {...state, fetching: false, course: undefined, error: action.error};
         case ANSWER_QUESTION_PENDING:
             return {...state, answering: true};
         case ANSWER_QUESTION_SUCCESS:
             const answer = action.payload.data.answerQuestion;
             return {...state, answering: false, answer, hasAnswered: true, error: undefined};
         case ANSWER_QUESTION_ERROR:
-            return {...state, answering: false, answer: undefined, error: action.error.data.errors};
+            return {...state, answering: false, answer: undefined, error: action.error};
         default:
             return state;
     }

@@ -26,7 +26,7 @@ export const CreateQuestionSetReducer = (state: CreateQuestionSetState = INITIAL
             const questionSet: LimitedQuestionSet = {id, name, createdAt, questions};
             return {creating: false, questionSet, error: undefined};
         case CREATE_QUESTION_SET_ERROR:
-            return {creating: false, questionSet: undefined, error: action.error.data.errors};
+            return {creating: false, questionSet: undefined, error: action.error};
         default:
             return state;
     }

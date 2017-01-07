@@ -38,7 +38,7 @@ export const SelectedQuestionSetReducer = (state: SelectedQuestionSetState = INI
             const questionSet = action.payload.data.questionSet;
             return {fetching: false, questionSet, error: undefined};
         case FETCH_QUESTION_SET_ERROR:
-            return {fetching: false, questionSet: undefined, error: action.error.data.errors};
+            return {fetching: false, questionSet: undefined, error: action.error};
         default:
             return state;
     }

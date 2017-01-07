@@ -45,7 +45,7 @@ export const UserCoursesReducer = (state: UserCoursesState = INITIAL_SATE, actio
             const courses = action.payload.data.userCourses;
             return {fetching: false, courses, error: undefined};
         case LIST_COURSES_ERROR:
-            return {fetching: false, courses: [], error: action.error.errors};
+            return {fetching: false, courses: [], error: action.error};
         case CREATE_COURSE_SUCCESS:
             const course = action.payload.data.createCourse;
             return {...state, courses: [course, ...state.courses]};

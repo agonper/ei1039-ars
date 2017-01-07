@@ -51,7 +51,7 @@ export const SelectedQuestionReducer = (state: SelectedQuestionState = INITIAL_S
             const question = action.payload.data.question;
             return {fetching: false, question, error: undefined};
         case FETCH_QUESTION_ERROR:
-            return {fetching: false, question: undefined, error: action.error.data.errors};
+            return {fetching: false, question: undefined, error: action.error};
         default:
             return state;
     }

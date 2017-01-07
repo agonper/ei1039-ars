@@ -33,7 +33,7 @@ export const SelectedCourseReducer = (state: SelectedCourseState = INITIAL_STATE
             const course = action.payload.data.course;
             return {fetching: false, course, error: undefined};
         case FETCH_COURSE_ERROR:
-            return {fetching: false, course: undefined, error: action.error.data.errors};
+            return {fetching: false, course: undefined, error: action.error};
         default:
             return state;
     }
