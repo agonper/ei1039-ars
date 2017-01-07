@@ -153,7 +153,23 @@ const DisplayCourseQuery = gql`
       responses {
         option
       }
-    }
+     }
+     displayedQuestionSet {
+      name
+      createdAt
+      questions {
+        answers {
+         option
+         isCorrect
+        }
+        responses {
+         option
+         student {
+          id
+         }
+        }
+       }
+     }
    }
  }`;
 

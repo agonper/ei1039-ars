@@ -28,13 +28,19 @@ export interface LimitedQuestionSet {
     questions: LimitedQuestion[]
 }
 
+export interface BasicQuestionSet extends LimitedQuestionSet {
+    name: string,
+    createdAt: string
+}
+
 export interface DisplayedCourse {
     id: string,
     name: string,
     showStats: boolean,
-    questionSets: LimitedQuestionSet[]
-    students: LimitedStudent[]
-    displayedQuestion: DisplayedQuestion
+    questionSets: LimitedQuestionSet[],
+    students: LimitedStudent[],
+    displayedQuestion: DisplayedQuestion,
+    displayedQuestionSet: BasicQuestionSet
 }
 
 export interface DisplayedCourseState {

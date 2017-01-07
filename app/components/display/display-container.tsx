@@ -11,6 +11,7 @@ import {QuestionDisplay} from "../questions/question-display";
 import {subscribeDisplayToCourseChanges, unsubscribeToCourseChanges} from "../../actions/subscription";
 import {QUESTION_ANSWERED} from "../../../common/states/question-states";
 import {CourseStatsContainer} from "./course-stats-contanier";
+import {QuestionSetStatsContainer} from "./question-set-stats-container";
 
 interface DisplayContainerProps {
     displayedCourse: DisplayedCourseState
@@ -38,7 +39,7 @@ class DisplayContainerComponent extends Component<DisplayContainerProps, any> {
 
     renderContent() {
         const {course} = this.props.displayedCourse;
-        const {displayedQuestion, showStats} = course;
+        const {displayedQuestion, displayedQuestionSet, showStats} = course;
         if (displayedQuestion) {
             const isAnswered = displayedQuestion.state === QUESTION_ANSWERED;
             return (
@@ -49,6 +50,9 @@ class DisplayContainerComponent extends Component<DisplayContainerProps, any> {
                         displayStudentResponses={isAnswered}/>
                 </div>
             );
+        }
+        if (displayedQuestionSet) {
+            return <QuestionSetStatsContainer course={course}/>;
         }
         if (showStats) {
             return <CourseStatsContainer course={course}/>;

@@ -68,5 +68,6 @@ export const esTranslationStrings = {
     'display.course.not-found': "Curso no encontrado",
     'display.course.ranking.title': "Ranking del curso",
     'display.course.ranking.no-records': "No hay registros",
+    'display.question-set.ranking.title': "Ranking para {name}",
     'keypad.idle.message': "Esperando al profesor..."
 };
