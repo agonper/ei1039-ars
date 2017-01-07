@@ -24,7 +24,7 @@ export const localLogin = (config: ServerConfig): passport.Strategy => {
 
                     const token = jwt.sign(payload, config.jwtSecret);
 
-                    return done(null, token);
+                    return done(null, {token, user: {name: user.name, email: user.email, type: user.type}});
                 }).catch((err) => {
                     log.info(err);
                     return done({message: 'Wrong password', errors: {password: 'wrong-password'}}, false);
