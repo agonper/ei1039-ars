@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import {ApplicationState} from "../reducers/index";
 import {KeypadState} from "../reducers/keypad";
 import {KeypadContainer} from "../components/keypad/keypad-container";
+import {UserMenu} from "../components/ui/user-menu";
 
 interface KeypadProps {
     params: {
@@ -54,7 +55,8 @@ export const KeypadComponent = (props: KeypadProps) => {
         <div>
             <AppBar
                 iconElementLeft={<IconButton><RecordVoiceOverIcon color={white}/></IconButton>}
-                title={course.name}/>
+                title={course.name}
+                iconElementRight={<UserMenu/>}/>
             <KeypadContainer/>
         </div>
     );
