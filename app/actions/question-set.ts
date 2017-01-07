@@ -43,7 +43,10 @@ const FetchQuestionSetQuery = gql`
      name
      createdAt
      course {
+       id
+       displayedQuestionSet {
         id
+       }
      }
    }
  }`;
@@ -55,5 +58,5 @@ export function fetchQuestionSet(id: string) {
         failure: FETCH_QUESTION_SET_ERROR
     };
 
-    return performGraphQLQuery({query: FetchQuestionSetQuery, variables: {id}}, actionTypes);
+    return performGraphQLQuery({query: FetchQuestionSetQuery, variables: {id}, forceFetch: true}, actionTypes);
 }

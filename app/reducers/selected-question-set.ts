@@ -6,6 +6,9 @@ import {
 
 export interface BasicCourse {
     id: string
+    displayedQuestionSet: {
+        id: string
+    }
 }
 
 export interface SelectedQuestionSet {

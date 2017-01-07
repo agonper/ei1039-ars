@@ -26,6 +26,14 @@ export const CLEAR_DISPLAYED_QUESTION_PENDING = 'CLEAR_DISPLAYED_QUESTION_PENDIN
 export const CLEAR_DISPLAYED_QUESTION_SUCCESS = 'CLEAR_DISPLAYED_QUESTION_SUCCESS';
 export const CLEAR_DISPLAYED_QUESTION_ERROR = 'CLEAR_DISPLAYED_QUESTION_ERROR';
 
+export const DISPLAY_QUESTION_SET_PENDING = 'DISPLAY_QUESTION_SET_PENDING';
+export const DISPLAY_QUESTION_SET_SUCCESS = 'DISPLAY_QUESTION_SET_SUCCESS';
+export const DISPLAY_QUESTION_SET_ERROR = 'DISPLAY_QUESTION_SET_ERROR';
+
+export const CLEAR_DISPLAYED_QUESTION_SET_PENDING = 'CLEAR_DISPLAYED_QUESTION_SET_PENDING';
+export const CLEAR_DISPLAYED_QUESTION_SET_SUCCESS = 'CLEAR_DISPLAYED_QUESTION_SET_SUCCESS';
+export const CLEAR_DISPLAYED_QUESTION_SET_ERROR = 'CLEAR_DISPLAYED_QUESTION_SET_ERROR';
+
 export const TOGGLE_COURSE_SHOW_STATS_PENDING = 'TOGGLE_COURSE_SHOW_STATS_PENDING';
 export const TOGGLE_COURSE_SHOW_STATS_SUCCESS = 'TOGGLE_COURSE_SHOW_STATS_SUCCESS';
 export const TOGGLE_COURSE_SHOW_STATS_ERROR = 'TOGGLE_COURSE_SHOW_STATS_ERROR';
@@ -197,6 +205,46 @@ export function clearDisplayedQuestion(courseId: string) {
     };
 
     return performGraphQLMutation({mutation: ClearDisplayedQuestionMutation, variables: {courseId}}, actionTypes);
+}
+
+const DisplayQuestionSetMutation = gql`
+mutation displayQuestionSet($courseId: String!, $questionSetId: String!) {
+  displayQuestionSet(courseId: $courseId, questionSetId: $questionSetId) {
+    id
+    displayedQuestionSet {
+      id
+    }
+  }
+}`;
+
+export function displayQuestionSet(courseId: string, questionSetId: string) {
+    const actionTypes = {
+        pending: DISPLAY_QUESTION_SET_PENDING,
+        success: DISPLAY_QUESTION_SET_SUCCESS,
+        failure: DISPLAY_QUESTION_SET_ERROR
+    };
+
+    return performGraphQLMutation({mutation: DisplayQuestionSetMutation, variables: {courseId, questionSetId}}, actionTypes);
+}
+
+const ClearDisplayedQuestionSetMutation = gql`
+mutation clearDisplayedQuestionSet($courseId: String!) {
+  clearDisplayedQuestionSet(courseId: $courseId) {
+    id
+    displayedQuestionSet {
+      id
+    }
+  }
+}`;
+
+export function clearDisplayedQuestionSet(courseId: string) {
+    const actionTypes = {
+        pending: CLEAR_DISPLAYED_QUESTION_SET_PENDING,
+        success: CLEAR_DISPLAYED_QUESTION_SET_SUCCESS,
+        failure: CLEAR_DISPLAYED_QUESTION_SET_ERROR
+    };
+
+    return performGraphQLMutation({mutation: ClearDisplayedQuestionSetMutation, variables: {courseId}}, actionTypes);
 }
 
 const ToggleCourseShowStatsMutation = gql`
