@@ -45,6 +45,11 @@ const CourseType: any = new GraphQLObjectType({
                 type: QuestionType,
                 resolve: course => course.populate('displayedQuestion').execPopulate()
                     .then((course: Course) => course.displayedQuestion)
+            },
+            displayedQuestionSet: {
+                type: QuestionSetType,
+                resolve: course => course.populate('displayedQuestionSet').execPopulate()
+                    .then((course: Course) => course.displayedQuestionSet)
             }
         }
     }

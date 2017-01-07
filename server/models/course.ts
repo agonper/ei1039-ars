@@ -2,12 +2,12 @@ import * as log from 'winston';
 import {MongooseDocument, Types} from "mongoose";
 import {User} from "./user";
 import {CourseModel} from './mongodb/course';
-import {QuestionSet} from "./question-set";
+import {QuestionSet, questionSetRepository} from "./question-set";
 import {Question, questionRepository} from "./question";
 import * as PubSub from 'pubsub-js';
 import {
     COURSES_TOPIC, DISPLAYED_QUESTION_CHANGED, DISPLAYED_QUESTION_CLEARED,
-    COURSE_SHOW_STATS_CHANGED
+    COURSE_SHOW_STATS_CHANGED, DISPLAYED_QUESTION_SET_CHANGED, DISPLAYED_QUESTION_SET_CLEARED
 } from "../../common/messages/ws-messages";
 import {USER_TEACHER, USER_STUDENT} from "../../common/types/user-types";
 
@@ -19,7 +19,8 @@ export interface Course {
     students: User[],
     questionSets: QuestionSet[],
     showStats: boolean,
-    displayedQuestion: Question
+    displayedQuestion: Question,
+    displayedQuestionSet: QuestionSet
 }
 
 class CourseRepository {
@@ -58,9 +59,20 @@ class CourseRepository {
         });
     }
 
+    public toggleShowStats(course: any & MongooseDocument): Promise<MongooseDocument & Course> {
+        course.showStats = !course.showStats;
+        course.displayedQuestion = null;
+        course.displayedQuestionSet = null;
+        return course.save().then((course: any) => {
+            PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: COURSE_SHOW_STATS_CHANGED});
+            return course;
+        });
+    }
+
     public displayQuestion(course: any & MongooseDocument, questionId: string): Promise<MongooseDocument & Course> {
         return questionRepository.findByIdIfFromCourse(questionId, course).then((question) => {
             course.displayedQuestion = questionId;
+            course.displayedQuestionSet = null;
             course.showStats = false;
             return course.save().then((course: any) => {
                 PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: DISPLAYED_QUESTION_CHANGED});
@@ -77,13 +89,24 @@ class CourseRepository {
         });
     }
 
-    public toggleShowStats(course: any & MongooseDocument): Promise<MongooseDocument & Course> {
-        course.showStats = !course.showStats;
-        course.displayedQuestion = null;
+    public displayQuestionSet(course: any & MongooseDocument, questionSetId: string): Promise<MongooseDocument & Course> {
+        return questionSetRepository.findByIdIfFromCourse(questionSetId, course).then((questionSet) => {
+            course.displayedQuestionSet = questionSet;
+            course.displayedQuestion = null;
+            course.showStats = false;
+            return course.save().then((course: any) => {
+                PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: DISPLAYED_QUESTION_SET_CHANGED});
+                return course;
+            })
+        })
+    }
+
+    public clearDisplayedQuestionSet(course: any & MongooseDocument): Promise<MongooseDocument & Course> {
+        course.displayedQuestionSet = null;
         return course.save().then((course: any) => {
-            PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: COURSE_SHOW_STATS_CHANGED});
+            PubSub.publish(`${COURSES_TOPIC}.${course._id}`, {msg: DISPLAYED_QUESTION_SET_CLEARED});
             return course;
-        });
+        })
     }
 }
 

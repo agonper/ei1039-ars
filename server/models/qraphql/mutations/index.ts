@@ -9,6 +9,8 @@ import MutationAskQuestion from "./ask-question";
 import MutationStopAskingQuestion from "./stop-asking-question";
 import MutationAnswerQuestion from "./answer-question";
 import MutationToggleCourseShowStats from "./toggle-course-show-stats";
+import MutationDisplayQuestionSet from "./display-question-set";
+import MutationClearDisplayedQuestionSet from "./clear-displayed-question-set";
 
 export const MutationType = new GraphQLObjectType({
     name: 'Mutation',
@@ -18,9 +20,11 @@ export const MutationType = new GraphQLObjectType({
         createQuestionSet: MutationCreateQuestionSet,
         createLinkedQuestion: MutationCreateLinkedQuestion,
         createIndependentQuestion: MutationCreateIndependentQuestion,
+        toggleCourseShowStats: MutationToggleCourseShowStats,
         displayQuestion: MutationDisplayQuestion,
         clearDisplayedQuestion: MutationClearDisplayedQuestion,
-        toggleCourseShowStats: MutationToggleCourseShowStats,
+        displayQuestionSet: MutationDisplayQuestionSet,
+        clearDisplayedQuestionSet: MutationClearDisplayedQuestionSet,
         askQuestion: MutationAskQuestion,
         stopAskingQuestion: MutationStopAskingQuestion,
         answerQuestion: MutationAnswerQuestion
