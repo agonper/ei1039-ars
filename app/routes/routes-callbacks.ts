@@ -20,10 +20,12 @@ export const checkIfNotLoggedIn: Router.EnterHook = (nextState, replace) => {
 
 export const checkIfNotLoggedInForDashboard: Router.EnterHook = (nextState, replace) => {
     checkIfNotLoggedIn(nextState, replace);
-    const applicationState: ApplicationState = applicationStore.getState();
-    const {type} = applicationState.login.user;
-    if (type === USER_STUDENT) {
-        return replace('/unavailable')
+    if (isLoggedIn()) {
+        const applicationState: ApplicationState = applicationStore.getState();
+        const {type} = applicationState.login.user;
+        if (type === USER_STUDENT) {
+            return replace('/unavailable')
+        }
     }
 };
 
