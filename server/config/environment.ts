@@ -18,7 +18,7 @@ export interface ServerConfig {
 
 const developmentConfig: ServerConfig = {
     db :{
-        dbUri: 'mongodb://localhost:27017/ei1039-ars-dev'
+        dbUri: process.env.MONGODB_URI ||'mongodb://localhost:27017/ei1039-ars-dev'
     },
     http: {
         host: os.hostname(),
@@ -30,7 +30,7 @@ const developmentConfig: ServerConfig = {
 
 const testConfig: ServerConfig = {
     db :{
-        dbUri: 'mongodb://localhost:27017/ei1039-ars-test'
+        dbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/ei1039-ars-test'
     },
     http: {
         host: os.hostname(),
