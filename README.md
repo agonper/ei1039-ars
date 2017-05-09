@@ -1,4 +1,4 @@
-#EI1039 - UJI | ARS
+# EI1039 - UJI | ARS
 ## Introducción
 
 Proyecto creado por los alumnos de Ingeniería Informática de la Universitat Jaume I (UJI) 
